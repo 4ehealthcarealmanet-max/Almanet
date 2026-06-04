@@ -25,3 +25,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@theme {
+  --color-brand-ice: #E5EDF1;
+  --color-brand-mist: #96C2DB;
+  --color-brand-white: #FFFFFF;
+}

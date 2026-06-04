@@ -152,9 +152,9 @@ const [activeService, setActiveService] = useState<any>(null);
     }
   };
   return (
-<div className="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-900 overflow-x-hidden">
-      
-      {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
+// Is line ko dhundo aur classes badlo:
+// Is line ko page.tsx ke top par wapas pehle jaisa kar dein:
+<div className="min-h-screen bg-[#0B1120] text-slate-200 antialiased selection:bg-teal-500/30">      {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
       <div className="max-w-[1366px] mx-auto w-full bg-slate-900 shadow-2xl relative">     
       {/* --- HEADER NAVIGATION --- */}
      <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-all">
@@ -208,53 +208,107 @@ const [activeService, setActiveService] = useState<any>(null);
 </header>
 
       {/* --- HERO SECTION --- */}
-      <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(45,212,191,0.08),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(79,70,229,0.1),transparent_50%)]" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 text-center md:text-left">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/20">
-              <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" /> Next Generation Digital Ecosystems
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
-              Empowering Ideas via <span className="bg-gradient-to-r from-teal-400 via-emerald-400 to-indigo-400 bg-clip-text text-transparent">Advanced Intelligence</span>
-            </h1>
-            <p className="text-lg text-slate-400 max-w-xl mx-auto md:mx-0 font-light leading-relaxed">
-              Almanet builds foundational automation suites, customized corporate SAP transformations, and machine learning models engineered to elevate complex modern business initiatives.
-            </p>
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-              <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-slate-800 text-white hover:bg-slate-700 transition-all border border-slate-700">
-                Explore Products
-              </button>
-              <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:opacity-90 transition-all">
-                Register Platform
-              </button>
-            </div>
-          </div>
-          <div className="relative flex justify-center">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-3xl blur opacity-30 animate-pulse" />
-            <img 
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" 
-              alt="Almanet Digital Ecosystem Dashboard" 
-              className="rounded-2xl border border-slate-700 shadow-2xl relative z-10 max-w-full h-auto object-cover"
-            />
-          </div>
-        </div>
-      </section>
+     <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-gradient-to-b from-[#0F172A] via-[#F0F4F8] to-[#E5EDF1] border-b border-[#96C2DB]/40">
+  
+  {/* Shaded Canvas Technical Print Layer */}
+  <div 
+    className="absolute inset-0 opacity-[0.10] pointer-events-none z-0"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
+      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
+    }}
+  />
 
-    {/* --- PRODUCTS SECTION (UPDATED) --- */}
-<section id="products" className="py-20 relative w-full z-10 border-t border-slate-800">
-  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12">
-    <div className="space-y-3">
-      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Enterprise Scaling Products</h2>
-      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">Robust system modules custom optimized to run high-volume workflows fluidly.</p>
+  {/* Soft Ambient Light Spotlights inside the hero background */}
+  <div className="absolute top-0 left-1/3 w-[50vw] h-[300px] bg-gradient-to-b from-teal-500/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
+  <div className="absolute bottom-0 right-1/4 w-[40vw] h-[250px] bg-gradient-to-t from-[#96C2DB]/20 to-transparent rounded-full blur-[80px] pointer-events-none" />
+  
+  <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+    <div className="space-y-6 text-center md:text-left">
+      
+      {/* Upper Badges tweaked to match the light-blue tinted tone */}
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/40">
+        <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" /> Next Generation Digital Ecosystems
+      </span>
+      
+      {/* High-Contrast Main Heading Typography */}
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900">
+        Empowering Ideas via <span className="bg-gradient-to-r from-teal-600 via-emerald-600 to-indigo-600 bg-clip-text text-transparent">Advanced Intelligence</span>
+      </h1>
+      
+      {/* Subtext description tweaked from text-slate-400 to text-slate-700 */}
+      <p className="text-lg text-slate-700 max-w-xl mx-auto md:mx-0 font-normal leading-relaxed">
+        Almanet builds foundational automation suites, customized corporate SAP transformations, and machine learning models engineered to elevate complex modern business initiatives.
+      </p>
+      
+      {/* Main Trigger Call to Actions */}
+      <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+        {/* Changed button bg to high-contrast slate-900 for premium light layout presentation */}
+        <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-[#0F172A] text-white hover:bg-slate-800 shadow-md border border-slate-800 transition-all">
+          Explore Products
+        </button>
+        <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 shadow-md transition-all">
+          Register Platform
+        </button>
+      </div>
     </div>
+    
+    {/* Right Column: Hero Showcase Image Mockup Block - Fully Intact */}
+    <div className="relative flex justify-center">
+      <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-3xl blur opacity-35 animate-pulse" />
+      <img 
+        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" 
+        alt="Almanet Digital Ecosystem Dashboard" 
+        className="rounded-2xl border border-slate-800 shadow-2xl relative z-10 max-w-full h-auto object-cover bg-[#0F172A]"
+      />
+    </div>
+  </div>
+</section>
+
+   <section id="products" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/40 overflow-hidden">
+  
+  {/* PRINT ELEMENT 01: High-Tech Linear Grid Architecture Print */}
+  <div 
+    className="absolute inset-0 opacity-[0.12] pointer-events-none -z-10 mix-blend-overlay"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
+      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
+    }}
+  />
+
+  {/* PRINT ELEMENT 02: Ambient Radial Light Spotlights */}
+  {/* PRINT ELEMENT: Dot Matrix Engine */}
+<div 
+  className="absolute inset-0 opacity-[0.15] pointer-events-none -z-10 mix-blend-multiply"
+  style={{
+    backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
+    backgroundSize: '16px 16px',
+  }}
+/>
+  <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-[#96C2DB]/30 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
+  <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-bl from-[#E5EDF1]/80 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
+
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12 relative z-10">
+    
+    {/* Section Headers */}
+    <div className="space-y-3">
+      <span className="text-xs font-extrabold uppercase tracking-widest text-[#4A77BC]">Our Portfolios</span>
+      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Enterprise Scaling Products</h2>
+      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Robust system modules custom optimized to run high-volume workflows fluidly.</p>
+    </div>
+
+    {/* The Grid */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
       {PRODUCTS && PRODUCTS.map((prod: any, idx: number) => (
-        <div key={prod?.id || prod?.title || idx} className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-md p-5 space-y-4 hover:border-slate-700/50 transition-all text-left flex flex-col justify-between shadow-sm">
+        
+        /* INNER CARD BOXES: 100% Intact Dark Corporate Look */
+        <div 
+          key={prod?.id || prod?.title || idx} 
+          className="group rounded-2xl border border-slate-800 bg-[#0F172A] p-5 space-y-4 hover:border-slate-700 transition-all text-left flex flex-col justify-between shadow-[0_15px_30px_rgba(15,23,42,0.18)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.35)] hover:-translate-y-1 duration-300"
+        >
           <div className="space-y-3">
-            <div className="h-44 rounded-xl overflow-hidden bg-slate-900 border border-slate-800">
+            {/* Image Box */}
+            <div className="h-44 rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
               <img 
                 src={
                   (prod?.title?.toLowerCase().includes('pathyatech') || prod?.name?.toLowerCase().includes('pathyatech'))
@@ -265,88 +319,169 @@ const [activeService, setActiveService] = useState<any>(null);
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
               />
             </div>
+
+            {/* Dark Card Typography */}
             <h3 className="text-base font-bold text-white tracking-tight">{prod?.title || prod?.name || "Product"}</h3>
             <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">{prod?.desc || prod?.description || ""}</p>
           </div>
-          {/* Click to open Full Detail Page */}
+
+          {/* Action Trigger Link */}
           <button 
             onClick={() => setActiveProduct(prod)} 
-            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors"
+            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors w-fit"
           >
             Explore Specifications &rarr;
           </button>
         </div>
+
       ))}
     </div>
   </div>
 </section>
 
-    {/* --- SERVICES SECTION (UPDATED) --- */}
-<section id="services" className="py-20 relative w-full z-10 border-t border-slate-800">
-  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12">
+   <section id="services" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/40 overflow-hidden">
+  
+  {/* Shaded Canvas Technical Print Layer */}
+  <div 
+    className="absolute inset-0 opacity-[0.12] pointer-events-none -z-10 mix-blend-overlay"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
+      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
+    }}
+  />
+
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12 relative z-10">
+    
+    {/* Section Header */}
     <div className="space-y-3">
-      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Our Professional Services</h2>
-      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">Providing operational consultancy, custom execution algorithms, and workspace expansion paths.</p>
+      <span className="text-xs font-extrabold uppercase tracking-widest text-[#4A77BC]">Capabilities</span>
+      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Our Professional Services</h2>
+      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Strategic architecture consulting and customized full-stack pipeline integration.</p>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-      {SERVICES && SERVICES.map((serv: any, idx: number) => (
-        <div key={serv?.id || serv?.title || idx} className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-md p-6 text-left space-y-4 hover:border-slate-700/50 transition-all flex flex-col justify-between shadow-sm">
+
+    {/* Services Grid Layout */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      {SERVICES && SERVICES.map((srv: any, idx: number) => (
+        
+        /* INNER SERVICE BOX: Original Dark Box Architecture */
+        <div 
+          key={srv?.id || srv?.title || idx} 
+          className="group rounded-2xl border border-slate-800 bg-[#0F172A] p-5 space-y-4 hover:border-slate-700 transition-all text-left flex flex-col justify-between shadow-[0_15px_30px_rgba(15,23,42,0.18)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.35)] hover:-translate-y-1 duration-300"
+        >
           <div className="space-y-4">
-            <div className="h-44 rounded-xl overflow-hidden border border-slate-800 bg-slate-900">
-              <img src={serv?.img || serv?.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80"} alt="" className="w-full h-full object-cover" />
+            
+            {/* UPDATED DYNAMIC IMAGE CONTAINER: Fixed size to h-40 and w-full */}
+            {srv?.icon || srv?.img || srv?.image ? (
+              <div className="h-40 w-full rounded-xl bg-slate-950 border border-slate-800/80 text-teal-400 flex items-center justify-center overflow-hidden relative group-hover:border-slate-700 transition-colors">
+                {typeof (srv?.icon || srv?.img || srv?.image) === 'string' && (srv?.icon || srv?.img || srv?.image).startsWith('http') ? (
+                  <img 
+                    src={srv?.icon || srv?.img || srv?.image} 
+                    alt="" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : typeof (srv?.icon || srv?.img || srv?.image) === 'string' && !(srv?.icon || srv?.img || srv?.image).startsWith('http') && (srv?.icon || srv?.img || srv?.image).length > 4 ? (
+                  /* Handling local asset relative path string strings like /images/rec.jpg */
+                  <img 
+                    src={srv?.icon || srv?.img || srv?.image} 
+                    alt="" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  /* Fallback variant if it's an inline emoji or a JSX component */
+                  <div className="text-3xl text-teal-400 group-hover:text-emerald-400 transition-colors transform group-hover:scale-110 duration-300">
+                    {srv?.icon || "🌐"}
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Global fallback empty thumbnail wrapper just in case background fails */
+              <div className="h-44 w-full rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-700">
+                🌐
+              </div>
+            )}
+            
+            {/* Dark Card Corporate Content with improved spacing padding */}
+            <div className="space-y-2 pt-1">
+              <h3 className="text-base font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors">
+                {srv?.title || srv?.name || "Service"}
+              </h3>
+              <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">
+                {srv?.desc || srv?.description || ""}
+              </p>
             </div>
-            <h3 className="text-lg font-bold text-white tracking-tight">{serv?.title || serv?.name || "Service"}</h3>
-            <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">{serv?.desc || serv?.description || ""}</p>
           </div>
-          {/* Click to open Full Detail Page */}
+
           <button 
-            onClick={() => setActiveService(serv)} 
-            className="text-xs font-bold tracking-wider text-teal-400 group-hover:text-emerald-400 uppercase pt-2 transition-colors"
+            onClick={() => setActiveService(srv)} 
+            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors w-fit"
           >
-            Review Service Architecture &rarr;
+            Request Scope Audit &rarr;
           </button>
         </div>
+
       ))}
     </div>
   </div>
 </section>
 
-      {/* --- EVENTS SECTION --- */}
-      <section id="events" className="py-24 border-t border-slate-800/60 bg-slate-950/40">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Upcoming Events & Workshops</h2>
-            <p className="text-slate-400">Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {EVENTS.map((evt) => (
-              <div key={evt.id} className="bg-slate-800/40 border border-slate-800 rounded-2xl overflow-hidden flex flex-col sm:flex-row hover:border-slate-700 transition-all group shadow-xl">
-                <div className="sm:w-2/5 h-48 sm:h-auto relative overflow-hidden">
-                  <img src={evt.img} alt={evt.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-6 sm:w-3/5 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap gap-2 text-xs text-emerald-400 font-semibold tracking-wide">
-                      <span>{evt.date}</span> &bull; <span>{evt.time}</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-emerald-400 transition-colors">{evt.title}</h3>
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{evt.desc}</p>
-                    <p className="text-xs font-medium text-slate-500 italic">📌 {evt.location}</p>
-                  </div>
-                  <button 
-                    onClick={() => { setActiveEvent(evt); setEventFormSubmitted(false); }}
-                    className="w-full py-2 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 font-bold text-xs tracking-wider transition-all"
-                  >
-                    Register For Event
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    {/* --- EVENTS SECTION (LIGHT CORRESPONDENT GRADIENT THEME) --- */}
+<section id="events" className="py-24 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#96C2DB]/40 via-[#F0F4F8] to-[#E5EDF1] overflow-hidden">
+  
+  {/* Light Shaded Canvas Technical Print Layer */}
+  <div 
+    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
+      backgroundSize: '16px 16px',
+    }}
+  />
 
-      {/* --- BLOGS SECTION --- */}
+  <div className="max-w-7xl mx-auto px-6 relative z-10">
+    
+    {/* Section Header adapted with high-contrast text */}
+    <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Upcoming Events & Workshops</h2>
+      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.</p>
+    </div>
+
+    {/* Dynamic Events Grid - Keeping Inner Dark Card Architecture 100% Intact */}
+    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      {EVENTS && EVENTS.map((evt: any) => (
+        <div key={evt.id} className="bg-[#0F172A] border border-slate-800 rounded-2xl overflow-hidden flex flex-col sm:flex-row hover:border-slate-700 transition-all group shadow-xl">
+          
+          {/* Left Frame Image Box */}
+          <div className="sm:w-2/5 h-48 sm:h-auto relative overflow-hidden">
+            <img src={evt.img} alt={evt.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          
+          {/* Right Frame Content Area */}
+          <div className="p-6 sm:w-3/5 flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex flex-wrap gap-2 text-xs text-teal-400 font-semibold tracking-wide">
+                <span>{evt.date}</span> &bull; <span>{evt.time}</span>
+              </div>
+              <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-teal-400 transition-colors">{evt.title}</h3>
+              <p className="text-xs text-slate-400 font-light line-clamp-2 leading-relaxed">{evt.desc}</p>
+              <p className="text-xs font-medium text-slate-500 italic">📌 {evt.location}</p>
+            </div>
+            
+            {/* Action Register Button Hook */}
+            <button 
+              onClick={() => { setActiveEvent(evt); setEventFormSubmitted(false); }}
+              className="w-full py-2 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 font-bold text-xs tracking-wider transition-all"
+            >
+              Register For Event
+            </button>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+     {/* --- BLOGS SECTION --- */}
       <section id="blogs" className="py-24 border-t border-slate-800/60">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
@@ -390,48 +525,61 @@ const [activeService, setActiveService] = useState<any>(null);
       </section>
 
      {/* --- CAREERS SECTION (DARK THEME COMPATIBLE) --- */}
-<section id="careers" className="py-20 relative w-full z-10 border-t border-slate-800 bg-transparent">
-  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-16">
+{/* --- CAREERS SECTION (LIGHT CORRESPONDENT GRADIENT THEME) --- */}
+<section id="careers" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#96C2DB]/30 via-[#F0F4F8] to-[#E5EDF1] overflow-hidden">
+  
+  {/* Shaded Canvas Technical Print Layer */}
+  <div 
+    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
+      backgroundSize: '20px 20px',
+    }}
+  />
+
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-16 relative z-10">
+    
+    {/* Section Header with Crisp Light Setup */}
     <div className="space-y-3">
-      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/30">
         🚀 Join Our Team
       </span>
-      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
-        Build the Future of <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">Enterprise Software</span>
+      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+        Build the Future of <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent">Enterprise Software</span>
       </h2>
-      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">
+      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">
         Grow your skills while working on advanced data systems, enterprise integrations, and robust application suites.
       </p>
     </div>
 
-    {/* Perks Cards - Translucent Glassmorphism */}
+    {/* Perks Cards - 100% Original Dark Inner Setup Floating Cleanly */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
-      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
         <div className="text-xl">💻</div>
         <h3 className="text-sm font-bold text-slate-200">Modern Tech Stack</h3>
         <p className="text-xs text-slate-400 font-light leading-relaxed">Work directly with Next.js, specialized back-end pipelines, and microservices architectures built to scale flawlessly.</p>
       </div>
-      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
         <div className="text-xl">📈</div>
         <h3 className="text-sm font-bold text-slate-200">Accelerated Mentorship</h3>
         <p className="text-xs text-slate-400 font-light leading-relaxed">Collaborate under industry seniors and project leads to fast-track your practical system engineering capabilities.</p>
       </div>
-      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
         <div className="text-xl">🤝</div>
         <h3 className="text-sm font-bold text-slate-200">Open Culture</h3>
         <p className="text-xs text-slate-400 font-light leading-relaxed">Ownership driven developer ecosystems where optimal design and clean logic are highly recognized.</p>
       </div>
     </div>
 
-    {/* Job Cards - Sleek Dark Row Panels */}
+    {/* Job Cards - Sleek Original Mapping Loop Kept 100% Intact */}
     <div className="space-y-4 max-w-4xl mx-auto text-left">
-      <h3 className="text-base font-bold text-slate-200 mb-4 px-2">Current Openings</h3>
+      <h3 className="text-base font-bold text-slate-800 mb-4 px-2">Current Openings</h3>
       
       {[
         { title: 'Full Stack Web Developer Intern', dept: 'Engineering', type: 'Remote / Hybrid', desc: 'Assist in integrating robust Next.js layouts with fast enterprise API modules.' },
         { title: 'Backend Systems Engineer', dept: 'Cloud Infrastructure', type: 'Full-Time', desc: 'Build scalable business data layers, manage migrations, and secure telemetry hooks.' }
       ].map((job, idx) => (
-        <div key={idx} className="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl shadow-lg hover:border-slate-700/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+        <div key={idx} className="p-5 bg-[#0F172A] border border-slate-800 rounded-2xl shadow-lg hover:border-slate-700/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
               <h4 className="text-sm font-bold text-white group-hover:text-teal-400 transition-colors">{job.title}</h4>
@@ -440,6 +588,8 @@ const [activeService, setActiveService] = useState<any>(null);
             <p className="text-[11px] text-teal-400/80 font-medium">{job.dept}</p>
             <p className="text-xs text-slate-400 font-light max-w-xl">{job.desc}</p>
           </div>
+          
+          {/* Action Trigger State Button */}
           <button 
             onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
             className="sm:self-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 font-bold text-xs hover:opacity-90 active:scale-[0.98] transition-all whitespace-nowrap text-center shadow-md shadow-teal-500/10"
@@ -452,96 +602,110 @@ const [activeService, setActiveService] = useState<any>(null);
   </div>
 </section>
 
+
       {/* --- EXTENDED HIGH-IMPACT ABOUT US SECTION --- */}
-      <section id="aboutus" className="py-28 border-t border-slate-800/60 bg-gradient-to-b from-slate-950/40 to-slate-950 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(45,212,191,0.03),transparent_60%)]" />
+   <section id="aboutus" className="py-28 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/30 relative overflow-hidden">
+  
+  {/* Shaded Canvas Technical Print Layer */}
+  <div 
+    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
+    style={{
+      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
+      backgroundSize: '20px 20px',
+    }}
+  />
+  
+  <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
+    
+    {/* Main Structural Introduction */}
+    <div className="grid lg:grid-cols-12 gap-12 items-center">
+      <div className="lg:col-span-7 space-y-6 text-left">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/30">
+          🏢 Corporate Profile & Intelligence
+        </span>
         
-        <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
-          
-          {/* Main Structural Introduction */}
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7 space-y-6 text-left">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                🏢 Corporate Profile & Intelligence
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Architecting the Software Ecosystems That Drive <span className="bg-gradient-to-r from-teal-400 to-indigo-400 bg-clip-text text-transparent">Global Modern Enterprises</span>
-              </h2>
-              <p className="text-slate-300 font-light leading-relaxed text-base sm:text-lg">
-                Founded on rigid software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks. From deploying robust, integrated hospital lab modules and automated clinic workflows to delivering custom multi-tier SAP cloud management, we bridge advanced technical programming with localized business scale logic natively.
-              </p>
-              <p className="text-slate-400 font-light leading-relaxed text-sm">
-                We believe that modern enterprise apps shouldn't operate in siloes. Our specialized approach centers on unifying fragmented data streams—ensuring that field actions, internal inventories, donor telemetry, and customer facing touchpoints speak to the same underlying analytical database engine fluidly and securely.
-              </p>
-            </div>
-            
-            {/* Visual Stats Block Grid */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-              <div className="p-6 bg-slate-900/60 rounded-2xl border border-slate-800/80 shadow-md">
-                <div className="text-3xl font-black text-teal-400">99.9%</div>
-                <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">System Uptime</div>
-                <p className="text-[11px] text-slate-500 font-light mt-1.5 leading-normal">Guaranteed high-volume telemetry through redundant cloud pipelines.</p>
-              </div>
-              <div className="p-6 bg-slate-900/60 rounded-2xl border border-slate-800/80 shadow-md">
-                <div className="text-3xl font-black text-indigo-400">14+</div>
-                <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Core Modules</div>
-                <p className="text-[11px] text-slate-500 font-light mt-1.5 leading-normal">Production-ready system layers custom optimized for enterprise use.</p>
-              </div>
-              <div className="p-6 bg-slate-900/60 rounded-2xl border border-slate-800/80 shadow-md">
-                <div className="text-3xl font-black text-emerald-400">100%</div>
-                <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Data Privacy</div>
-                <p className="text-[11px] text-slate-500 font-light mt-1.5 leading-normal">Strict regulatory compliance layers built inside custom firewalls.</p>
-              </div>
-              <div className="p-6 bg-slate-900/60 rounded-2xl border border-slate-800/80 shadow-md">
-                <div className="text-3xl font-black text-purple-400">2026</div>
-                <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Industry Ready</div>
-                <p className="text-[11px] text-slate-500 font-light mt-1.5 leading-normal">Advanced AI frameworks geared up for next-gen performance.</p>
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-slate-900" />
-
-          {/* Expanded Three Pillar Value Architecture */}
-          <div className="grid md:grid-cols-3 gap-8">
-            
-            {/* Pillar 1 */}
-            <div className="space-y-3 p-6 rounded-2xl bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-colors">
-              <div className="h-10 w-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg border border-teal-500/20">
-                🎯
-              </div>
-              <h3 className="text-lg font-bold text-slate-100 tracking-tight">Our Mission</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-light">
-                To democratize heavy enterprise automation layers. We engineer robust, secure ecosystems that lower operational friction, making high-throughput tracking frameworks accessible to both non-profit structures and multinational networks uniformly.
-              </p>
-            </div>
-
-            {/* Pillar 2 */}
-            <div className="space-y-3 p-6 rounded-2xl bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-colors">
-              <div className="h-10 w-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-lg border border-indigo-500/20">
-                🛡️
-              </div>
-              <h3 className="text-lg font-bold text-slate-100 tracking-tight">Technical Mastery</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-light">
-                From specialized Python deep learning orchestration to comprehensive SAP configurations, our architecture relies heavily on microservice modularity. This structure guarantees lightning-fast load patterns, scalable deployment parameters, and zero data downtime.
-              </p>
-            </div>
-
-            {/* Pillar 3 */}
-            <div className="space-y-3 p-6 rounded-2xl bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-colors">
-              <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-lg border border-purple-500/20">
-                🚀
-              </div>
-              <h3 className="text-lg font-bold text-slate-100 tracking-tight">Talent Incubation</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-light">
-                Beyond physical software delivery, Almanet actively drives technical workspace scaling. Our integrated internship systems and expert-led virtual training modules (VTO) ensure that upcoming developers master full-stack code paths using live production environments.
-              </p>
-            </div>
-
-          </div>
-
+        {/* Main Heading adapted for high contrast display */}
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Architecting the Software Ecosystems That Drive <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent">Global Modern Enterprises</span>
+        </h2>
+        
+        {/* Paragraphs tuned from text-slate-300/400 to solid slate-700 */}
+        <p className="text-slate-700 font-normal leading-relaxed text-base sm:text-lg">
+          Founded on rigid software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks. From deploying robust, integrated hospital lab modules and automated clinic workflows to delivering custom multi-tier SAP cloud management, we bridge advanced technical programming with localized business scale logic natively.
+        </p>
+        <p className="text-slate-600 font-light leading-relaxed text-sm">
+          We believe that modern enterprise apps shouldn't operate in siloes. Our specialized approach centers on unifying fragmented data streams—ensuring that field actions, internal inventories, donor telemetry, and customer facing touchpoints speak to the same underlying analytical database engine fluidly and securely.
+        </p>
+      </div>
+      
+      {/* Visual Stats Block Grid - Kept 100% Original Dark Box Setup to match other grids */}
+      <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
+          <div className="text-3xl font-black text-teal-400">99.9%</div>
+          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">System Uptime</div>
+          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Guaranteed high-volume telemetry through redundant cloud pipelines.</p>
         </div>
-      </section>
+        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
+          <div className="text-3xl font-black text-indigo-400">14+</div>
+          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Core Modules</div>
+          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Production-ready system layers custom optimized for enterprise use.</p>
+        </div>
+        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
+          <div className="text-3xl font-black text-emerald-400">100%</div>
+          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Data Privacy</div>
+          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Strict regulatory compliance layers built inside custom firewalls.</p>
+        </div>
+        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
+          <div className="text-3xl font-black text-purple-400">2026</div>
+          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Industry Ready</div>
+          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Advanced AI frameworks geared up for next-gen performance.</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Section Splitter Line tuned to match the print structure */}
+    <hr className="border-[#96C2DB]/40" />
+
+    {/* Expanded Three Pillar Value Architecture - Safely Restored with original details */}
+    <div className="grid md:grid-cols-3 gap-8">
+      
+      {/* Pillar 1 */}
+      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
+        <div className="h-10 w-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg border border-teal-500/20">
+          🎯
+        </div>
+        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Our Mission</h3>
+        <p className="text-xs text-slate-400 leading-relaxed font-light">
+          To democratize heavy enterprise automation layers. We engineer robust, secure ecosystems that lower operational friction, making high-throughput tracking frameworks accessible to both non-profit structures and multinational networks uniformly.
+        </p>
+      </div>
+
+      {/* Pillar 2 */}
+      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
+        <div className="h-10 w-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-lg border border-indigo-500/20">
+          🛡️
+        </div>
+        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Technical Mastery</h3>
+        <p className="text-xs text-slate-400 leading-relaxed font-light">
+          From specialized Python deep learning orchestration to comprehensive SAP configurations, our architecture relies heavily on microservice modularity. This structure guarantees lightning-fast load patterns, scalable deployment parameters, and zero data downtime.
+        </p>
+      </div>
+
+      {/* Pillar 3 */}
+      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
+        <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-lg border border-purple-500/20">
+          🚀
+        </div>
+        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Talent Incubation</h3>
+        <p className="text-xs text-slate-400 leading-relaxed font-light">
+          Beyond physical software delivery, Almanet actively drives technical workspace scaling. Our integrated internship systems and expert-led virtual training modules (VTO) ensure that upcoming developers master full-stack code paths using live production environments.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
       {/* --- EXTENDED MEGA FOOTER --- */}
       <footer className="bg-slate-950 text-slate-400 pt-16 pb-12 border-t border-slate-900 text-sm relative overflow-hidden">
