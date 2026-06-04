@@ -139,7 +139,8 @@ export default function AlmanetWebsite() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [activeBlog, setActiveBlog] = useState<typeof BLOGS[0] | null>(null);
   const [activeEvent, setActiveEvent] = useState<typeof EVENTS[0] | null>(null);
-
+const [activeProduct, setActiveProduct] = useState<any>(null);
+const [activeService, setActiveService] = useState<any>(null);
   // Form states
   const [regFormSubmitted, setRegFormSubmitted] = useState(false);
   const [eventFormSubmitted, setEventFormSubmitted] = useState(false);
@@ -156,39 +157,55 @@ export default function AlmanetWebsite() {
       {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
       <div className="max-w-[1366px] mx-auto w-full bg-slate-900 shadow-2xl relative">     
       {/* --- HEADER NAVIGATION --- */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-all">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-teal-400 to-indigo-600 flex items-center justify-center font-bold text-xl tracking-wider text-white shadow-lg shadow-teal-500/20">
-              A
-            </div>
-            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-teal-400 bg-clip-text text-transparent">
-              Almanet
-            </span>
-          </div>
-          
-          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-slate-300">
-            {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
-              <button 
-                key={item} 
-                onClick={() => handleScroll(item.toLowerCase().replace(' ', ''))}
-                className="hover:text-teal-400 transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-teal-400 after:transition-all"
-              >
-                {item}
-              </button>
-            ))}
-          </nav>
+     <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-all">
+  <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+     <div 
+  className="flex items-center cursor-pointer select-none h-32 py-1 pl-2" 
+  onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+>
+  {/* Ultra High-Visibility Big 3D Frame Container */}
+  <div className="h-28 py-2 px-2.5 bg-slate-900/95 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center relative transition-all duration-300 hover:border-teal-400/80 shadow-[0_15px_40px_rgba(0,0,0,0.95)] hover:shadow-[0_0_45px_rgba(74,119,188,0.5)] group">
+    
+    {/* Ultra Background Glow Pulse Effect */}
+    <div className="absolute -inset-1.5 bg-gradient-to-r from-[#4A77BC]/50 via-teal-500/35 to-[#C85A32]/50 rounded-2xl blur-lg opacity-90 group-hover:opacity-100 transition duration-300 -z-10 animate-pulse" />
 
-          <div>
-            <button 
-              onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
-              className="bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 px-5 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-teal-400/20 hover:shadow-emerald-400/30 hover:scale-[1.03] active:scale-[0.98] transition-all"
-            >
-              Get in Touch
-            </button>
-          </div>
-        </div>
-      </header>
+    {/* Max Size Logo Asset */}
+    <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.06] active:scale-[0.96]">
+      <img 
+        src="/almanet01_logo.jpg" 
+        alt="AlmaNet Official" 
+        className="h-full w-auto object-contain rounded-xl shadow-[0_8px_25px_rgba(0,0,0,0.6)] border border-white/10" 
+      />
+    </div>
+
+  </div>
+</div>
+    </div>
+    
+    {/* Navigation Buttons - Added 'Careers' */}
+    <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-slate-300">
+      {['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'].map((item) => (
+        <button 
+          key={item} 
+          onClick={() => handleScroll(item.toLowerCase().replace(' ', ''))}
+          className="hover:text-teal-400 transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-teal-400 after:transition-all"
+        >
+          {item}
+        </button>
+      ))}
+    </nav>
+
+    <div>
+      <button 
+        onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
+        className="bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 px-5 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-teal-400/20 hover:shadow-emerald-400/30 hover:scale-[1.03] active:scale-[0.98] transition-all"
+      >
+        Get in Touch
+      </button>
+    </div>
+  </div>
+</header>
 
       {/* --- HERO SECTION --- */}
       <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden">
@@ -226,86 +243,73 @@ export default function AlmanetWebsite() {
         </div>
       </section>
 
-     {/* --- PRODUCTS SECTION --- */}
-      <section id="products" className="py-24 border-t border-slate-800/60 bg-slate-900/40">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Enterprise Scaling Products</h2>
-            <p className="text-slate-400">Robust, secure modular micro-architectures developed to optimize high-volume business metrics natively.</p>
+    {/* --- PRODUCTS SECTION (UPDATED) --- */}
+<section id="products" className="py-20 relative w-full z-10 border-t border-slate-800">
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12">
+    <div className="space-y-3">
+      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Enterprise Scaling Products</h2>
+      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">Robust system modules custom optimized to run high-volume workflows fluidly.</p>
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      {PRODUCTS && PRODUCTS.map((prod: any, idx: number) => (
+        <div key={prod?.id || prod?.title || idx} className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-md p-5 space-y-4 hover:border-slate-700/50 transition-all text-left flex flex-col justify-between shadow-sm">
+          <div className="space-y-3">
+            <div className="h-44 rounded-xl overflow-hidden bg-slate-900 border border-slate-800">
+              <img 
+                src={
+                  (prod?.title?.toLowerCase().includes('pathyatech') || prod?.name?.toLowerCase().includes('pathyatech'))
+                    ? "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80"
+                    : (prod?.img || prod?.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80")
+                } 
+                alt="" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+            </div>
+            <h3 className="text-base font-bold text-white tracking-tight">{prod?.title || prod?.name || "Product"}</h3>
+            <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">{prod?.desc || prod?.description || ""}</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {PRODUCTS.map((prod) => (
-              <div key={prod.id} className="group rounded-2xl bg-slate-800/50 border border-slate-700/60 overflow-hidden hover:border-teal-500/50 hover:bg-slate-800 transition-all duration-300 flex flex-col h-full shadow-lg">
-                <div className="h-44 overflow-hidden relative">
-                  <img 
-                    src={prod.id === 'pathyatech' ? 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=500&auto=format&fit=crop&q=60' : prod.img} 
-                    alt={prod.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                    onError={(e) => {
-                      // Fallback protection layer
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=500&auto=format&fit=crop&q=60';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
-                </div>
-                <div className="p-6 flex flex-col flex-grow space-y-2">
-                  <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">{prod.name}</h3>
-                  <p className="text-sm text-slate-400 font-light flex-grow leading-relaxed">{prod.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Click to open Full Detail Page */}
+          <button 
+            onClick={() => setActiveProduct(prod)} 
+            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors"
+          >
+            Explore Specifications &rarr;
+          </button>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
-     {/* --- SERVICES SECTION --- */}
-      <section id="services" className="py-24 border-t border-slate-800/60">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Our Professional Services</h2>
-            <p className="text-slate-400">Consulting, high-impact technical training, and custom architecture execution built to optimize internal scaling speeds.</p>
+    {/* --- SERVICES SECTION (UPDATED) --- */}
+<section id="services" className="py-20 relative w-full z-10 border-t border-slate-800">
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12">
+    <div className="space-y-3">
+      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Our Professional Services</h2>
+      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">Providing operational consultancy, custom execution algorithms, and workspace expansion paths.</p>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+      {SERVICES && SERVICES.map((serv: any, idx: number) => (
+        <div key={serv?.id || serv?.title || idx} className="group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-md p-6 text-left space-y-4 hover:border-slate-700/50 transition-all flex flex-col justify-between shadow-sm">
+          <div className="space-y-4">
+            <div className="h-44 rounded-xl overflow-hidden border border-slate-800 bg-slate-900">
+              <img src={serv?.img || serv?.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80"} alt="" className="w-full h-full object-cover" />
+            </div>
+            <h3 className="text-lg font-bold text-white tracking-tight">{serv?.title || serv?.name || "Service"}</h3>
+            <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">{serv?.desc || serv?.description || ""}</p>
           </div>
-          
-          {/* Updated grid items from small icons to beautiful large images */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {SERVICES.map((srv, index) => (
-              <div key={index} className="group rounded-2xl bg-slate-800/40 border border-slate-800/80 overflow-hidden hover:border-indigo-500/50 hover:bg-slate-800 transition-all duration-300 flex flex-col h-full shadow-xl">
-                
-                {/* 📸 Images are now large banners instead of small circular/square icons */}
-                <div className="h-48 overflow-hidden relative">
-                  <img 
-                    src={srv.img} 
-                    alt={srv.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                    onError={(e) => {
-                      // Fallback image source agar koi link broken ho toh
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-indigo-400 transition-colors">
-                      {srv.name}
-                    </h3>
-                    <p className="text-sm text-slate-400 font-light leading-relaxed">
-                      {srv.desc}
-                    </p>
-                  </div>
-                  
-                  <span className="text-xs font-semibold tracking-wider text-indigo-400 uppercase group-hover:translate-x-1.5 transition-transform inline-block pt-2">
-                    Learn more &rarr;
-                  </span>
-                </div>
-
-              </div>
-            ))}
-          </div>
+          {/* Click to open Full Detail Page */}
+          <button 
+            onClick={() => setActiveService(serv)} 
+            className="text-xs font-bold tracking-wider text-teal-400 group-hover:text-emerald-400 uppercase pt-2 transition-colors"
+          >
+            Review Service Architecture &rarr;
+          </button>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* --- EVENTS SECTION --- */}
       <section id="events" className="py-24 border-t border-slate-800/60 bg-slate-950/40">
@@ -384,6 +388,69 @@ export default function AlmanetWebsite() {
           </div>
         </div>
       </section>
+
+     {/* --- CAREERS SECTION (DARK THEME COMPATIBLE) --- */}
+<section id="careers" className="py-20 relative w-full z-10 border-t border-slate-800 bg-transparent">
+  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-16">
+    <div className="space-y-3">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+        🚀 Join Our Team
+      </span>
+      <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+        Build the Future of <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">Enterprise Software</span>
+      </h2>
+      <p className="text-slate-400 font-light max-w-2xl mx-auto text-sm">
+        Grow your skills while working on advanced data systems, enterprise integrations, and robust application suites.
+      </p>
+    </div>
+
+    {/* Perks Cards - Translucent Glassmorphism */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
+      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+        <div className="text-xl">💻</div>
+        <h3 className="text-sm font-bold text-slate-200">Modern Tech Stack</h3>
+        <p className="text-xs text-slate-400 font-light leading-relaxed">Work directly with Next.js, specialized back-end pipelines, and microservices architectures built to scale flawlessly.</p>
+      </div>
+      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+        <div className="text-xl">📈</div>
+        <h3 className="text-sm font-bold text-slate-200">Accelerated Mentorship</h3>
+        <p className="text-xs text-slate-400 font-light leading-relaxed">Collaborate under industry seniors and project leads to fast-track your practical system engineering capabilities.</p>
+      </div>
+      <div className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm space-y-3">
+        <div className="text-xl">🤝</div>
+        <h3 className="text-sm font-bold text-slate-200">Open Culture</h3>
+        <p className="text-xs text-slate-400 font-light leading-relaxed">Ownership driven developer ecosystems where optimal design and clean logic are highly recognized.</p>
+      </div>
+    </div>
+
+    {/* Job Cards - Sleek Dark Row Panels */}
+    <div className="space-y-4 max-w-4xl mx-auto text-left">
+      <h3 className="text-base font-bold text-slate-200 mb-4 px-2">Current Openings</h3>
+      
+      {[
+        { title: 'Full Stack Web Developer Intern', dept: 'Engineering', type: 'Remote / Hybrid', desc: 'Assist in integrating robust Next.js layouts with fast enterprise API modules.' },
+        { title: 'Backend Systems Engineer', dept: 'Cloud Infrastructure', type: 'Full-Time', desc: 'Build scalable business data layers, manage migrations, and secure telemetry hooks.' }
+      ].map((job, idx) => (
+        <div key={idx} className="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl shadow-lg hover:border-slate-700/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h4 className="text-sm font-bold text-white group-hover:text-teal-400 transition-colors">{job.title}</h4>
+              <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">{job.type}</span>
+            </div>
+            <p className="text-[11px] text-teal-400/80 font-medium">{job.dept}</p>
+            <p className="text-xs text-slate-400 font-light max-w-xl">{job.desc}</p>
+          </div>
+          <button 
+            onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
+            className="sm:self-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 font-bold text-xs hover:opacity-90 active:scale-[0.98] transition-all whitespace-nowrap text-center shadow-md shadow-teal-500/10"
+          >
+            Apply Now
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* --- EXTENDED HIGH-IMPACT ABOUT US SECTION --- */}
       <section id="aboutus" className="py-28 border-t border-slate-800/60 bg-gradient-to-b from-slate-950/40 to-slate-950 relative overflow-hidden">
@@ -485,12 +552,29 @@ export default function AlmanetWebsite() {
           {/* Column 1: Brand Insight */}
           <div className="lg:col-span-2 space-y-5">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-              <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-teal-400 to-indigo-600 flex items-center justify-center font-bold text-lg text-white shadow-md">
-                A
-              </div>
-              <span className="text-xl font-extrabold tracking-tight text-white">
-                Almanet
-              </span>
+              {/* --- FOOTER OFFICIAL LOGO INTEGRATION --- */}
+<div className="flex flex-col items-start space-y-4">
+  {/* Premium Frame Container (Header se thoda chota size footer ke liye perfect hai) */}
+  <div className="h-20 py-1.5 px-1.5 bg-slate-900/95 border border-slate-700/60 rounded-xl flex items-center justify-center relative shadow-[0_8px_20px_rgba(0,0,0,0.7)] group">
+    
+    {/* Clean Soft Ambient Glow (Footer dark theme compatibility) */}
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A77BC]/20 via-slate-800 to-[#C85A32]/20 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 -z-10" />
+
+    {/* Official White Box Image */}
+    <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.03]">
+      <img 
+        src="/almanet01_logo.jpg" 
+        alt="AlmaNet Official Logo" 
+        className="h-full w-auto object-contain rounded-lg border border-white/5" 
+      />
+    </div>
+  </div>
+
+  {/* Logo ke niche ka tagline text */}
+  <p className="text-xs text-slate-400 font-light max-w-xs leading-relaxed">
+    Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.
+  </p>
+</div>
             </div>
             <p className="text-xs text-slate-500 max-w-sm leading-relaxed font-light">
               Architecting secure data pipelines, next-generation healthcare integrations, and custom business automation tools engineered to empower modern enterprise initiatives globally.
@@ -768,6 +852,202 @@ export default function AlmanetWebsite() {
       )}
       
     </div>
+   {/* ================= NEW PRODUCT DETAIL PAGE MODAL ================= */}
+{activeProduct && (
+  <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-start justify-center p-4 pt-6 md:pt-12 overflow-y-auto">
+    <div className="bg-slate-900 border-2 border-slate-800 max-w-5xl w-full rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(74,119,188,0.15)] relative max-h-[92vh] flex flex-col mb-8 text-slate-200">
+      
+      {/* Top Banner Row */}
+      <div className="h-64 w-full relative shrink-0 border-b border-slate-800">
+        <img 
+          src={
+            (activeProduct?.title?.toLowerCase().includes('pathyatech') || activeProduct?.name?.toLowerCase().includes('pathyatech'))
+              ? "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1000&auto=format&fit=crop&q=80"
+              : (activeProduct?.img || activeProduct?.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&auto=format&fit=crop&q=80")
+          } 
+          alt="" 
+          className="w-full h-full object-cover brightness-[0.85]" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
+        <button onClick={() => setActiveProduct(null)} className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl bg-slate-950/90 h-10 w-10 rounded-full flex items-center justify-center border border-slate-700 shadow-xl transition-transform hover:scale-110">&times;</button>
+      </div>
+
+      <div className="overflow-y-auto p-6 md:p-10 space-y-8 custom-scrollbar">
+        {/* Header Badges */}
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-3 py-1 rounded-md border border-blue-500/20 uppercase tracking-widest">Core Product Engine</span>
+          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">v4.2 Stable Release</span>
+          <span className="text-[10px] font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md ml-auto">ID: #{activeProduct?.id || 'PROD-90X'}</span>
+        </div>
+
+        {/* Title */}
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight -mt-4">{activeProduct?.title || activeProduct?.name}</h2>
+
+        {/* Left-Right Splitted Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Left Large Column: Overview & Architecture Highlights */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="space-y-3">
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Functional Overview</h3>
+              <p className="text-slate-300 font-light text-base leading-relaxed whitespace-pre-line">
+                {activeProduct?.desc || activeProduct?.description || "High-performance enterprise infrastructure component designed natively to compute high-density logic layers with zero throttling."}
+              </p>
+            </div>
+
+            {/* Expanded Field: Embedded Features List */}
+            <div className="bg-slate-950/40 border border-slate-800 p-6 rounded-2xl space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-teal-400">Standard Integrated Capability Modules</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-400">
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Automated Hot-Swap Failover Engine</div>
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Live Telemetry Exporter Hooks</div>
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Encrypted High-Volume Matrix Sync</div>
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Role-Based IAM Access Rules</div>
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Multi-Region Database Sharding</div>
+                <div className="flex items-center gap-2"><span className="text-teal-400">✔</span> Low Latency Cache Routing</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Smaller Column: System Specification Panel */}
+          <div className="space-y-4 bg-slate-950/80 border-2 border-slate-800/60 p-5 rounded-2xl h-fit">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Technical Matrix Sheet</h3>
+            
+            {[
+              { label: "Deployment Structure", val: "Docker / Kubernetes" },
+              { label: "Compliance Standard", val: "ISO 27001 / SOC2 Ready" },
+              { label: "Data Pipeline", val: "Kafka / Redis Streams" },
+              { label: "Maximum API Latency", val: "< 8ms Peak Load" },
+              { label: "Bandwidth Threshold", val: "Unlimited Node Pools" },
+              { label: "License Type", val: "Commercial SaaS / On-Premise" }
+            ].map((spec, i) => (
+              <div key={i} className="flex flex-col border-b border-slate-800 pb-2 text-xs">
+                <span className="text-slate-500 font-medium">{spec.label}</span>
+                <span className="text-slate-200 font-semibold mt-0.5">{spec.val}</span>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* Action Panel */}
+        <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-slate-800">
+          <div className="text-xs text-slate-500">Need a sandbox environment setup? Contact system engineers directly.</div>
+          <div className="flex gap-3 w-full sm:w-auto">
+            <button 
+              onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); setActiveProduct(null); }}
+              className="flex-1 sm:flex-initial px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-500/10 hover:opacity-90 transition-all"
+            >
+              Request Enterprise License
+            </button>
+            <button onClick={() => setActiveProduct(null)} className="px-5 py-3 rounded-xl border border-slate-800 text-slate-400 font-medium text-xs hover:bg-slate-800/40">
+              Close Sheet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* ================= NEW SERVICE DETAIL PAGE MODAL ================= */}
+{activeService && (
+  <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-start justify-center p-4 pt-6 md:pt-12 overflow-y-auto">
+    <div className="bg-slate-900 border-2 border-slate-800 max-w-4xl w-full rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.1)] relative max-h-[92vh] flex flex-col mb-8 text-slate-200">
+      
+      <button onClick={() => setActiveService(null)} className="absolute top-4 right-4 z-20 text-slate-400 hover:text-white text-lg bg-slate-950/90 h-10 w-10 rounded-full flex items-center justify-center border border-slate-700 transition-transform hover:scale-110">&times;</button>
+
+      <div className="overflow-y-auto p-6 md:p-10 space-y-8 custom-scrollbar">
+        {/* Top Service Badge */}
+        <div className="space-y-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
+            ⚙️ Strategy & Custom Execution
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">{activeService?.title || activeService?.name}</h2>
+        </div>
+
+        <hr className="border-slate-800" />
+
+        {/* Big Side Image Banner with Text Inline */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 items-start">
+          <div className="md:col-span-2 h-48 w-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
+            <img src={activeService?.img || activeService?.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80"} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="md:col-span-3 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">Service Paradigm & Methodology</h3>
+            <p className="text-slate-300 font-light text-sm leading-relaxed whitespace-pre-line">
+              {activeService?.desc || activeService?.description || "Providing standard architecture consulting, system pipeline optimization, and deployment strategy layouts customized for long-term scalability parameters."}
+            </p>
+          </div>
+        </div>
+
+        {/* Expanded Field: Step by Step Workflow Timeline Panels */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-white tracking-wide">Standard Execution Milestones & Delivery Phases</h3>
+          
+          <div className="space-y-3">
+            <div className="p-4 bg-slate-950/40 border-l-4 border-emerald-500 rounded-r-xl space-y-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <span className="bg-emerald-500/20 text-emerald-400 h-5 w-5 rounded-full flex items-center justify-center text-[10px]">1</span>
+                Phase 01: Audit Discovery & Scoping Loop (Week 1)
+              </div>
+              <p className="text-xs text-slate-400 pl-7 font-light">Deep inspection of current system architecture, tracing API bottleneck matrices, and mapping target telemetry thresholds.</p>
+            </div>
+
+            <div className="p-4 bg-slate-950/40 border-l-4 border-teal-500 rounded-r-xl space-y-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <span className="bg-teal-500/20 text-teal-400 h-5 w-5 rounded-full flex items-center justify-center text-[10px]">2</span>
+                Phase 02: Blueprinting & Pipeline Refactoring (Week 2-3)
+              </div>
+              <p className="text-xs text-slate-400 pl-7 font-light">Developing targeted middleware scripts, custom router setups, and configuration layers to optimize active database query pools.</p>
+            </div>
+
+            <div className="p-4 bg-slate-950/40 border-l-4 border-indigo-500 rounded-r-xl space-y-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <span className="bg-indigo-500/20 text-indigo-400 h-5 w-5 rounded-full flex items-center justify-center text-[10px]">3</span>
+                Phase 03: Simulated Stress Tests & Handover (Week 4)
+              </div>
+              <p className="text-xs text-slate-400 pl-7 font-light">Subjecting backend channels to intense mock traffic protocols. Validation analysis generation and safe production rollout sign-off.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Expanded Field: Operational Constraints & KPIs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div className="p-4 bg-slate-950/50 border border-slate-800 rounded-xl">
+            <h4 className="text-xs font-bold text-emerald-400 mb-1">Expected Deliverables</h4>
+            <ul className="text-[11px] text-slate-400 list-disc list-inside space-y-1 font-light">
+              <li>Full-Stack Integration Architecture Maps</li>
+              <li>Production Pipeline Performance Metrics</li>
+              <li>SLA Compliance Certificates</li>
+            </ul>
+          </div>
+          <div className="p-4 bg-slate-950/50 border border-slate-800 rounded-xl">
+            <h4 className="text-xs font-bold text-emerald-400 mb-1">Resource allocation</h4>
+            <ul className="text-[11px] text-slate-400 list-disc list-inside space-y-1 font-light">
+              <li>Dedicated Project Lead & Senior Architect</li>
+              <li>24/7 Priority Emergency Channel Support</li>
+              <li>Weekly Synchronization Framework Reviews</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Button Action Section */}
+        <div className="pt-4 flex justify-end gap-3 border-t border-slate-800">
+          <button onClick={() => setActiveService(null)} className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 font-medium text-xs hover:bg-slate-800/40">
+            Dismiss
+          </button>
+          <button 
+            onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); setActiveService(null); }}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/10 hover:opacity-95 transition-all"
+          >
+            Initiate Project Scope Audit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div> 
   );
 }
