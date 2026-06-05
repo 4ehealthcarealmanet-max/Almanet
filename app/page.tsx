@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-
+import { Briefcase, BookOpen, GraduationCap, Users, Bot, Code, Megaphone } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+// Icons import karein
+import { ShieldCheck, Settings, Database, MessageSquare } from 'lucide-react';
 // --- MOCK DATA ---
 const PRODUCTS = [
   { id: 'pathyatech', name: 'PathyaTech', desc: 'Next-gen healthcare management and automation systems.', img: 'https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?w=500&auto=format&fit=crop&q=60' },
@@ -13,16 +17,16 @@ const PRODUCTS = [
   { id: 'doctor', name: 'MedConsult Live - Telehealth & Doctor Consultation Platform', desc: 'Telehealth and clinic appointment scheduler for modern doctors.', img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=500&auto=format&fit=crop&q=60' },
 ];
 
-const SERVICES = [
-  { name: 'SAP Consulting & Implementation Services', desc: 'Enterprise resource planning tailoring and structural deployment.', img: 'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?w=500&auto=format&fit=crop&q=60' },
-  { name: 'SAP VTO Solutions - Vendor Transition & Optimization', desc: 'Virtual Training Optimization for enterprise-level workforce agility.', img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&auto=format&fit=crop&q=60' },
-  { name: 'Enterprise SAP Training Programs', desc: 'Hands-on SAP module certifications led by global industry experts.', img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60' },
-  { name: 'Tech Internship & Industry Readiness Program', desc: 'Real-world project exposure for promising tech talents.', img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=60' },
-  { name: 'AI & Machine Learning with Python - Professional Certification ', desc: 'Master Deep Learning, Neural Networks, and Predictive Models.', img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&auto=format&fit=crop&q=60' },
-  { name: 'AI Solutions & Custom Software Development', desc: 'Bespoke LLM integrations and automation custom-built for your business.', img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80' },
-  { name: ' Digital Marketing & Growth Services', desc: 'Data-driven SEO, SEM, and performance marketing frameworks.', img: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=500&auto=format&fit=crop&q=60' },
-];
 
+const services = [
+  { icon: Briefcase, title: 'SAP Consultant', desc: 'Expert strategic advisory for enterprise landscape optimization.' },
+  { icon: BookOpen, title: 'SAP VTO', desc: 'Virtual technical orchestration for complex SAP environments.' },
+  { icon: GraduationCap, title: 'SAP Training', desc: 'Comprehensive modules for mastering SAP architectures.' },
+  { icon: Users, title: 'Internship', desc: 'Hands-on industry exposure in live production environments.' },
+  { icon: Bot, title: 'AI in Python', desc: 'Deep learning and automation training using Python.' },
+  { icon: Code, title: 'Custom AI Dev', desc: 'Tailored AI-driven development for business process automation.' },
+  { icon: Megaphone, title: 'Digital Marketing', desc: 'Data-driven outreach to scale your brand presence.' }
+];
 const BLOGS = [
   { 
     id: 1, 
@@ -141,6 +145,8 @@ export default function AlmanetWebsite() {
   const [activeEvent, setActiveEvent] = useState<typeof EVENTS[0] | null>(null);
 const [activeProduct, setActiveProduct] = useState<any>(null);
 const [activeService, setActiveService] = useState<any>(null);
+const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'];
+
   // Form states
   const [regFormSubmitted, setRegFormSubmitted] = useState(false);
   const [eventFormSubmitted, setEventFormSubmitted] = useState(false);
@@ -151,55 +157,57 @@ const [activeService, setActiveService] = useState<any>(null);
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  const services = [
+    { icon: Briefcase, title: 'SAP Consulting & Implementation Services', desc: 'Expert strategic advisory for enterprise landscape optimization.' },
+    { icon: BookOpen, title: 'SAP VTO Solutions - Vendor Transition & Optimization', desc: 'Virtual technical orchestration for complex SAP environments.' },
+    { icon: GraduationCap, title: 'Enterprise SAP Training Programs', desc: 'Comprehensive modules for mastering SAP architectures.' },
+    { icon: Users, title: 'Tech Internship & Industry Readiness Program', desc: 'Hands-on industry exposure in live production environments.' },
+    { icon: Bot, title: 'AI & Machine Learning with Python - Professional Certification', desc: 'Deep learning and automation training using Python.' },
+    { icon: Code, title: 'AI Solutions & Custom Software Development', desc: 'Tailored AI-driven development for business process automation.' },
+    { icon: Megaphone, title: 'Digital Marketing & Growth Services', desc: 'Data-driven outreach to scale your brand presence.' }
+  ];
+  
   return (
+
+    
 // Is line ko dhundo aur classes badlo:
 // Is line ko page.tsx ke top par wapas pehle jaisa kar dein:
 <div className="min-h-screen bg-[#0B1120] text-slate-200 antialiased selection:bg-teal-500/30">      {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
       <div className="max-w-[1366px] mx-auto w-full bg-slate-900 shadow-2xl relative">     
       {/* --- HEADER NAVIGATION --- */}
-     <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-all">
-  <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-     <div 
-  className="flex items-center cursor-pointer select-none h-32 py-1 pl-2" 
-  onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
->
-  {/* Ultra High-Visibility Big 3D Frame Container */}
-  <div className="h-28 py-2 px-2.5 bg-slate-900/95 border-2 border-slate-700/80 rounded-2xl flex items-center justify-center relative transition-all duration-300 hover:border-teal-400/80 shadow-[0_15px_40px_rgba(0,0,0,0.95)] hover:shadow-[0_0_45px_rgba(74,119,188,0.5)] group">
+    <header className="sticky top-0 z-40 bg-[#F8FAFC] backdrop-blur-md border-b border-gray-200 transition-all">
+  <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between"> {/* h-24 se header bhi thoda bada ho gaya */}
     
-    {/* Ultra Background Glow Pulse Effect */}
-    <div className="absolute -inset-1.5 bg-gradient-to-r from-[#4A77BC]/50 via-teal-500/35 to-[#C85A32]/50 rounded-2xl blur-lg opacity-90 group-hover:opacity-100 transition duration-300 -z-10 animate-pulse" />
-
-    {/* Max Size Logo Asset */}
-    <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.06] active:scale-[0.96]">
+    {/* LOGO SECTION - Bada Size */}
+    <div 
+      className="flex items-center cursor-pointer h-20 py-1" // h-20 logo ki height ke liye
+      onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+    >
       <img 
         src="/almanet-logo.png" 
         alt="AlmaNet Official" 
-        className="h-full w-auto object-contain rounded-xl shadow-[0_8px_25px_rgba(0,0,0,0.6)] border border-white/10" 
+        className="h-full w-auto object-contain transition-transform duration-300 hover:scale-105" 
       />
     </div>
-
-  </div>
-</div>
-    </div>
     
-    {/* Navigation Buttons - Added 'Careers' */}
-    <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-slate-300">
-      {['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'].map((item) => (
+    {/* NAVIGATION */}
+    <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-gray-700">
+      {navItems.map((item) => (
         <button 
           key={item} 
-          onClick={() => handleScroll(item.toLowerCase().replace(' ', ''))}
-          className="hover:text-teal-400 transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-teal-400 after:transition-all"
+          onClick={() => handleScroll(item.toLowerCase().replace(/\s+/g, ''))}
+          className="hover:text-blue-700 transition-colors duration-200"
         >
           {item}
         </button>
       ))}
     </nav>
 
+    {/* CTA BUTTON */}
     <div>
       <button 
         onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
-        className="bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 px-5 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-teal-400/20 hover:shadow-emerald-400/30 hover:scale-[1.03] active:scale-[0.98] transition-all"
+        className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-[0.98]"
       >
         Get in Touch
       </button>
@@ -208,107 +216,93 @@ const [activeService, setActiveService] = useState<any>(null);
 </header>
 
       {/* --- HERO SECTION --- */}
-     <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-gradient-to-b from-[#0F172A] via-[#F0F4F8] to-[#E5EDF1] border-b border-[#96C2DB]/40">
+     <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-[#F8FAFC] border-b border-gray-200">
   
-  {/* Shaded Canvas Technical Print Layer */}
+  {/* Light Technical Grid - Opacity kam kar di hai taaki sublte lage */}
   <div 
-    className="absolute inset-0 opacity-[0.10] pointer-events-none z-0"
+    className="absolute inset-0 opacity-[0.04] pointer-events-none z-0"
     style={{
-      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
-      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
+      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
+      backgroundSize: '40px 40px, 40px 40px, 40px 40px',
     }}
   />
 
-  {/* Soft Ambient Light Spotlights inside the hero background */}
-  <div className="absolute top-0 left-1/3 w-[50vw] h-[300px] bg-gradient-to-b from-teal-500/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
-  <div className="absolute bottom-0 right-1/4 w-[40vw] h-[250px] bg-gradient-to-t from-[#96C2DB]/20 to-transparent rounded-full blur-[80px] pointer-events-none" />
+  {/* Soft Ambient Light - Blue tints for premium feel */}
+  <div className="absolute top-0 left-1/3 w-[50vw] h-[300px] bg-blue-100 rounded-full blur-[120px] pointer-events-none" />
   
   <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
     <div className="space-y-6 text-center md:text-left">
       
-      {/* Upper Badges tweaked to match the light-blue tinted tone */}
-      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/40">
-        <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" /> Next Generation Digital Ecosystems
+      {/* Badge - Blue theme */}
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" /> Next Generation Digital Ecosystems
       </span>
       
-      {/* High-Contrast Main Heading Typography */}
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900">
-        Empowering Ideas via <span className="bg-gradient-to-r from-teal-600 via-emerald-600 to-indigo-600 bg-clip-text text-transparent">Advanced Intelligence</span>
+      {/* Heading */}
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-gray-900">
+        Empowering Ideas via <br/> <span className="text-blue-600">Advanced Intelligence</span>
       </h1>
       
-      {/* Subtext description tweaked from text-slate-400 to text-slate-700 */}
-      <p className="text-lg text-slate-700 max-w-xl mx-auto md:mx-0 font-normal leading-relaxed">
+      {/* Description */}
+      <p className="text-lg text-gray-600 max-w-xl mx-auto md:mx-0 font-normal leading-relaxed">
         Almanet builds foundational automation suites, customized corporate SAP transformations, and machine learning models engineered to elevate complex modern business initiatives.
       </p>
       
-      {/* Main Trigger Call to Actions */}
+      {/* Buttons */}
       <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-        {/* Changed button bg to high-contrast slate-900 for premium light layout presentation */}
-        <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-[#0F172A] text-white hover:bg-slate-800 shadow-md border border-slate-800 transition-all">
+        <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">
           Explore Products
         </button>
-        <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 shadow-md transition-all">
+        <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-white text-gray-800 border border-gray-200 hover:border-blue-300 transition-all">
           Register Platform
         </button>
       </div>
     </div>
     
-    {/* Right Column: Hero Showcase Image Mockup Block - Fully Intact */}
+    {/* Image Showcase */}
     <div className="relative flex justify-center">
-      <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-3xl blur opacity-35 animate-pulse" />
+      <div className="absolute -inset-1 bg-blue-200 rounded-3xl blur-2xl opacity-40 animate-pulse" />
       <img 
         src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" 
         alt="Almanet Digital Ecosystem Dashboard" 
-        className="rounded-2xl border border-slate-800 shadow-2xl relative z-10 max-w-full h-auto object-cover bg-[#0F172A]"
+        className="rounded-2xl border border-gray-100 shadow-xl relative z-10 max-w-full h-auto object-cover"
       />
     </div>
   </div>
 </section>
 
-   <section id="products" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/40 overflow-hidden">
+   <section id="products" className="py-24 relative w-full z-10 bg-white overflow-hidden">
   
-  {/* PRINT ELEMENT 01: High-Tech Linear Grid Architecture Print */}
+  {/* Light subtle grid pattern */}
   <div 
-    className="absolute inset-0 opacity-[0.12] pointer-events-none -z-10 mix-blend-overlay"
+    className="absolute inset-0 opacity-[0.03] pointer-events-none -z-10"
     style={{
-      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
-      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
+      backgroundImage: `radial-gradient(#2563EB 1px, transparent 1px)`,
+      backgroundSize: '32px 32px',
     }}
   />
-
-  {/* PRINT ELEMENT 02: Ambient Radial Light Spotlights */}
-  {/* PRINT ELEMENT: Dot Matrix Engine */}
-<div 
-  className="absolute inset-0 opacity-[0.15] pointer-events-none -z-10 mix-blend-multiply"
-  style={{
-    backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
-    backgroundSize: '16px 16px',
-  }}
-/>
-  <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-[#96C2DB]/30 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
-  <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-bl from-[#E5EDF1]/80 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
 
   <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12 relative z-10">
     
     {/* Section Headers */}
     <div className="space-y-3">
-      <span className="text-xs font-extrabold uppercase tracking-widest text-[#4A77BC]">Our Portfolios</span>
-      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Enterprise Scaling Products</h2>
-      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Robust system modules custom optimized to run high-volume workflows fluidly.</p>
+      <span className="text-xs font-black uppercase tracking-widest text-blue-600">Our Portfolios</span>
+      <h2 className="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">Enterprise Scaling Products</h2>
+      <p className="text-gray-500 font-normal max-w-2xl mx-auto text-sm">Robust system modules custom optimized to run high-volume workflows fluidly.</p>
     </div>
 
     {/* The Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
       {PRODUCTS && PRODUCTS.map((prod: any, idx: number) => (
         
-        /* INNER CARD BOXES: 100% Intact Dark Corporate Look */
+        /* Updated Card Design: White background, soft shadow, thin border */
         <div 
           key={prod?.id || prod?.title || idx} 
-          className="group rounded-2xl border border-slate-800 bg-[#0F172A] p-5 space-y-4 hover:border-slate-700 transition-all text-left flex flex-col justify-between shadow-[0_15px_30px_rgba(15,23,42,0.18)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.35)] hover:-translate-y-1 duration-300"
+          className="group rounded-3xl border border-gray-100 bg-white p-6 space-y-4 hover:border-blue-100 transition-all text-left flex flex-col justify-between shadow-sm hover:shadow-xl hover:shadow-blue-50/50 hover:-translate-y-1 duration-300"
         >
-          <div className="space-y-3">
+          <div className="space-y-4">
             {/* Image Box */}
-            <div className="h-44 rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
+            <div className="h-48 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
               <img 
                 src={
                   (prod?.title?.toLowerCase().includes('pathyatech') || prod?.name?.toLowerCase().includes('pathyatech'))
@@ -320,15 +314,15 @@ const [activeService, setActiveService] = useState<any>(null);
               />
             </div>
 
-            {/* Dark Card Typography */}
-            <h3 className="text-base font-bold text-white tracking-tight">{prod?.title || prod?.name || "Product"}</h3>
-            <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">{prod?.desc || prod?.description || ""}</p>
+            {/* Typography */}
+            <h3 className="text-lg font-bold text-gray-900 tracking-tight">{prod?.title || prod?.name || "Product"}</h3>
+            <p className="text-sm text-gray-500 font-normal leading-relaxed line-clamp-3">{prod?.desc || prod?.description || ""}</p>
           </div>
 
           {/* Action Trigger Link */}
           <button 
             onClick={() => setActiveProduct(prod)} 
-            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors w-fit"
+            className="text-sm font-semibold text-blue-600 group-hover:text-blue-700 pt-4 flex items-center gap-2 transition-colors w-fit"
           >
             Explore Specifications &rarr;
           </button>
@@ -338,116 +332,48 @@ const [activeService, setActiveService] = useState<any>(null);
     </div>
   </div>
 </section>
-
-   <section id="services" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/40 overflow-hidden">
-  
-  {/* Shaded Canvas Technical Print Layer */}
-  <div 
-    className="absolute inset-0 opacity-[0.12] pointer-events-none -z-10 mix-blend-overlay"
-    style={{
-      backgroundImage: `radial-gradient(#4A77BC 1.5px, transparent 1.5px), linear-gradient(to right, #96C2DB 1px, transparent 1px), linear-gradient(to bottom, #96C2DB 1px, transparent 1px)`,
-      backgroundSize: '24px 24px, 48px 48px, 48px 48px',
-    }}
-  />
-
-  <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-12 relative z-10">
-    
-    {/* Section Header */}
-    <div className="space-y-3">
-      <span className="text-xs font-extrabold uppercase tracking-widest text-[#4A77BC]">Capabilities</span>
-      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Our Professional Services</h2>
-      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Strategic architecture consulting and customized full-stack pipeline integration.</p>
+{/* Services section */}
+ <section className="py-24 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center max-w-2xl mx-auto mb-16">
+      <h2 className="text-3xl font-black text-gray-900 mb-4">Our Core Services</h2>
+      <p className="text-gray-500 text-sm">We deliver end-to-end IT solutions—helping organisations implement, optimise, and support mission-critical systems.</p>
     </div>
 
-    {/* Services Grid Layout */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-      {SERVICES && SERVICES.map((srv: any, idx: number) => (
-        
-        /* INNER SERVICE BOX: Original Dark Box Architecture */
-        <div 
-          key={srv?.id || srv?.title || idx} 
-          className="group rounded-2xl border border-slate-800 bg-[#0F172A] p-5 space-y-4 hover:border-slate-700 transition-all text-left flex flex-col justify-between shadow-[0_15px_30px_rgba(15,23,42,0.18)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.35)] hover:-translate-y-1 duration-300"
-        >
-          <div className="space-y-4">
-            
-            {/* UPDATED DYNAMIC IMAGE CONTAINER: Fixed size to h-40 and w-full */}
-            {srv?.icon || srv?.img || srv?.image ? (
-              <div className="h-40 w-full rounded-xl bg-slate-950 border border-slate-800/80 text-teal-400 flex items-center justify-center overflow-hidden relative group-hover:border-slate-700 transition-colors">
-                {typeof (srv?.icon || srv?.img || srv?.image) === 'string' && (srv?.icon || srv?.img || srv?.image).startsWith('http') ? (
-                  <img 
-                    src={srv?.icon || srv?.img || srv?.image} 
-                    alt="" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : typeof (srv?.icon || srv?.img || srv?.image) === 'string' && !(srv?.icon || srv?.img || srv?.image).startsWith('http') && (srv?.icon || srv?.img || srv?.image).length > 4 ? (
-                  /* Handling local asset relative path string strings like /images/rec.jpg */
-                  <img 
-                    src={srv?.icon || srv?.img || srv?.image} 
-                    alt="" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  /* Fallback variant if it's an inline emoji or a JSX component */
-                  <div className="text-3xl text-teal-400 group-hover:text-emerald-400 transition-colors transform group-hover:scale-110 duration-300">
-                    {srv?.icon || "🌐"}
-                  </div>
-                )}
-              </div>
-            ) : (
-              /* Global fallback empty thumbnail wrapper just in case background fails */
-              <div className="h-44 w-full rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-700">
-                🌐
-              </div>
-            )}
-            
-            {/* Dark Card Corporate Content with improved spacing padding */}
-            <div className="space-y-2 pt-1">
-              <h3 className="text-base font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors">
-                {srv?.title || srv?.name || "Service"}
-              </h3>
-              <p className="text-xs text-slate-400 font-light leading-relaxed line-clamp-3">
-                {srv?.desc || srv?.description || ""}
-              </p>
-            </div>
+    <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {services.map((s, i) => (
+        <div key={i} className="p-8 bg-white border border-gray-100 rounded-3xl hover:border-blue-100 transition-all shadow-sm hover:shadow-lg hover:shadow-blue-50 group">
+          <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+            <s.icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
           </div>
-
-          <button 
-            onClick={() => setActiveService(srv)} 
-            className="text-xs font-semibold text-teal-400 group-hover:text-emerald-400 pt-3 flex items-center gap-1 transition-colors w-fit"
-          >
-            Request Scope Audit &rarr;
-          </button>
+          <h3 className="text-sm font-bold text-gray-900 mb-2">{s.title}</h3>
+          <p className="text-xs text-gray-500 font-normal leading-relaxed mb-6">{s.desc}</p>
+          <Link href={`/services/${s.title.toLowerCase().replace(/\s+/g, '-')}`}>
+  <button className="text-blue-600 font-bold">Learn More →</button>
+</Link>
         </div>
-
       ))}
     </div>
   </div>
 </section>
 
-    {/* --- EVENTS SECTION (LIGHT CORRESPONDENT GRADIENT THEME) --- */}
-<section id="events" className="py-24 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#96C2DB]/40 via-[#F0F4F8] to-[#E5EDF1] overflow-hidden">
+  <section id="events" className="py-24 relative w-full z-10 bg-white">
   
-  {/* Light Shaded Canvas Technical Print Layer */}
-  <div 
-    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
-    style={{
-      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
-      backgroundSize: '16px 16px',
-    }}
-  />
+  {/* Light subtle grid pattern */}
+  <div className="absolute inset-0 opacity-[0.03] pointer-events-none -z-10" style={{ backgroundImage: `radial-gradient(#2563EB 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
 
   <div className="max-w-7xl mx-auto px-6 relative z-10">
     
-    {/* Section Header adapted with high-contrast text */}
+    {/* Section Header */}
     <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-      <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Upcoming Events & Workshops</h2>
-      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.</p>
+      <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Upcoming Events & Workshops</h2>
+      <p className="text-gray-500 font-normal max-w-2xl mx-auto text-sm">Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.</p>
     </div>
 
-    {/* Dynamic Events Grid - Keeping Inner Dark Card Architecture 100% Intact */}
+    {/* Dynamic Events Grid - Updated to Light Theme */}
     <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
       {EVENTS && EVENTS.map((evt: any) => (
-        <div key={evt.id} className="bg-[#0F172A] border border-slate-800 rounded-2xl overflow-hidden flex flex-col sm:flex-row hover:border-slate-700 transition-all group shadow-xl">
+        <div key={evt.id} className="bg-white border border-gray-100 rounded-3xl overflow-hidden flex flex-col sm:flex-row hover:border-blue-100 transition-all group shadow-sm hover:shadow-lg">
           
           {/* Left Frame Image Box */}
           <div className="sm:w-2/5 h-48 sm:h-auto relative overflow-hidden">
@@ -457,18 +383,18 @@ const [activeService, setActiveService] = useState<any>(null);
           {/* Right Frame Content Area */}
           <div className="p-6 sm:w-3/5 flex flex-col justify-between space-y-4">
             <div className="space-y-2">
-              <div className="flex flex-wrap gap-2 text-xs text-teal-400 font-semibold tracking-wide">
+              <div className="flex flex-wrap gap-2 text-xs text-blue-600 font-semibold tracking-wide">
                 <span>{evt.date}</span> &bull; <span>{evt.time}</span>
               </div>
-              <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-teal-400 transition-colors">{evt.title}</h3>
-              <p className="text-xs text-slate-400 font-light line-clamp-2 leading-relaxed">{evt.desc}</p>
-              <p className="text-xs font-medium text-slate-500 italic">📌 {evt.location}</p>
+              <h3 className="text-lg font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">{evt.title}</h3>
+              <p className="text-xs text-gray-500 font-normal line-clamp-2 leading-relaxed">{evt.desc}</p>
+              <p className="text-xs font-medium text-gray-400 italic">📌 {evt.location}</p>
             </div>
             
-            {/* Action Register Button Hook */}
+            {/* Action Register Button */}
             <button 
               onClick={() => { setActiveEvent(evt); setEventFormSubmitted(false); }}
-              className="w-full py-2 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 font-bold text-xs tracking-wider transition-all"
+              className="w-full py-2.5 rounded-xl bg-gray-50 text-gray-700 border border-gray-100 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-bold text-xs tracking-wider transition-all"
             >
               Register For Event
             </button>
@@ -481,118 +407,111 @@ const [activeService, setActiveService] = useState<any>(null);
   </div>
 </section>
 
-     {/* --- BLOGS SECTION --- */}
-      <section id="blogs" className="py-24 border-t border-slate-800/60">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Our Latest Publications</h2>
-            <p className="text-slate-400">Deep technical reading exploring AI design patterns, cloud computing pipelines, and data orchestration.</p>
+    <section id="blogs" className="py-24 bg-white border-t border-gray-100">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Our Latest Publications</h2>
+      <p className="text-gray-500 text-sm">Deep technical reading exploring AI design patterns, cloud computing pipelines, and data orchestration.</p>
+    </div>
+    
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {BLOGS.map((blog) => (
+        <article key={blog.id} className="bg-white border border-gray-100 rounded-3xl overflow-hidden hover:border-blue-100 transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl hover:shadow-blue-50/50">
+          <div>
+            <div className="h-52 overflow-hidden relative">
+              <img 
+                src={blog.id === 2 ? 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=60' : blog.img} 
+                alt={blog.title} 
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=60';
+                }}
+              />
+            </div>
+            <div className="p-6 space-y-3">
+              <span className="text-xs text-blue-600 font-bold tracking-wider uppercase">{blog.date}</span>
+              <h3 className="text-xl font-bold text-gray-900 tracking-tight leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">{blog.title}</h3>
+              <p className="text-sm text-gray-500 font-normal leading-relaxed line-clamp-3">{blog.excerpt}</p>
+            </div>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {BLOGS.map((blog) => (
-              <article key={blog.id} className="bg-slate-800/30 border border-slate-800/80 rounded-2xl overflow-hidden hover:scale-[1.02] hover:border-slate-700/80 transition-all duration-300 flex flex-col justify-between shadow-md">
-                <div>
-                  <div className="h-52 overflow-hidden relative">
-                    <img 
-                      src={blog.id === 2 ? 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=60' : blog.img} 
-                      alt={blog.title} 
-                      className="w-full h-full object-cover" 
-                      onError={(e) => {
-                        // Global fallback check for all blog images
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=60';
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-40" />
-                  </div>
-                  <div className="p-6 space-y-3">
-                    <span className="text-xs text-teal-400 font-semibold tracking-wider uppercase">{blog.date}</span>
-                    <h3 className="text-xl font-bold text-white tracking-tight leading-snug line-clamp-2">{blog.title}</h3>
-                    <p className="text-sm text-slate-400 font-light leading-relaxed line-clamp-3">{blog.excerpt}</p>
-                  </div>
-                </div>
-                <div className="p-6 pt-0">
-                  <button 
-                    onClick={() => setActiveBlog(blog)}
-                    className="text-sm font-semibold text-teal-400 hover:text-teal-300 flex items-center gap-1.5 transition-colors"
-                  >
-                    Read Full Article &rarr;
-                  </button>
-                </div>
-              </article>
-            ))}
+          <div className="p-6 pt-0">
+            <button 
+              onClick={() => setActiveBlog(blog)}
+              className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition-colors"
+            >
+              Read Full Article &rarr;
+            </button>
           </div>
-        </div>
-      </section>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
 
      {/* --- CAREERS SECTION (DARK THEME COMPATIBLE) --- */}
 {/* --- CAREERS SECTION (LIGHT CORRESPONDENT GRADIENT THEME) --- */}
-<section id="careers" className="py-20 relative w-full z-10 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#96C2DB]/30 via-[#F0F4F8] to-[#E5EDF1] overflow-hidden">
+<section id="careers" className="py-24 relative w-full z-10 bg-white border-t border-gray-100">
   
-  {/* Shaded Canvas Technical Print Layer */}
+  {/* Light grid pattern */}
   <div 
-    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
+    className="absolute inset-0 opacity-[0.03] pointer-events-none -z-10"
     style={{
-      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
-      backgroundSize: '20px 20px',
+      backgroundImage: `radial-gradient(#2563EB 1px, transparent 1px)`,
+      backgroundSize: '32px 32px',
     }}
   />
 
   <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 text-center space-y-16 relative z-10">
     
-    {/* Section Header with Crisp Light Setup */}
+    {/* Section Header */}
     <div className="space-y-3">
-      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/30">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">
         🚀 Join Our Team
       </span>
-      <h2 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-        Build the Future of <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent">Enterprise Software</span>
+      <h2 className="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
+        Build the Future of <span className="text-blue-600">Enterprise Software</span>
       </h2>
-      <p className="text-slate-600 font-normal max-w-2xl mx-auto text-sm">
+      <p className="text-gray-500 font-normal max-w-2xl mx-auto text-sm">
         Grow your skills while working on advanced data systems, enterprise integrations, and robust application suites.
       </p>
     </div>
 
-    {/* Perks Cards - 100% Original Dark Inner Setup Floating Cleanly */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
-      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
-        <div className="text-xl">💻</div>
-        <h3 className="text-sm font-bold text-slate-200">Modern Tech Stack</h3>
-        <p className="text-xs text-slate-400 font-light leading-relaxed">Work directly with Next.js, specialized back-end pipelines, and microservices architectures built to scale flawlessly.</p>
-      </div>
-      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
-        <div className="text-xl">📈</div>
-        <h3 className="text-sm font-bold text-slate-200">Accelerated Mentorship</h3>
-        <p className="text-xs text-slate-400 font-light leading-relaxed">Collaborate under industry seniors and project leads to fast-track your practical system engineering capabilities.</p>
-      </div>
-      <div className="p-6 bg-[#0F172A] border border-slate-800/80 rounded-2xl shadow-xl space-y-3">
-        <div className="text-xl">🤝</div>
-        <h3 className="text-sm font-bold text-slate-200">Open Culture</h3>
-        <p className="text-xs text-slate-400 font-light leading-relaxed">Ownership driven developer ecosystems where optimal design and clean logic are highly recognized.</p>
-      </div>
+    {/* Perks Cards - Updated to Light Theme */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-5xl mx-auto">
+      {[
+        { icon: "💻", title: "Modern Tech Stack", desc: "Work directly with Next.js, specialized back-end pipelines, and microservices architectures." },
+        { icon: "📈", title: "Accelerated Mentorship", desc: "Collaborate under industry seniors and project leads to fast-track your engineering capabilities." },
+        { icon: "🤝", title: "Open Culture", desc: "Ownership driven developer ecosystems where clean logic and design are highly recognized." }
+      ].map((perk, i) => (
+        <div key={i} className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:border-blue-100 transition-all space-y-3">
+          <div className="text-2xl">{perk.icon}</div>
+          <h3 className="text-sm font-bold text-gray-900">{perk.title}</h3>
+          <p className="text-xs text-gray-500 font-normal leading-relaxed">{perk.desc}</p>
+        </div>
+      ))}
     </div>
 
-    {/* Job Cards - Sleek Original Mapping Loop Kept 100% Intact */}
+    {/* Job Cards - Updated to Light Theme */}
     <div className="space-y-4 max-w-4xl mx-auto text-left">
-      <h3 className="text-base font-bold text-slate-800 mb-4 px-2">Current Openings</h3>
+      <h3 className="text-base font-bold text-gray-900 mb-4 px-2">Current Openings</h3>
       
       {[
         { title: 'Full Stack Web Developer Intern', dept: 'Engineering', type: 'Remote / Hybrid', desc: 'Assist in integrating robust Next.js layouts with fast enterprise API modules.' },
         { title: 'Backend Systems Engineer', dept: 'Cloud Infrastructure', type: 'Full-Time', desc: 'Build scalable business data layers, manage migrations, and secure telemetry hooks.' }
       ].map((job, idx) => (
-        <div key={idx} className="p-5 bg-[#0F172A] border border-slate-800 rounded-2xl shadow-lg hover:border-slate-700/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+        <div key={idx} className="p-6 bg-white border border-gray-100 rounded-2xl hover:border-blue-100 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group shadow-sm hover:shadow-md">
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h4 className="text-sm font-bold text-white group-hover:text-teal-400 transition-colors">{job.title}</h4>
-              <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">{job.type}</span>
+              <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{job.title}</h4>
+              <span className="text-[10px] bg-gray-50 text-gray-600 px-2 py-0.5 rounded-md border border-gray-100">{job.type}</span>
             </div>
-            <p className="text-[11px] text-teal-400/80 font-medium">{job.dept}</p>
-            <p className="text-xs text-slate-400 font-light max-w-xl">{job.desc}</p>
+            <p className="text-[11px] text-blue-600 font-medium">{job.dept}</p>
+            <p className="text-xs text-gray-500 font-normal max-w-xl">{job.desc}</p>
           </div>
           
-          {/* Action Trigger State Button */}
           <button 
             onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
-            className="sm:self-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-500 text-slate-950 font-bold text-xs hover:opacity-90 active:scale-[0.98] transition-all whitespace-nowrap text-center shadow-md shadow-teal-500/10"
+            className="sm:self-center px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 active:scale-[0.98] transition-all whitespace-nowrap shadow-md shadow-blue-100"
           >
             Apply Now
           </button>
@@ -604,14 +523,14 @@ const [activeService, setActiveService] = useState<any>(null);
 
 
       {/* --- EXTENDED HIGH-IMPACT ABOUT US SECTION --- */}
-   <section id="aboutus" className="py-28 border-t border-[#96C2DB]/40 bg-gradient-to-b from-[#E5EDF1] via-[#F0F4F8] to-[#96C2DB]/30 relative overflow-hidden">
+  <section id="aboutus" className="py-28 bg-white relative overflow-hidden border-t border-gray-100">
   
-  {/* Shaded Canvas Technical Print Layer */}
+  {/* Light Technical Grid Layer */}
   <div 
-    className="absolute inset-0 opacity-[0.10] pointer-events-none -z-10"
+    className="absolute inset-0 opacity-[0.05] pointer-events-none -z-10"
     style={{
-      backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`,
-      backgroundSize: '20px 20px',
+      backgroundImage: `radial-gradient(#2563EB 1px, transparent 1px)`,
+      backgroundSize: '32px 32px',
     }}
   />
   
@@ -620,85 +539,82 @@ const [activeService, setActiveService] = useState<any>(null);
     {/* Main Structural Introduction */}
     <div className="grid lg:grid-cols-12 gap-12 items-center">
       <div className="lg:col-span-7 space-y-6 text-left">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#4A77BC]/10 text-[#4A77BC] border border-[#96C2DB]/30">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
           🏢 Corporate Profile & Intelligence
         </span>
         
-        {/* Main Heading adapted for high contrast display */}
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-          Architecting the Software Ecosystems That Drive <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent">Global Modern Enterprises</span>
+        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight leading-tight">
+          Architecting the Software Ecosystems That Drive <span className="text-blue-600">Global Modern Enterprises</span>
         </h2>
         
-        {/* Paragraphs tuned from text-slate-300/400 to solid slate-700 */}
-        <p className="text-slate-700 font-normal leading-relaxed text-base sm:text-lg">
+        <p className="text-gray-700 font-normal leading-relaxed text-base sm:text-lg">
           Founded on rigid software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks. From deploying robust, integrated hospital lab modules and automated clinic workflows to delivering custom multi-tier SAP cloud management, we bridge advanced technical programming with localized business scale logic natively.
         </p>
-        <p className="text-slate-600 font-light leading-relaxed text-sm">
+        <p className="text-gray-600 font-light leading-relaxed text-sm">
           We believe that modern enterprise apps shouldn't operate in siloes. Our specialized approach centers on unifying fragmented data streams—ensuring that field actions, internal inventories, donor telemetry, and customer facing touchpoints speak to the same underlying analytical database engine fluidly and securely.
         </p>
       </div>
       
-      {/* Visual Stats Block Grid - Kept 100% Original Dark Box Setup to match other grids */}
+      {/* Visual Stats Block Grid - Modernized Light Style */}
       <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
-          <div className="text-3xl font-black text-teal-400">99.9%</div>
-          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">System Uptime</div>
-          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Guaranteed high-volume telemetry through redundant cloud pipelines.</p>
+        <div className="p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-blue-100 transition-all">
+          <div className="text-4xl font-black text-blue-600">99.9%</div>
+          <div className="text-xs font-semibold text-gray-900 tracking-wider mt-1.5 uppercase">System Uptime</div>
+          <p className="text-[11px] text-gray-500 font-normal mt-1.5 leading-normal">Guaranteed high-volume telemetry through redundant cloud pipelines.</p>
         </div>
-        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
-          <div className="text-3xl font-black text-indigo-400">14+</div>
-          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Core Modules</div>
-          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Production-ready system layers custom optimized for enterprise use.</p>
+        <div className="p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-blue-100 transition-all">
+          <div className="text-4xl font-black text-blue-600">14+</div>
+          <div className="text-xs font-semibold text-gray-900 tracking-wider mt-1.5 uppercase">Core Modules</div>
+          <p className="text-[11px] text-gray-500 font-normal mt-1.5 leading-normal">Production-ready system layers custom optimized for enterprise use.</p>
         </div>
-        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
-          <div className="text-3xl font-black text-emerald-400">100%</div>
-          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Data Privacy</div>
-          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Strict regulatory compliance layers built inside custom firewalls.</p>
+        <div className="p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-blue-100 transition-all">
+          <div className="text-4xl font-black text-blue-600">100%</div>
+          <div className="text-xs font-semibold text-gray-900 tracking-wider mt-1.5 uppercase">Data Privacy</div>
+          <p className="text-[11px] text-gray-500 font-normal mt-1.5 leading-normal">Strict regulatory compliance layers built inside custom firewalls.</p>
         </div>
-        <div className="p-6 bg-[#0F172A] rounded-2xl border border-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
-          <div className="text-3xl font-black text-purple-400">2026</div>
-          <div className="text-xs font-semibold text-slate-200 tracking-wider mt-1 uppercase">Industry Ready</div>
-          <p className="text-[11px] text-slate-400 font-light mt-1.5 leading-normal">Advanced AI frameworks geared up for next-gen performance.</p>
+        <div className="p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-blue-100 transition-all">
+          <div className="text-4xl font-black text-blue-600">2026</div>
+          <div className="text-xs font-semibold text-gray-900 tracking-wider mt-1.5 uppercase">Industry Ready</div>
+          <p className="text-[11px] text-gray-500 font-normal mt-1.5 leading-normal">Advanced AI frameworks geared up for next-gen performance.</p>
         </div>
       </div>
     </div>
 
-    {/* Section Splitter Line tuned to match the print structure */}
-    <hr className="border-[#96C2DB]/40" />
+    <hr className="border-gray-100" />
 
-    {/* Expanded Three Pillar Value Architecture - Safely Restored with original details */}
+    {/* Three Pillar Value Architecture - Updated to White Cards */}
     <div className="grid md:grid-cols-3 gap-8">
       
       {/* Pillar 1 */}
-      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
-        <div className="h-10 w-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg border border-teal-500/20">
+      <div className="space-y-3 p-8 rounded-3xl bg-white border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all">
+        <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xl border border-blue-100">
           🎯
         </div>
-        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Our Mission</h3>
-        <p className="text-xs text-slate-400 leading-relaxed font-light">
-          To democratize heavy enterprise automation layers. We engineer robust, secure ecosystems that lower operational friction, making high-throughput tracking frameworks accessible to both non-profit structures and multinational networks uniformly.
+        <h3 className="text-lg font-bold text-gray-900 tracking-tight">Our Mission</h3>
+        <p className="text-xs text-gray-600 leading-relaxed font-normal">
+          To democratize heavy enterprise automation layers. We engineer robust, secure ecosystems that lower operational friction, making high-throughput tracking frameworks accessible.
         </p>
       </div>
 
       {/* Pillar 2 */}
-      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
-        <div className="h-10 w-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-lg border border-indigo-500/20">
+      <div className="space-y-3 p-8 rounded-3xl bg-white border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all">
+        <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xl border border-blue-100">
           🛡️
         </div>
-        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Technical Mastery</h3>
-        <p className="text-xs text-slate-400 leading-relaxed font-light">
-          From specialized Python deep learning orchestration to comprehensive SAP configurations, our architecture relies heavily on microservice modularity. This structure guarantees lightning-fast load patterns, scalable deployment parameters, and zero data downtime.
+        <h3 className="text-lg font-bold text-gray-900 tracking-tight">Technical Mastery</h3>
+        <p className="text-xs text-gray-600 leading-relaxed font-normal">
+          Specialized Python deep learning orchestration to comprehensive SAP configurations, our architecture relies heavily on microservice modularity for lightning-fast patterns.
         </p>
       </div>
 
       {/* Pillar 3 */}
-      <div className="space-y-3 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 shadow-md group hover:border-slate-700 transition-colors">
-        <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-lg border border-purple-500/20">
+      <div className="space-y-3 p-8 rounded-3xl bg-white border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all">
+        <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xl border border-blue-100">
           🚀
         </div>
-        <h3 className="text-lg font-bold text-slate-100 tracking-tight">Talent Incubation</h3>
-        <p className="text-xs text-slate-400 leading-relaxed font-light">
-          Beyond physical software delivery, Almanet actively drives technical workspace scaling. Our integrated internship systems and expert-led virtual training modules (VTO) ensure that upcoming developers master full-stack code paths using live production environments.
+        <h3 className="text-lg font-bold text-gray-900 tracking-tight">Talent Incubation</h3>
+        <p className="text-xs text-gray-600 leading-relaxed font-normal">
+          Integrated internship systems and expert-led training ensure upcoming developers master full-stack code paths using live production environments.
         </p>
       </div>
 
@@ -708,122 +624,104 @@ const [activeService, setActiveService] = useState<any>(null);
 </section>
 
       {/* --- EXTENDED MEGA FOOTER --- */}
-      <footer className="bg-slate-950 text-slate-400 pt-16 pb-12 border-t border-slate-900 text-sm relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(79,70,229,0.05),transparent_40%)]" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
-          
-          {/* Column 1: Brand Insight */}
-          <div className="lg:col-span-2 space-y-5">
-            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-              {/* --- FOOTER OFFICIAL LOGO INTEGRATION --- */}
-<div className="flex flex-col items-start space-y-4">
-  {/* Premium Frame Container (Header se thoda chota size footer ke liye perfect hai) */}
-  <div className="h-20 py-1.5 px-1.5 bg-slate-900/95 border border-slate-700/60 rounded-xl flex items-center justify-center relative shadow-[0_8px_20px_rgba(0,0,0,0.7)] group">
+    <footer className="bg-gray-50 text-gray-600 pt-16 pb-12 border-t border-gray-100 text-sm relative overflow-hidden">
+  <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
     
-    {/* Clean Soft Ambient Glow (Footer dark theme compatibility) */}
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A77BC]/20 via-slate-800 to-[#C85A32]/20 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 -z-10" />
-
-    {/* Official White Box Image */}
-    <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.03]">
+    {/* Column 1: Brand Insight */}
+    <div className="lg:col-span-2 space-y-5">
+      <div className="flex flex-col items-start space-y-4">
+        {/* Logo Container */}
+        <div className="h-16 w-auto py-1 px-3 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm hover:shadow-md transition-all">
       <img 
         src="/almanet-logo.png" 
         alt="AlmaNet Official Logo" 
-        className="h-full w-auto object-contain rounded-lg border border-white/5" 
+        className="h-full w-auto object-contain" 
       />
+    </div>
+        <p className="text-xs text-gray-500 font-normal max-w-xs leading-relaxed">
+          Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.
+        </p>
+      </div>
+      <p className="text-xs text-gray-400 max-w-sm leading-relaxed font-normal">
+        Architecting secure data pipelines, next-generation healthcare integrations, and custom business automation tools engineered to empower modern enterprise initiatives globally.
+      </p>
+      <div className="flex space-x-4 pt-2">
+        {['Twitter', 'LinkedIn', 'GitHub', 'Discord'].map((platform) => (
+          <button 
+            key={platform} 
+            onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
+            className="h-8 w-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xs text-gray-500 hover:border-blue-600 hover:text-blue-600 transition-all"
+          >
+            {platform[0]}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* Column 2: Sitemap */}
+    <div className="space-y-4">
+      <h4 className="text-xs font-bold tracking-widest text-gray-900 uppercase">Sitemap</h4>
+      <ul className="space-y-2 text-xs font-medium text-gray-600">
+        {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
+          <li key={item}>
+            <button onClick={() => handleScroll(item.toLowerCase().replace(' ', ''))} className="hover:text-blue-600 transition-colors">
+              {item}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Column 3: Core Products */}
+    <div className="space-y-4">
+      <h4 className="text-xs font-bold tracking-widest text-gray-900 uppercase">Core Products</h4>
+      <ul className="space-y-2 text-xs font-medium text-gray-600">
+        {['Pathyatech Ecosystem', 'Trackintrack Fleet', 'Almanet CRM Matrix', 'NGO Global Portal', 'Vendor Supply Connect', 'Lab Module Hub'].map((prod) => (
+          <li key={prod}>
+            <button onClick={() => handleScroll('products')} className="hover:text-blue-600 transition-colors text-left">
+              {prod}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Column 4: Newsletter */}
+    <div className="space-y-4">
+      <h4 className="text-xs font-bold tracking-widest text-gray-900 uppercase">Stay Informed</h4>
+      <p className="text-xs text-gray-500 leading-relaxed font-normal">
+        Subscribe to unlock periodic engineering research insights and version release blueprints.
+      </p>
+      <form onSubmit={(e) => { e.preventDefault(); setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="space-y-2">
+        <input 
+          type="email" 
+          required 
+          placeholder="engineering@domain.com" 
+          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 outline-none focus:border-blue-600 transition-all"
+        />
+        <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold tracking-wide transition-all">
+          Join Telemetry
+        </button>
+      </form>
     </div>
   </div>
 
-  {/* Logo ke niche ka tagline text */}
-  <p className="text-xs text-slate-400 font-light max-w-xs leading-relaxed">
-    Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.
-  </p>
-</div>
-            </div>
-            <p className="text-xs text-slate-500 max-w-sm leading-relaxed font-light">
-              Architecting secure data pipelines, next-generation healthcare integrations, and custom business automation tools engineered to empower modern enterprise initiatives globally.
-            </p>
-            <div className="flex space-x-4 pt-2">
-              {['Twitter', 'LinkedIn', 'GitHub', 'Discord'].map((platform) => (
-                <button 
-                  key={platform} 
-                  onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }}
-                  className="h-8 w-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-xs hover:border-teal-500 hover:text-white transition-all"
-                >
-                  {platform[0]}
-                </button>
-              ))}
-            </div>
-          </div>
+  <hr className="border-gray-200 max-w-7xl mx-auto px-6 mb-8" />
 
-          {/* Column 2: Quick Navigation Links */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold tracking-widest text-slate-200 uppercase">Sitemap</h4>
-            <ul className="space-y-2 text-xs font-light">
-              {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
-                <li key={item}>
-                  <button 
-                    onClick={() => handleScroll(item.toLowerCase().replace(' ', ''))}
-                    className="hover:text-teal-400 transition-colors"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Top Core Modules */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold tracking-widest text-slate-200 uppercase">Core Products</h4>
-            <ul className="space-y-2 text-xs font-light">
-              {['Pathyatech Ecosystem', 'Trackintrack Fleet', 'Almanet CRM Matrix', 'NGO Global Portal', 'Vendor Supply Connect', 'Lab Module Hub'].map((prod) => (
-                <li key={prod}>
-                  <button onClick={() => handleScroll('products')} className="hover:text-indigo-400 transition-colors text-left">
-                    {prod}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Newsletter / Engagement Box */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold tracking-widest text-slate-200 uppercase">Stay Informed</h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-light">
-              Subscribe to unlock periodic engineering research insights and version release blueprints.
-            </p>
-            <form onSubmit={(e) => { e.preventDefault(); setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="space-y-2">
-              <input 
-                type="email" 
-                required 
-                placeholder="engineering@domain.com" 
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-teal-500 transition-all"
-              />
-              <button type="submit" className="w-full py-2 bg-slate-800 hover:bg-gradient-to-r hover:from-teal-400 hover:to-indigo-500 text-slate-300 hover:text-slate-950 rounded-lg text-xs font-bold tracking-wide transition-all border border-slate-700 hover:border-transparent">
-                Join Telemetry
-              </button>
-            </form>
-          </div>
-
-        </div>
-
-        <hr className="border-slate-900 max-w-7xl mx-auto px-6 mb-8" />
-
-        {/* Bottom Metadata Bar */}
-        <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-600">
-          <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-            <span className="text-slate-400 font-medium">Almanet Technologies © 2026</span>
-            <span>&bull;</span>
-            <span>All System Telemetry Operational</span>
-          </div>
-          <div className="flex space-x-6">
-            <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-slate-400 transition-colors">Security Controls</button>
-            <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-slate-400 transition-colors">Privacy Framework</button>
-            <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-slate-400 transition-colors">Terms of Operations</button>
-          </div>
-        </div>
-      </footer>
+  {/* Bottom Metadata Bar */}
+  <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-gray-500">
+    <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+      <span className="text-gray-900 font-semibold">Almanet Technologies © 2026</span>
+      <span>&bull;</span>
+      <span>All System Telemetry Operational</span>
+    </div>
+    <div className="flex space-x-6">
+      <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-blue-600 transition-colors">Security Controls</button>
+      <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-blue-600 transition-colors">Privacy Framework</button>
+      <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="hover:text-CKblue-600 transition-colors">Terms of Operations</button>
+    </div>
+  </div>
+</footer>  
 
 
       {/* ================= MODAL COMPONENTS ================= */}
