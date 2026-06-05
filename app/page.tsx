@@ -173,7 +173,7 @@ const [activeService, setActiveService] = useState<any>(null);
     {/* Max Size Logo Asset */}
     <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.06] active:scale-[0.96]">
       <img 
-        src="/almanet01_logo.jpg" 
+        src="/almanet-logo.png" 
         alt="AlmaNet Official" 
         className="h-full w-auto object-contain rounded-xl shadow-[0_8px_25px_rgba(0,0,0,0.6)] border border-white/10" 
       />
@@ -727,7 +727,7 @@ const [activeService, setActiveService] = useState<any>(null);
     {/* Official White Box Image */}
     <div className="h-full relative flex items-center transition-transform duration-300 hover:scale-[1.03]">
       <img 
-        src="/almanet01_logo.jpg" 
+        src="/almanet-logo.png" 
         alt="AlmaNet Official Logo" 
         className="h-full w-auto object-contain rounded-lg border border-white/5" 
       />
