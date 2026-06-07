@@ -145,7 +145,7 @@ export default function AlmanetWebsite() {
   const [activeEvent, setActiveEvent] = useState<typeof EVENTS[0] | null>(null);
 const [activeProduct, setActiveProduct] = useState<any>(null);
 const [activeService, setActiveService] = useState<any>(null);
-const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'];
+const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Career', 'About Us'];
 
   // Form states
   const [regFormSubmitted, setRegFormSubmitted] = useState(false);
@@ -320,12 +320,12 @@ const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 
           </div>
 
           {/* Action Trigger Link */}
-          <button 
-            onClick={() => setActiveProduct(prod)} 
-            className="text-sm font-semibold text-blue-600 group-hover:text-blue-700 pt-4 flex items-center gap-2 transition-colors w-fit"
-          >
-            Explore Specifications &rarr;
-          </button>
+        <Link 
+  href={`/products/${(prod?.title || prod?.name || "product").toLowerCase().replace(/\s+/g, '-')}`}
+  className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors"
+>
+  Explore Specification →
+</Link>
         </div>
 
       ))}
