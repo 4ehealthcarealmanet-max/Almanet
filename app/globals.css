@@ -1,8 +1,21 @@
 @import "tailwindcss";
 
+/* ── CSS Reset for full-width layout ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111827;
 }
 
 @theme inline {
@@ -20,25 +33,13 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: inherit;
 }
 
 @theme {
   --color-brand-ice: #E5EDF1;
   --color-brand-mist: #96C2DB;
   --color-brand-white: #FFFFFF;
-}
-
-:root {
-  --background: #ffffff; /* Pure white for clean look */
-  --foreground: #111827; /* Dark Grey text, not black */
-}
-
-/* Ye add kar do taaki pure site par smooth feel aaye */
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: inherit; /* Jo aapka default font hai */
 }
