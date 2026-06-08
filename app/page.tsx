@@ -145,7 +145,7 @@ export default function AlmanetWebsite() {
   const [activeEvent, setActiveEvent] = useState<typeof EVENTS[0] | null>(null);
 const [activeProduct, setActiveProduct] = useState<any>(null);
 const [activeService, setActiveService] = useState<any>(null);
-const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'];
+const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Career', 'About Us'];
 
   // Form states
   const [regFormSubmitted, setRegFormSubmitted] = useState(false);
@@ -172,8 +172,16 @@ const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 
     
 // Is line ko dhundo aur classes badlo:
 // Is line ko page.tsx ke top par wapas pehle jaisa kar dein:
-<div className="min-h-screen bg-[#0B1120] text-slate-200 antialiased selection:bg-teal-500/30">      {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
-      <div className="max-w-[1366px] mx-auto w-full bg-slate-900 shadow-2xl relative">     
+<div className="min-h-screen bg-[#0B1120] text-slate-200 antialiased selection:bg-teal-500/30">     
+ {/* LOCK WRAPPER PASTE HERE: Yeh poori website ko image_3a43.jpg ki tarah center me lock rakhega */}
+{/* OUTER WRAPPER: Yeh poori screen ki width lega aur background color fill karega */}
+<div className="w-full bg-white relative"> 
+  
+  {/* INNER WRAPPER: Yeh content ko 1366px par limit karega aur center mein rakhega */}
+  <div className="max-w-[1366px] mx-auto w-full px-4">
+     {/* Aapka sara content yahan aayega */}
+  </div>
+
       {/* --- HEADER NAVIGATION --- */}
     <header className="sticky top-0 z-40 bg-[#F8FAFC] backdrop-blur-md border-b border-gray-200 transition-all">
   <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between"> {/* h-24 se header bhi thoda bada ho gaya */}
@@ -320,12 +328,12 @@ const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 
           </div>
 
           {/* Action Trigger Link */}
-          <button 
-            onClick={() => setActiveProduct(prod)} 
-            className="text-sm font-semibold text-blue-600 group-hover:text-blue-700 pt-4 flex items-center gap-2 transition-colors w-fit"
-          >
-            Explore Specifications &rarr;
-          </button>
+        <Link 
+  href={`/products/${(prod?.title || prod?.name || "product").toLowerCase().replace(/\s+/g, '-')}`}
+  className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors"
+>
+  Explore Specification →
+</Link>
         </div>
 
       ))}
@@ -435,12 +443,12 @@ const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 
             </div>
           </div>
           <div className="p-6 pt-0">
-            <button 
-              onClick={() => setActiveBlog(blog)}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition-colors"
-            >
-              Read Full Article &rarr;
-            </button>
+           <Link
+  href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}
+  className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition-colors"
+>
+  Read Full Article →
+</Link>
           </div>
         </article>
       ))}
