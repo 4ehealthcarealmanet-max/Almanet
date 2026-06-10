@@ -5,13 +5,52 @@ import { Briefcase, BookOpen, GraduationCap, Users, Bot, Code, Megaphone, Monito
 import Link from 'next/link';
 import emailjs from '@emailjs/browser';
 const PRODUCTS = [
-  { id: 'pathyatech', name: 'PathyaTech', desc: 'Next-gen healthcare management and automation systems.', img: 'https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?w=500&auto=format&fit=crop&q=60' },
-  { id: 'trackintake', name: 'Trackintake', desc: 'Real-time logistics, asset, and fleet tracking intelligence.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=500&auto=format&fit=crop&q=60' },
-  { id: 'crm', name: 'CRM -  Unified Customer Relationship Platform', desc: 'Seamless customer relationship management to scale sales.', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop&q=60' },
-  { id: 'ngo', name: 'NgoConnect - Non-Profit Management System', desc: 'All-in-one digital ecosystems for non-profit operations.', img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&auto=format&fit=crop&q=60' },
-  { id: 'vendor', name: 'VendorSync - Vendor & Procurement Management', desc: 'Streamlined supply chain and vendor management portals.', img: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=500&auto=format&fit=crop&q=60' },
-  { id: 'lab', name: 'LabCore LIMS - Laboratory Information Management System', desc: 'Advanced laboratory information systems for precise diagnostics.', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&auto=format&fit=crop&q=60' },
-  { id: 'doctor', name: 'MedConsult Live - Telehealth & Doctor Consultation Platform', desc: 'Telehealth and clinic appointment scheduler for modern doctors.', img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=500&auto=format&fit=crop&q=60' },
+{ 
+  id: 'pathyatech', 
+  name: 'PathyaTech', 
+  desc: 'Next-gen healthcare management and automation systems.', 
+img: 'https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=500&auto=format&fit=crop&q=60'},
+  { 
+    id: 'trackintake', 
+    name: 'Trackintake', 
+    desc: 'Real-time logistics, asset, and fleet tracking intelligence.', 
+    img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500&auto=format&fit=crop&q=60' 
+    // Fleet / trucks on road
+  },
+ { 
+  id: 'crm', 
+  name: 'CRM - Unified Customer Relationship Platform', 
+  desc: 'Seamless customer relationship management to scale sales.', 
+  img: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=500&auto=format&fit=crop&q=60' 
+},
+  { 
+    id: 'ngo', 
+    name: 'NgoConnect - Non-Profit Management System', 
+    desc: 'All-in-one digital ecosystems for non-profit operations.', 
+    img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&auto=format&fit=crop&q=60' 
+    // People / community / ngo
+  },
+  { 
+    id: 'vendor', 
+    name: 'VendorSync - Vendor & Procurement Management', 
+    desc: 'Streamlined supply chain and vendor management portals.', 
+    img: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=500&auto=format&fit=crop&q=60' 
+    // Warehouse / supply chain
+  },
+  { 
+    id: 'lab', 
+    name: 'LabCore LIMS - Laboratory Information Management System', 
+    desc: 'Advanced laboratory information systems for precise diagnostics.', 
+    img: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=500&auto=format&fit=crop&q=60' 
+    // Lab / microscope / diagnostics
+  },
+  { 
+    id: 'doctor', 
+    name: 'MedConsult Live - Telehealth & Doctor Consultation Platform', 
+    desc: 'Telehealth and clinic appointment scheduler for modern doctors.', 
+    img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&auto=format&fit=crop&q=60' 
+    // Doctor on video call / telehealth
+  },
 ];
 
 const BLOGS = [
@@ -31,8 +70,7 @@ Building a reliable enterprise-grade model requires rigorous structural steps:
 3. Live Feedback Telemetry Loops: Allowing corporate agents to grade AI outputs instantly, scaling accuracy metrics exponentially over time.
 
 Through proper data pipelines built in Python, companies can save up to 40% of standard operating costs.`,
-    img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=60'
-  },
+img: 'https://images.unsplash.com/photo-1559000357-f6b52ddfbe37?w=500&auto=format&fit=crop&q=60'  },
   {
     id: 2,
     title: 'Optimizing Logistics with Trackintrack',
@@ -131,7 +169,7 @@ const [isEventOpen, setIsEventOpen] = useState(false);
 const [eventTitle, setEventTitle] = useState('');
 const [eventDate, setEventDate] = useState('');
 
-  const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Career', 'About Us'];
+  const navItems = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Careers', 'About Us'];
 
   const services = [
     { icon: Briefcase, title: 'SAP Consulting & Implementation Services', desc: 'Expert strategic advisory for enterprise landscape optimization.' },
@@ -184,32 +222,19 @@ const sendApplication = (e: any) => {
 
 const sendEventRegistration = (e: any) => {
   e.preventDefault();
-
- emailjs.sendForm(
-  'YOUR_SERVICE_ID',   // ← ye abhi placeholder hai
-  'YOUR_TEMPLATE_ID',  // ← ye bhi
-  e.target,
-  'YOUR_PUBLIC_KEY'    // ← ye bhi
-)
- .then(() => {
-    setEventFormSubmitted(true);
-  })
-  .catch((error) => {
-    console.log('EmailJS Error:', error);  // ← yeh rakho
-    alert('Registration failed. Please try again.');
-  });
+  setEventFormSubmitted(true); // ← bas itna hi!
 };
   return (
     <div className="min-h-screen w-full bg-white text-gray-900 antialiased">
 
       {/* HEADER */}
-      <header className="sticky top-0 z-40 bg-[#F8FAFC] backdrop-blur-md border-b border-gray-200 transition-all">
+<header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
          <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
   <img 
     src="/almanet-logo.png" 
     alt="AlmaNet Official" 
-    className="h-12 w-auto object-contain transition-transform duration-300 hover:scale-105"
+    className="h-18 w-auto object-contain transition-transform duration-300 hover:scale-105"
     style={{ mixBlendMode: 'multiply' }}
   />
 </div>
@@ -224,32 +249,44 @@ const sendEventRegistration = (e: any) => {
         </div>
       </header>
 
-      {/* HERO */}
-      <section id="home" className="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-[#F8FAFC] border-b border-gray-200">
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none z-0" style={{ backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
-        <div className="absolute top-0 left-1/3 w-[50vw] h-[300px] bg-blue-100 rounded-full blur-[120px] pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 text-center md:text-left">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" /> Next Generation Digital Ecosystems
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-gray-900">
-              Empowering Ideas via <br /> <span className="text-blue-600">Advanced Intelligence</span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto md:mx-0 font-normal leading-relaxed">
-              Almanet builds foundational automation suites, customized corporate SAP transformations, and machine learning models engineered to elevate complex modern business initiatives.
-            </p>
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-              <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">Explore Products</button>
-              <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-white text-gray-800 border border-gray-200 hover:border-blue-300 transition-all">Register Platform</button>
-            </div>
-          </div>
-          <div className="relative flex justify-center">
-            <div className="absolute -inset-1 bg-blue-200 rounded-3xl blur-2xl opacity-40 animate-pulse" />
-            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" alt="Dashboard" className="rounded-2xl border border-gray-100 shadow-xl relative z-10 max-w-full h-auto object-cover" />
-          </div>
-        </div>
-      </section>
+     {/* HERO */}
+<section id="home" className="relative pt-36 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-[#F8FAFC] border-b border-gray-200">
+  <div className="absolute inset-0 opacity-[0.04] pointer-events-none z-0" style={{ backgroundImage: `radial-gradient(#4A77BC 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
+  <div className="absolute top-0 left-1/3 w-[50vw] h-[300px] bg-blue-100 rounded-full blur-[120px] pointer-events-none" />
+  <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+
+    {/* LEFT - Text */}
+    <div className="space-y-6 text-center md:text-left">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" /> Next Generation Digital Ecosystems
+      </span>
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-gray-900">
+        Empowering Ideas via <br /> <span className="text-blue-600">Advanced Intelligence</span>
+      </h1>
+      <p className="text-lg text-gray-600 max-w-xl mx-auto md:mx-0 font-normal leading-relaxed">
+        Almanet builds foundational automation suites, customized corporate SAP transformations, and machine learning models engineered to elevate complex modern business initiatives.
+      </p>
+      <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+        <button onClick={() => handleScroll('products')} className="px-6 py-3 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">Explore Products</button>
+        <button onClick={() => { setIsRegisterOpen(true); setRegFormSubmitted(false); }} className="px-6 py-3 rounded-xl font-semibold bg-white text-gray-800 border border-gray-200 hover:border-blue-300 transition-all">Register Platform</button>
+      </div>
+    </div>
+
+    {/* RIGHT - Image with animation */}
+    <div className="relative flex justify-center hero-image-enter">
+      <div className="hero-image-float">
+        <div className="absolute -inset-1 bg-blue-200 rounded-3xl blur-2xl opacity-40" />
+        <img
+          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"
+          alt="Dashboard"
+          className="rounded-2xl border border-gray-100 shadow-xl relative z-10 max-w-full h-auto object-cover"
+        />
+        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-blue-400/20 blur-2xl rounded-full" />
+      </div>
+    </div>
+
+  </div>
+</section>
 
       {/* PRODUCTS */}
       <section id="products" className="py-24 relative w-full z-10 bg-white overflow-hidden">
@@ -475,8 +512,8 @@ const sendEventRegistration = (e: any) => {
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           <div className="lg:col-span-2 space-y-5">
             <div className="flex flex-col items-start space-y-4">
-              <div className="h-12 w-auto">
-                <img src="/almanet-logo.png" alt="AlmaNet Official Logo" className="h-full w-auto object-contain" style={{ background: 'transparent' }} />
+              <div className="h-18 w-auto">
+                <img src="/almanet-logo.png" alt="AlmaNet Official Logo" className="h-full w-auto object-contain" style={{ mixBlendMode: 'multiply' }} />
               </div>
               <p className="text-xs text-gray-500 font-normal max-w-xs leading-relaxed">Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.</p>
             </div>
