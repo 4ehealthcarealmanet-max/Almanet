@@ -28,7 +28,6 @@ export default function RootLayout({
     <html
       lang="en"
 className={`${inter.variable} ${plusJakarta.variable} antialiased`}
-      style={{ width: '100%', maxWidth: '100%' }}
     >
       <head>
         <link
