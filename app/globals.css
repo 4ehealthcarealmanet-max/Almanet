@@ -124,3 +124,190 @@ h1, h2, h3, h4 {
   animation-delay: 1.5s;
 }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ADDITIONS — append these to the END of your existing globals.css.
+   Nothing above this line in your current file needs to change; the
+   float / fade-in-right / bounce-slow keyframes you already have keep
+   working exactly as-is.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Staggered reveal delays — used by the useReveal hook's reveal() helper
+   so cards in a grid don't all fade in at the exact same millisecond. */
+@layer utilities {
+  .delay-75   { transition-delay: 75ms; }
+  .delay-150  { transition-delay: 150ms; }
+  .delay-300  { transition-delay: 300ms; }
+  .delay-500  { transition-delay: 500ms; }
+}
+
+/* Visible, brand-colored focus ring for keyboard navigation — accessibility
+   requirement that was missing (buttons/links had no explicit focus state). */
+@layer base {
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid #2563EB;
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* Subtle grain/texture for the hero background shape — adds depth without
+   a gradient overlay. Pure CSS, no image request, no performance cost. */
+.hero-grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(37,99,235,0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Soft rotating accent shape behind the hero image — replaces the idea of
+   a gradient overlay with a quiet geometric accent instead. */
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.hero-accent-ring {
+  animation: slow-spin 40s linear infinite;
+}
+
+/* Respect reduced-motion globally for anyone who's asked for it at the OS level. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Card lift — single shared timing function so every card in every section
+   (Products, Services, Events, Blogs, Careers) lifts identically instead
+   of using slightly different durations/easings per section. */
+@layer utilities {
+  .card-lift {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 280ms ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ADDITIONS — append these to the END of your existing globals.css.
+   Nothing above this line in your current file needs to change; the
+   float / fade-in-right / bounce-slow keyframes you already have keep
+   working exactly as-is.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Staggered reveal delays — used by the useReveal hook's reveal() helper
+   so cards in a grid don't all fade in at the exact same millisecond. */
+@layer utilities {
+  .delay-75   { transition-delay: 75ms; }
+  .delay-150  { transition-delay: 150ms; }
+  .delay-300  { transition-delay: 300ms; }
+  .delay-500  { transition-delay: 500ms; }
+}
+
+/* Visible, brand-colored focus ring for keyboard navigation — accessibility
+   requirement that was missing (buttons/links had no explicit focus state). */
+@layer base {
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid #2563EB;
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* Subtle grain/texture for the hero background shape — adds depth without
+   a gradient overlay. Pure CSS, no image request, no performance cost. */
+.hero-grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(37,99,235,0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Soft rotating accent shape behind the hero image — replaces the idea of
+   a gradient overlay with a quiet geometric accent instead. */
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.hero-accent-ring {
+  animation: slow-spin 40s linear infinite;
+}
+
+/* Respect reduced-motion globally for anyone who's asked for it at the OS level. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Card lift — single shared timing function so every card in every section
+   (Products, Services, Events, Blogs, Careers) lifts identically instead
+   of using slightly different durations/easings per section. */
+@layer utilities {
+  .card-lift {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 280ms ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* ── Hero Section — global animations ──────────────────────────────────────
+   Paste these at the end of your globals.css / index.css
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Floating dots */
+.hero-dot {
+  animation: heroDrift 7s ease-in-out infinite;
+}
+@keyframes heroDrift {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(10px, -14px); }
+  66%       { transform: translate(-8px, 10px); }
+}
+
+/* Dual rotating rings */
+.hero-accent-ring {
+  animation: heroRingSpin 24s linear infinite;
+}
+.hero-accent-ring-reverse {
+  animation: heroRingSpin 18s linear infinite reverse;
+}
+@keyframes heroRingSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Floating badges — slow bounce */
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.animate-bounce-slow       { animation: bounceSlow 4s ease-in-out infinite; }
+.animate-bounce-slow-delay { animation: bounceSlow 4s ease-in-out infinite 1.2s; }
+
+/* Grain texture overlay */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 0.4;
+}
+
+.blogs-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(30, 58, 138, 0.25) 0%, transparent 70%),
+    #0B1120;
+}

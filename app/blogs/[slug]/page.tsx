@@ -48,42 +48,41 @@ const BLOGS: any[] = [
     tags: ['AI', 'Enterprise Software', 'CRM', 'Machine Learning', 'Digital Transformation'],
     relatedSlugs: ['optimizing-logistics-with-trackintrack', 'why-sap-cloud-transformation-is-crucial'],
   },
-
-  {
-    titleSlug: 'optimizing-logistics-with-trackintrack',
-    title: 'Optimizing Logistics with TrackIntrack',
-    date: 'May 28, 2026',
-    author: 'Arjun Mehta',
-    authorRole: 'Head of Supply Chain Solutions',
-    readTime: '7 min read',
-    category: 'Logistics & Supply Chain',
-    categoryColor: '#ea580c',
-    categoryBg: '#fff7ed',
-    heroImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600&q=80',
-    accent: '#ea580c',
-    accentLight: '#fff7ed',
-    accentDark: '#431407',
-    excerpt: 'Why real-time tracking is vital for modern supply-chain compliance and how TrackIntrack delivers.',
-    intro: `Supply chains have always been complex. But the decade since 2020 has exposed just how fragile complexity can become under pressure. Port shutdowns, driver shortages, fuel price spikes, and the relentless growth of e-commerce have pushed logistics operators to their limits. The organisations that navigated these crises best shared one capability: real-time visibility into every node of their supply chain.`,
+{
+    titleSlug: 'smart-nutrition-tracking-with-trackintrack',
+    title: 'Smart Nutrition Tracking with TrackIntake',
+    date: 'June 12, 2026',
+    author: 'Priya Nair',
+    authorRole: 'Head of Health & Wellness Products',
+    readTime: '6 min read',
+    category: 'Health & Nutrition',
+    categoryColor: '#16a34a',
+    categoryBg: '#f0fdf4',
+    heroImage: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&q=80',
+    accent: '#16a34a',
+    accentLight: '#f0fdf4',
+    accentDark: '#052e16',
+    excerpt: 'Why consistent food logging is the single biggest predictor of health outcomes — and how TrackIntake makes it effortless.',
+    intro: `Most diet plans fail not because the advice is wrong, but because people stop tracking. Studies consistently show that the act of logging food — regardless of the specific diet followed — is the single strongest predictor of long-term weight and health outcomes. The challenge has never been knowledge; it has been friction. TrackIntake was built to remove that friction entirely.`,
     sections: [
       {
-        heading: 'The Visibility Gap — and Why It Is So Costly',
-        body: `Most logistics operators have some form of tracking — GPS units on trucks, barcode scans at warehouses. But point-in-time data is not the same as real-time visibility. A GPS ping every 5 minutes means a vehicle can travel several kilometres unmonitored. A warehouse scan tells you when a pallet arrived, not where it is right now or whether it has been moved to the correct location.\n\nThis visibility gap creates cascading costs. Delayed shipments trigger customer penalties. Missing inventory causes production line stoppages. Fuel theft — facilitated by infrequent monitoring — drains margins silently. Compliance violations go undetected until an audit reveals months of unreported route deviations.`
+        heading: 'The Logging Gap — and Why It Derails Progress',
+        body: `Most people start a health journey with good intentions — a notes app, a spreadsheet, a memory-based estimate at the end of the day. But manual logging breaks down within weeks. Portion sizes get guessed. Snacks get forgotten. Eating out becomes a black hole of unlogged calories.\n\nThis logging gap is costly. Inaccurate intake data means macro targets are built on guesswork. Plateaus go unexplained because the real culprit — a few hundred untracked calories a day — never shows up in the data. Motivation fades when progress cannot be clearly attributed to specific habits.`
       },
       {
-        heading: 'How TrackIntrack Closes the Gap',
-        body: `TrackIntrack's IoT platform aggregates data from GPS hardware, fuel sensors, door-open detectors, temperature probes, and driver behaviour accelerometers — updating every second. This sub-second telemetry feeds a live operational dashboard that gives dispatchers a true real-time picture of every asset.\n\nGeo-fencing rules automatically alert managers when a vehicle leaves an approved corridor or enters a restricted zone. Predictive maintenance algorithms analyse engine diagnostics from OBD-II ports and flag vehicles approaching failure — reducing unplanned breakdowns by up to 40% in early deployments.`
+        heading: 'How TrackIntake Closes the Gap',
+        body: `TrackIntake combines a 10,000+ item food database, barcode scanning, and AI-powered photo recognition to make logging take seconds instead of minutes. Search by name, scan a packet, or snap a photo of your plate — the system estimates portions and nutrients automatically.\n\nSmart reminders nudge users at typical meal times, and a streak system reinforces consistency without feeling punitive. Behind the scenes, the nutrient engine tracks not just calories but protein, carbohydrates, fats, fibre, and key micronutrients — turning raw food entries into a complete picture of dietary health.`
       },
       {
-        heading: 'Compliance and the Regulatory Landscape',
-        body: `Electronic logging device (ELD) mandates, driver hours-of-service rules, cold chain temperature documentation requirements, and customs pre-notification obligations are creating an increasingly complex compliance landscape for logistics operators. Manual compliance — paper logs, spreadsheet temperature records, verbal communications — is not only inefficient; it is increasingly legally insufficient.\n\nTrackIntrack's automated compliance module generates audit-ready reports from live telemetry data: ELD-compliant hours-of-service logs, timestamped temperature records for cold chain shipments, and geo-tagged delivery confirmations. When a regulator or a customer audits your operation, the documentation is already waiting.`
+        heading: 'Personalisation and the Goals Engine',
+        body: `Generic calorie targets ignore individual variation in metabolism, activity level, and health goals. TrackIntake's goals engine calculates personalised daily targets using body composition, activity data, and stated objectives — whether that is weight loss, muscle gain, or managing a medical condition through diet.\n\nAs users log consistently, the system refines its recommendations, surfacing patterns like consistently low fibre intake or excess sodium on weekdays. These insights turn a logging tool into an active coaching companion.`
       },
       {
-        heading: 'The ROI Case: Numbers That Move Decision-Makers',
-        body: `Logistics technology investments need to demonstrate measurable returns quickly. TrackIntrack deployments have consistently delivered: 28–34% reduction in fuel spend through route optimisation and idle-time alerts; 40% reduction in unplanned vehicle downtime through predictive maintenance; 22% improvement in on-time delivery rates; and 15–20% reduction in insurance premiums through driver safety scoring programmes. For a mid-size fleet of 200 vehicles, these numbers typically represent annual savings well in excess of the platform cost.`
+        heading: 'The Outcomes Case: Numbers That Matter',
+        body: `Consistent tracking drives measurable results. Internal data from TrackIntake users shows: 95% logging accuracy once AI photo recognition is enabled; users who log five or more days per week are 3x more likely to hit their monthly weight goal; average session time for a full meal log is under 20 seconds; and 68% of users maintain a logging streak of 30 days or more within their first two months. For a habit that determines long-term health outcomes, removing friction is the highest-leverage intervention available.`
       },
     ],
-    tags: ['Logistics', 'Fleet Management', 'IoT', 'Supply Chain', 'Real-Time Tracking'],
+    tags: ['Nutrition', 'Health Tracking', 'Calorie Counting', 'Wellness', 'AI'],
     relatedSlugs: ['the-future-of-ai-in-enterprise-solutions', 'revolutionizing-healthcare-via-tech-modules'],
   },
 
