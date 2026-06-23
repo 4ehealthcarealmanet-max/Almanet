@@ -229,15 +229,6 @@ const PRODUCTS: any[] = [
   },
 ];
 
-/* KEY FIX: normalize strips ALL non-alphanumeric characters before comparing.
-   "ngoconnect---non-profit-management-system" normalizes to "ngoconnectnon..."
-   "ngoconnect" normalizes to "ngoconnect"
-   Both match because we compare titleSlug (normalized) against the TITLE-based slug.
-
-   WAIT — that won't work either if the URL has extra words.
-   Real fix: match URL slug against titleSlug by checking if normalized(url) STARTS WITH normalized(titleSlug)
-   OR just match the first word/segment before the first extra dash group.
-*/
 function findProduct(rawSlug: string) {
   // Strategy 1: exact titleSlug match  e.g. "crm-platform"
   const s1 = PRODUCTS.find(p => p.titleSlug === rawSlug);
@@ -342,7 +333,8 @@ export default function ProductDetailPage() {
             {SM[d.badgeIconKey]} {d.badge}
           </div>
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-tight mb-3 max-w-3xl">{d.title}</h1>
-          <p className="text-xl text-white/85 font-semibold mb-2 max-w-2xl">{d.tagline}</p>
+          {/*<p className="text-xl text-white/85 font-semibold mb-2 max-w-2xl">{d.tagline}</p>*/}
+          <p className="text-2xl md:text-3xl text-white/90 font-bold mb-3 max-w-3xl">{d.tagline}</p>
           <p className="text-base text-white/60 max-w-2xl leading-relaxed">{d.subtitle}</p>
         </div>
       </div>
