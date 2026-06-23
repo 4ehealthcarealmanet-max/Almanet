@@ -4,11 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import { Activity, Briefcase, Target, ShieldCheck, Rocket } from 'lucide-react';
 import { Monitor, TrendingUp, Handshake, MapPin, Clock, ArrowRight } from "lucide-react";
-
 import { NAV_ITEMS, SERVICES, EVENTS, BLOGS, JOBS, CAREER_PERKS } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { PRODUCTS } from '../constants';
-
 //import { ArrowRight } from 'lucide-react';
 import type { ReactElement } from 'react';
 
@@ -22,6 +20,73 @@ import type { ReactElement } from 'react';
  * GPU-only (opacity/transform), respect prefers-reduced-motion, and only
  * fire once per element — no re-triggering jank while scrolling up/down.
  */
+// ─── Count-up animated stat ─────────────────────────────────────────────
+function useCountUp(targetText: string, durationMs = 1500) {
+  const [display, setDisplay] = useState(
+    targetText.replace(/[0-9.]/g, (c) => (c === "." ? "." : "0"))
+  );
+  const ref = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+
+  const match = targetText.match(/^([^\d]*)([\d.]+)(.*)$/);
+  const prefix = match ? match[1] : "";
+  const numericStr = match ? match[2] : "0";
+  const suffix = match ? match[3] : "";
+  const decimals = numericStr.includes(".") ? numericStr.split(".")[1].length : 0;
+  const targetNum = parseFloat(numericStr);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const start = performance.now();
+
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / durationMs, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = targetNum * eased;
+            setDisplay(`${prefix}${current.toFixed(decimals)}${suffix}`);
+            if (progress < 1) {
+              requestAnimationFrame(tick);
+            } else {
+              setDisplay(targetText);
+            }
+          };
+          requestAnimationFrame(tick);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { display, ref };
+}
+
+function CountUpStat({
+  value,
+  className = "",
+  durationMs = 1500,
+}: {
+  value: string;
+  className?: string;
+  durationMs?: number;
+}) {
+  const { display, ref } = useCountUp(value, durationMs);
+  return (
+    <div ref={ref} className={className}>
+      {display}
+    </div>
+  );
+}
 function useReveal<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T>(null);
   const [visible, setVisible] = useState(false);
@@ -95,18 +160,38 @@ function RevealItem({
 }
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
+import { Menu, X } from "lucide-react";
+
 export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleNavClick = (item: string) => {
+    scrollTo(item.toLowerCase().replace(/\s+/g, ""));
+    setMobileOpen(false); // close menu after tapping a link
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-[#F8FAFC]/90 backdrop-blur-md border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-       <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/almanet-logo.png" alt="AlmaNet" className="h-30 w-auto object-contain hover:scale-105 transition-transform duration-300" style={{ mixBlendMode: 'multiply' }} />
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+        {/* Logo */}
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <img
+            src="/logo.svg"
+            alt="AlmaNet"
+            className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-300"
+          />
         </div>
+
+        {/* Desktop nav — unchanged, visible md and up */}
         <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-gray-700">
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
-              onClick={() => scrollTo(item.toLowerCase().replace(/\s+/g, ''))}
+              onClick={() => handleNavClick(item)}
               className="relative hover:text-blue-700 transition-colors group py-2"
             >
               {item}
@@ -114,16 +199,56 @@ export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
             </button>
           ))}
         </nav>
+
+        {/* Desktop CTA — hidden on mobile, hamburger takes its place */}
         <button
           onClick={onGetInTouch}
-          className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md shadow-blue-200/60 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-[0.98]"
+          className="hidden md:inline-flex bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md shadow-blue-200/60 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-[0.98]"
         >
           Get in Touch
         </button>
+
+        {/* Hamburger button — visible only below md */}
+        <button
+          onClick={() => setMobileOpen((prev) => !prev)}
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile dropdown panel */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-[#F8FAFC] border-t border-gray-200 ${
+          mobileOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <nav className="flex flex-col px-6 py-4 space-y-1">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item}
+              onClick={() => handleNavClick(item)}
+              className="text-left text-base font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg px-3 py-3 transition-colors"
+            >
+              {item}
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              onGetInTouch();
+              setMobileOpen(false);
+            }}
+            className="mt-2 bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md shadow-blue-200/60 hover:bg-blue-700 transition-all active:scale-[0.98]"
+          >
+            Get in Touch
+          </button>
+        </nav>
       </div>
     </header>
   );
 }
+
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 // ─── Hero ─────────────────────────────────────────────────────────────────────
@@ -183,10 +308,10 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
 
           {/* Subheading */}
           <p className="text-lg text-gray-500 max-w-xl mx-auto md:mx-0 leading-relaxed">
-            Almanet builds foundational automation suites, customized corporate SAP
-            transformations, and machine learning models engineered to elevate
-            complex modern business initiatives.
-          </p>
+  Almanet designs enterprise-grade software ecosystems — from SAP transformation
+  and custom automation to AI-driven analytics — built to run mission-critical
+  operations across healthcare, sales, and supply chain.
+</p>
 
           {/* CTAs */}
           <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-1">
@@ -213,7 +338,7 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
             ].map((s, i) => (
               <div key={i} className="text-center md:text-left">
                 <div className="text-3xl font-black text-blue-600">{s.val}</div>
-                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">{s.label}</div>
+<div className="text-[13px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
@@ -222,15 +347,8 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
         {/* ─── RIGHT: Image ───────────────────────────────────────────────── */}
         <div className="relative flex justify-center items-center">
 
-          {/* Rotating rings */}
-          <div
-            className="hero-accent-ring absolute rounded-full border border-dashed border-blue-200 pointer-events-none hidden sm:block"
-            style={{ inset: "-32px" }}
-          />
-          <div
-            className="hero-accent-ring-reverse absolute rounded-full border border-dashed border-blue-100 pointer-events-none hidden sm:block"
-            style={{ inset: "-14px" }}
-          />
+         
+          
 
           {/* Glow behind image */}
           <div className="absolute inset-4 bg-blue-300 rounded-3xl blur-3xl opacity-20 animate-pulse pointer-events-none" />
@@ -241,11 +359,12 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
             className="relative z-10 rounded-2xl overflow-hidden border border-gray-100 shadow-2xl shadow-blue-100/60 transition-transform duration-200 ease-out"
             style={{ willChange: "transform" }}
           >
-            <img
-              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&auto=format&fit=crop&q=80"
-              alt="Almanet enterprise analytics dashboard"
-              className="w-full h-auto object-cover block max-w-full"
-            />
+                    
+          <img
+            src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&auto=format&fit=crop&q=80"
+            alt="Almanet enterprise analytics dashboard"
+            className="w-full h-auto object-cover block max-w-full"
+          />
             {/* Subtle inner vignette */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/5 to-transparent pointer-events-none" />
           </div>
@@ -262,241 +381,107 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse flex-shrink-0" />
           </div>
 
-          {/* Floating badge — bottom right (new: 100% Compliant) */}
-          <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-2 z-20 animate-bounce-slow hidden sm:flex">
-            <span className="text-xs font-bold text-emerald-600 whitespace-nowrap">✓ Compliant</span>
-          </div>
+         
 
         </div>
       </div>
     </section>
   );
 }
-
-
 // ─── Product Types ────────────────────────────────────────────────────────────────────
 interface ProductDisplay {
-  num: string;
   title: string;
   desc: string;
   tag: string;
-  color: { bg: string; accent: string; tagBg: string; tagText: string };
-  illustration: React.ReactNode;
+  color: { accent: string; iconBg: string };
+  icon: React.ReactNode;
   slug: string;
 }
 
-// ─── Illustrations ────────────────────────────────────────────────────────────
+// ─── Simple Icons (one per product, matches reference style) ─────────────────
 
-const PathyaIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <line x1="0" y1="37" x2="320" y2="37" stroke="#B5D4F4" strokeWidth="0.5" />
-    <line x1="0" y1="74" x2="320" y2="74" stroke="#B5D4F4" strokeWidth="0.5" />
-    <line x1="0" y1="111" x2="320" y2="111" stroke="#B5D4F4" strokeWidth="0.5" />
-    <polyline
-      points="0,80 40,80 55,80 60,30 68,120 76,80 100,80 115,80 120,40 128,115 136,80 200,80 210,80 215,45 222,118 230,80 280,80 320,80"
-      fill="none" stroke="#185FA5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-    />
-    <circle cx="280" cy="80" r="4" fill="#185FA5" opacity="0.8" />
-    <rect x="14" y="14" width="60" height="28" rx="7" fill="white" opacity="0.7" />
-    <text x="24" y="26" fontSize="7" fontWeight="700" fill="#185FA5">Patients</text>
-    <text x="24" y="36" fontSize="9" fontWeight="800" fill="#0D1E3A">1,284</text>
-    <rect x="86" y="14" width="60" height="28" rx="7" fill="white" opacity="0.7" />
-    <text x="96" y="26" fontSize="7" fontWeight="700" fill="#185FA5">Beds Free</text>
-    <text x="96" y="36" fontSize="9" fontWeight="800" fill="#0D1E3A">42 / 60</text>
+const PathyaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
+    <path d="M8 12h2l1.5-3 2 6 1.5-3H16" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const TrackintakeIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <circle cx="160" cy="74" r="50" fill="white" opacity="0.5" />
-    <circle cx="160" cy="74" r="50" fill="none" stroke="#3B6D11" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.4" />
-    <path d="M160,30 A44,44 0 0,1 204,98" fill="none" stroke="#3B6D11" strokeWidth="9" strokeLinecap="round" opacity="0.85" />
-    <path d="M204,98 A44,44 0 0,1 135,116" fill="none" stroke="#82C94E" strokeWidth="9" strokeLinecap="round" opacity="0.85" />
-    <path d="M135,116 A44,44 0 0,1 160,30" fill="none" stroke="#B5E480" strokeWidth="9" strokeLinecap="round" opacity="0.85" />
-    <circle cx="160" cy="74" r="22" fill="white" opacity="0.85" />
-    <text x="160" y="70" textAnchor="middle" fontSize="8" fontWeight="700" fill="#3B6D11">1,840</text>
-    <text x="160" y="80" textAnchor="middle" fontSize="7" fill="#5A7490">kcal</text>
-    <rect x="18" y="50" width="8" height="8" rx="2" fill="#3B6D11" />
-    <text x="30" y="58" fontSize="8" fill="#3B6D11" fontWeight="600">Protein 35%</text>
-    <rect x="18" y="66" width="8" height="8" rx="2" fill="#82C94E" />
-    <text x="30" y="74" fontSize="8" fill="#3B6D11" fontWeight="600">Carbs 40%</text>
-    <rect x="18" y="82" width="8" height="8" rx="2" fill="#B5E480" />
-    <text x="30" y="90" fontSize="8" fill="#3B6D11" fontWeight="600">Fats 25%</text>
-    <rect x="238" y="44" width="64" height="24" rx="7" fill="white" opacity="0.7" />
-    <text x="248" y="53" fontSize="7" fontWeight="600" fill="#3B6D11">Hydration</text>
-    <text x="248" y="63" fontSize="9" fontWeight="800" fill="#0D1E3A">2.4L / 3L</text>
-    <rect x="238" y="74" width="64" height="24" rx="7" fill="white" opacity="0.7" />
-    <text x="248" y="83" fontSize="7" fontWeight="600" fill="#3B6D11">Streak</text>
-    <text x="248" y="93" fontSize="9" fontWeight="800" fill="#0D1E3A">🔥 14 days</text>
+const TrackintakeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <circle cx="12" cy="12" r="8.5" stroke="white" strokeWidth="1.8" />
+    <path d="M12 6v6l4 2.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const CRMIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <path d="M100,20 L220,20 L190,60 L130,60 Z" fill="#534AB7" opacity="0.18" />
-    <path d="M130,64 L190,64 L175,100 L145,100 Z" fill="#534AB7" opacity="0.28" />
-    <path d="M145,104 L175,104 L167,130 L153,130 Z" fill="#534AB7" opacity="0.45" />
-    <text x="160" y="37" textAnchor="middle" fontSize="8" fontWeight="700" fill="#534AB7">Leads — 840</text>
-    <text x="160" y="79" textAnchor="middle" fontSize="8" fontWeight="700" fill="#534AB7">Pipeline — 312</text>
-    <text x="160" y="120" textAnchor="middle" fontSize="8" fontWeight="700" fill="#534AB7">Won — 98</text>
-    <rect x="14" y="14" width="68" height="28" rx="7" fill="white" opacity="0.7" />
-    <text x="24" y="26" fontSize="7" fontWeight="600" fill="#534AB7">Revenue</text>
-    <text x="24" y="36" fontSize="9" fontWeight="800" fill="#0D1E3A">$2.4M</text>
-    <rect x="238" y="14" width="68" height="28" rx="7" fill="white" opacity="0.7" />
-    <text x="248" y="26" fontSize="7" fontWeight="600" fill="#534AB7">Win Rate</text>
-    <text x="248" y="36" fontSize="9" fontWeight="800" fill="#0D1E3A">38.6%</text>
+const CRMIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <rect x="3" y="11" width="4" height="9" rx="1" stroke="white" strokeWidth="1.7" />
+    <rect x="10" y="6" width="4" height="14" rx="1" stroke="white" strokeWidth="1.7" />
+    <rect x="17" y="3" width="4" height="17" rx="1" stroke="white" strokeWidth="1.7" />
   </svg>
 );
 
-const NgoIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <circle cx="160" cy="74" r="18" fill="#0F6E56" opacity="0.85" />
-    <text x="160" y="78" textAnchor="middle" fontSize="9" fontWeight="800" fill="white">NGO</text>
-    <line x1="160" y1="56" x2="100" y2="24" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    <line x1="160" y1="56" x2="220" y2="24" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    <line x1="160" y1="92" x2="80" y2="120" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    <line x1="160" y1="92" x2="240" y2="120" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    <line x1="160" y1="74" x2="50" y2="74" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    <line x1="160" y1="74" x2="270" y2="74" stroke="#0F6E56" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
-    {[
-      { cx: 100, cy: 24, label: "Donors" },
-      { cx: 220, cy: 24, label: "Grants" },
-      { cx: 80, cy: 120, label: "Vol." },
-      { cx: 240, cy: 120, label: "Impact" },
-      { cx: 50, cy: 74, label: "Events" },
-      { cx: 270, cy: 74, label: "Reports" },
-    ].map(({ cx, cy, label }) => (
-      <g key={label}>
-        <circle cx={cx} cy={cy} r="12" fill="white" opacity="0.8" />
-        <text x={cx} y={cy + 4} textAnchor="middle" fontSize="7" fill="#0F6E56" fontWeight="700">{label}</text>
-      </g>
-    ))}
+const NgoIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
   </svg>
 );
 
-const VendorIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <text x="18" y="20" fontSize="8" fontWeight="600" fill="#854F0B">PO Volume — This Month</text>
-    {[
-      { x: 18, h: 24, op: 0.3 }, { x: 36, h: 32, op: 0.5 }, { x: 54, h: 28, op: 0.4 },
-      { x: 72, h: 36, op: 0.7 }, { x: 90, h: 40, op: 0.9 },
-    ].map(({ x, h, op }, i) => (
-      <rect key={i} x={x} y={50 - h} width="14" height={h} rx="3" fill="#854F0B" opacity={op} />
-    ))}
-    {[
-      { x: 18, label: "Supplier", val: "12" },
-      { x: 102, label: "Warehouse", val: "3 hubs" },
-      { x: 186, label: "Dispatch", val: "247" },
-      { x: 250, label: "Delivered", val: "✓ 98%" },
-    ].map(({ x, label, val }, i) => (
-      <g key={i}>
-        <rect x={x} y="55" width="52" height="38" rx="8" fill="white" opacity="0.8" />
-        <text x={x + 26} y="70" textAnchor="middle" fontSize="7" fontWeight="700" fill="#854F0B">{label}</text>
-        <text x={x + 26} y="82" textAnchor="middle" fontSize="8" fontWeight="800" fill={val.startsWith("✓") ? "#1D9E75" : "#0D1E3A"}>{val}</text>
-      </g>
-    ))}
-    <line x1="72" y1="74" x2="100" y2="74" stroke="#854F0B" strokeWidth="2" />
-    <line x1="156" y1="74" x2="184" y2="74" stroke="#854F0B" strokeWidth="2" />
-    <line x1="240" y1="74" x2="248" y2="74" stroke="#854F0B" strokeWidth="2" />
-    <rect x="18" y="108" width="110" height="24" rx="7" fill="white" opacity="0.7" />
-    <text x="28" y="120" fontSize="7.5" fontWeight="600" fill="#854F0B">Cost Saved this Q: </text>
-    <text x="118" y="120" fontSize="8" fontWeight="800" fill="#0D1E3A">$84K</text>
+const VendorIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <path d="M3 7h18l-1.5 11a2 2 0 0 1-2 1.7H6.5a2 2 0 0 1-2-1.7L3 7z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" />
+    <path d="M8 7V5.5A3.5 3.5 0 0 1 11.5 2h1A3.5 3.5 0 0 1 16 5.5V7" stroke="white" strokeWidth="1.7" strokeLinecap="round" />
   </svg>
 );
 
-const LabIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    {[
-      { x: 60, fillH: 32, fillY: 58, op1: 0.3, op2: 0.5 },
-      { x: 95, fillH: 44, fillY: 46, op1: 0.35, op2: 0.55, fill: "#E07850" },
-      { x: 130, fillH: 56, fillY: 34, op1: 0.2, op2: 0.35 },
-    ].map(({ x, fillH, fillY, op1, op2, fill = "#993C1D" }, i) => (
-      <g key={i}>
-        <rect x={x} y="20" width="22" height="70" rx="11" fill="white" opacity="0.6" />
-        <rect x={x} y={fillY} width="22" height={fillH} rx="0" fill={fill} opacity={op1} />
-        <rect x={x} y="72" width="22" height="18" rx="11" fill={fill} opacity={op2} />
-      </g>
-    ))}
-    <line x1="50" y1="92" x2="162" y2="92" stroke="#993C1D" strokeWidth="2" opacity="0.4" />
-    <rect x="178" y="14" width="128" height="120" rx="10" fill="white" opacity="0.65" />
-    <text x="188" y="30" fontSize="8" fontWeight="700" fill="#993C1D">Sample Results</text>
-    {[
-      { y: 36, label: "Haemoglobin", w: 62, pct: "78%" },
-      { y: 56, label: "WBC Count", w: 48, pct: "60%", fill: "#E07850" },
-      { y: 76, label: "RBC Count", w: 70, pct: "87%" },
-    ].map(({ y, label, w, pct, fill = "#993C1D" }, i) => (
-      <g key={i}>
-        <text x="188" y={y + 14} fontSize="7" fill="#5A7490">{label}</text>
-        <rect x="188" y={y + 18} width="80" height="5" rx="2" fill="#F5C8B8" />
-        <rect x="188" y={y + 18} width={w} height="5" rx="2" fill={fill} opacity="0.7" />
-        <text x="278" y={y + 23} fontSize="7" fill="#0D1E3A" fontWeight="700">{pct}</text>
-      </g>
-    ))}
-    <rect x="188" y="98" width="108" height="26" rx="7" fill="#FAECE7" />
-    <text x="198" y="109" fontSize="7" fontWeight="700" fill="#993C1D">Samples Processed</text>
-    <text x="198" y="119" fontSize="10" fontWeight="800" fill="#0D1E3A">1,482 today</text>
+const LabIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <path d="M9 2v8.5L4.5 19A2 2 0 0 0 6.3 22h11.4a2 2 0 0 0 1.8-3L15 10.5V2" stroke="white" strokeWidth="1.7" strokeLinejoin="round" />
+    <path d="M7 2h10" stroke="white" strokeWidth="1.7" strokeLinecap="round" />
+    <path d="M7.5 16h9" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
-const MedIllus = () => (
-  <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-    <rect x="30" y="18" width="160" height="100" rx="12" fill="white" opacity="0.65" />
-    <circle cx="110" cy="52" r="20" fill="#FBEAF0" />
-    <circle cx="110" cy="44" r="10" fill="#993556" opacity="0.6" />
-    <ellipse cx="110" cy="68" rx="16" ry="10" fill="#993556" opacity="0.4" />
-    <path d="M100,60 Q96,70 100,76" fill="none" stroke="#993556" strokeWidth="2" opacity="0.7" />
-    <circle cx="100" cy="77" r="3" fill="#993556" opacity="0.7" />
-    <rect x="40" y="106" width="140" height="6" rx="3" fill="#FBEAF0" />
-    <rect x="40" y="106" width="70" height="6" rx="3" fill="#993556" opacity="0.45" />
-    <text x="110" y="120" textAnchor="middle" fontSize="7" fill="#993556" fontWeight="700">Live Consultation</text>
-    <rect x="202" y="18" width="98" height="100" rx="10" fill="white" opacity="0.65" />
-    <text x="212" y="34" fontSize="7" fontWeight="700" fill="#993556">Queue Today</text>
-    <text x="212" y="46" fontSize="14" fontWeight="800" fill="#0D1E3A">38</text>
-    <text x="212" y="62" fontSize="7" fontWeight="700" fill="#993556">Avg Wait</text>
-    <text x="212" y="74" fontSize="12" fontWeight="800" fill="#0D1E3A">4 min</text>
-    <rect x="210" y="84" width="82" height="22" rx="6" fill="#FBEAF0" />
-    <text x="220" y="94" fontSize="6.5" fontWeight="700" fill="#993556">Satisfaction</text>
-    <text x="220" y="102" fontSize="8" fontWeight="800" fill="#0D1E3A">⭐ 4.8 / 5</text>
+const MedIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+    <path d="M9 3v6a3 3 0 0 0 6 0V3" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9 3H7M15 3h2" stroke="white" strokeWidth="1.7" strokeLinecap="round" />
+    <path d="M5 9v3a7 7 0 0 0 14 0V9" stroke="white" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="19" cy="16" r="2" stroke="white" strokeWidth="1.6" />
   </svg>
 );
 
 // ─── Display config keyed by product id ───────────────────────────────────────
 const PRODUCT_DISPLAY: Record<string, Omit<ProductDisplay, "title" | "desc" | "tag" | "slug">> = {
   pathyatech: {
-    num: "01",
-    color: { bg: "from-[#E6F1FB] to-[#C5DCF5]", accent: "#185FA5", tagBg: "rgba(24,95,165,0.15)", tagText: "#185FA5" },
-    illustration: <PathyaIllus />,
+    color: { accent: "#185FA5", iconBg: "linear-gradient(135deg,#2E8BE0,#185FA5)" },
+    icon: <PathyaIcon />,
   },
   trackintake: {
-    num: "02",
-    color: { bg: "from-[#EAF6E0] to-[#C8EAB0]", accent: "#3B6D11", tagBg: "rgba(59,109,17,0.15)", tagText: "#3B6D11" },
-    illustration: <TrackintakeIllus />,
+    color: { accent: "#3B6D11", iconBg: "linear-gradient(135deg,#82C94E,#3B6D11)" },
+    icon: <TrackintakeIcon />,
   },
   crm: {
-    num: "03",
-    color: { bg: "from-[#EEEDFE] to-[#D5D2FB]", accent: "#534AB7", tagBg: "rgba(83,74,183,0.15)", tagText: "#534AB7" },
-    illustration: <CRMIllus />,
+    color: { accent: "#534AB7", iconBg: "linear-gradient(135deg,#8F86E8,#534AB7)" },
+    icon: <CRMIcon />,
   },
   ngo: {
-    num: "04",
-    color: { bg: "from-[#E1F5EE] to-[#B2E5D0]", accent: "#0F6E56", tagBg: "rgba(15,110,86,0.15)", tagText: "#0F6E56" },
-    illustration: <NgoIllus />,
+    color: { accent: "#0F6E56", iconBg: "linear-gradient(135deg,#27B894,#0F6E56)" },
+    icon: <NgoIcon />,
   },
   vendor: {
-    num: "05",
-    color: { bg: "from-[#FAEEDA] to-[#F5D8A0]", accent: "#854F0B", tagBg: "rgba(133,79,11,0.15)", tagText: "#854F0B" },
-    illustration: <VendorIllus />,
+    color: { accent: "#854F0B", iconBg: "linear-gradient(135deg,#D99A33,#854F0B)" },
+    icon: <VendorIcon />,
   },
   lab: {
-    num: "06",
-    color: { bg: "from-[#FAECE7] to-[#F5C8B8]", accent: "#993C1D", tagBg: "rgba(153,60,29,0.15)", tagText: "#993C1D" },
-    illustration: <LabIllus />,
+    color: { accent: "#993C1D", iconBg: "linear-gradient(135deg,#E07850,#993C1D)" },
+    icon: <LabIcon />,
   },
-  doctor: {
-    num: "07",
-    color: { bg: "from-[#FBEAF0] to-[#F5C2D8]", accent: "#993556", tagBg: "rgba(153,53,86,0.15)", tagText: "#993556" },
-    illustration: <MedIllus />,
-  },
+ 'medconsult-live': {
+    color: { accent: "#993556", iconBg: "linear-gradient(135deg,#E0608E,#993556)" },
+    icon: <MedIcon />,
+},
 };
 
 // Merge constants PRODUCTS with display config
@@ -514,113 +499,68 @@ const DISPLAY_PRODUCTS: ProductDisplay[] = PRODUCTS
 function ProductCard({ p, delay }: { p: ProductDisplay; delay: number }) {
   return (
     <div
-      className="group bg-white border border-[rgba(55,138,221,0.13)] rounded-[18px]
-                 overflow-hidden flex flex-col
+      className="group bg-white border border-gray-100 rounded-2xl
+                 flex flex-col p-8
                  transition-all duration-300 ease-out
-                 hover:-translate-y-1.5 hover:scale-[1.012]
-                 hover:shadow-[0_12px_36px_rgba(24,95,165,0.13)]
-                 hover:border-[rgba(24,95,165,0.28)]"
+                 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
       style={{ animationDelay: `${delay}ms` }}
     >
-      {/* Illustration */}
-      <div className={`relative h-[148px] overflow-hidden bg-gradient-to-br ${p.color.bg} flex items-center justify-center`}>
-        {p.illustration}
-        {/* Number badge */}
+      {/* Icon + Title row (same line, like reference) */}
+      <div className="flex items-center gap-4 mb-4">
         <div
-          className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full flex items-center justify-center
-                     text-[10px] font-bold text-white z-10"
-          style={{ background: p.color.accent }}
+          className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: p.color.iconBg }}
         >
-          {p.num}
+          {p.icon}
         </div>
-        {/* Domain tag */}
-        <div
-          className="absolute bottom-2.5 left-2.5 text-[10px] font-bold px-2.5 py-1
-                     rounded-full z-10 tracking-wide backdrop-blur-sm"
-          style={{ background: p.color.tagBg, color: p.color.tagText }}
-        >
-          {p.tag}
+        <div className="flex flex-col">
+          <h3 className="text-[22px] font-bold text-gray-900 leading-tight flex items-center gap-1">
+            {p.title}
+            <sup className="text-[11px] font-normal text-gray-400">©</sup>
+          </h3>
+          <span className="text-[14px] font-semibold" style={{ color: p.color.accent }}>
+            {p.tag}
+          </span>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="flex flex-col flex-1 gap-1.5 p-4 pb-3.5">
-        <h3 className="text-[13px] font-bold text-gray-900 leading-snug">{p.title}</h3>
-        <p className="text-[11.5px] text-gray-500 leading-relaxed flex-1">{p.desc}</p>
-        <Link
-          href={`/products/${p.slug}`}
-          className="text-[11.5px] font-bold inline-flex items-center gap-1 mt-2 transition-all
-                     group-hover:gap-2"
-          style={{ color: p.color.accent }}
-        >
-          Explore Specification <span aria-hidden="true">→</span>
-        </Link>
-      </div>
+      {/* Description */}
+      <p className="text-[15px] text-gray-500 leading-relaxed flex-1 mb-5">
+        {p.desc}
+      </p>
+
+      {/* Learn More link — gray, like reference */}
+      <Link
+        href={`/products/${p.slug}`}
+        className="text-[15px] font-medium text-gray-500 inline-flex items-center gap-1.5
+                   transition-all group-hover:gap-2.5 group-hover:text-gray-700"
+      >
+        Learn More <span aria-hidden="true">→</span>
+      </Link>
     </div>
   );
 }
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 export function ProductsSection() {
-  const topRow = DISPLAY_PRODUCTS.slice(0, 3);
-  const midRow = DISPLAY_PRODUCTS.slice(3, 6);
-  const lastCard = DISPLAY_PRODUCTS[6] ?? null;
-
   return (
-    <section
-      id="products"
-      className="py-28 border-t border-gray-100 relative overflow-hidden"
-      style={{
-        background: `
-          radial-gradient(ellipse 60% 50% at 10% 40%, rgba(55,138,221,0.09) 0%, transparent 65%),
-          radial-gradient(ellipse 50% 60% at 90% 20%, rgba(83,74,183,0.07) 0%, transparent 60%),
-          radial-gradient(ellipse 40% 40% at 50% 90%, rgba(24,95,165,0.05) 0%, transparent 60%),
-          #EEF4FB
-        `,
-      }}
-    >
-      {/* Noise texture overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto px-6 relative">
+    <section id="products" className="py-24 bg-[#F4F6F9]">
+      <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-blue-700 bg-blue-100 mb-4">
-            Our Portfolios
-          </span>
-          <h2 className="text-4xl font-black text-gray-900 mb-4">Enterprise Scaling Products</h2>
-          <p className="text-gray-500 text-base">
-            Robust system modules custom optimized to run high-volume workflows fluidly.
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Core Products</h2>
+          <p className="text-gray-500 text-base leading-relaxed">
+            A suite of flagship enterprise modules designed to accelerate your digital
+            transformation journey.
           </p>
         </div>
 
-        {/* Row 1 — 3 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {topRow.map((p, i) => (
+        {/* Grid — 2 columns, generous gap, no orphan card */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          {DISPLAY_PRODUCTS.map((p, i) => (
             <ProductCard key={p.slug} p={p} delay={i * 75} />
           ))}
         </div>
-
-        {/* Row 2 — 3 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {midRow.map((p, i) => (
-            <ProductCard key={p.slug} p={p} delay={(i + 3) * 75} />
-          ))}
-        </div>
-
-        {/* Row 3 — 1 card centered */}
-        {lastCard && (
-          <div className="flex justify-center">
-            <div className="w-full sm:w-1/2 lg:w-1/3">
-              <ProductCard p={lastCard} delay={6 * 75} />
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
@@ -639,33 +579,33 @@ function ServiceCard({
   return (
     <RevealItem
       delayMs={delay}
-      className="p-6 bg-white border border-gray-100 rounded-3xl
+      className="p-8 bg-white border border-gray-100 rounded-3xl
                  hover:border-blue-200 card-lift shadow-sm hover:shadow-xl
                  group flex flex-col"
     >
       <div
-        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4
+        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5
                    group-hover:scale-110 transition-all duration-300"
         style={{ backgroundColor: s.color.bg }}
       >
         <s.icon
-          className="w-6 h-6 transition-colors duration-300"
+          className="w-7 h-7 transition-colors duration-300"
           style={{ color: s.color.icon }}
         />
       </div>
 
       <span
-        className="text-[10px] font-bold uppercase tracking-widest mb-1"
+        className="text-[12px] font-bold uppercase tracking-widest mb-1.5"
         style={{ color: s.color.icon }}
       >
         {s.color.tag}
       </span>
 
-      <h3 className="text-sm font-bold text-gray-900 mb-2 leading-snug">
+      <h3 className="text-sm font-bold text-gray-900 mb-2.5 leading-snug">
         {s.title}
       </h3>
 
-      <p className="text-xs text-gray-500 leading-relaxed mb-5 flex-1">
+      <p className="text-[14px] text-gray-500 leading-relaxed mb-5 flex-1">
         {s.desc}
       </p>
 
@@ -675,7 +615,7 @@ function ServiceCard({
           .replace(/[\s&,/]+/g, '-')
           .replace(/-+/g, '-')
           .replace(/^-|-$/g, '')}`}
-        className="text-sm font-bold flex items-center gap-1 transition-colors"
+        className="text-sm font-bold flex items-center gap-1.5 transition-colors"
         style={{ color: s.color.icon }}
       >
         Learn More <span aria-hidden="true">→</span>
@@ -711,7 +651,7 @@ export function ServicesSection() {
         </div>
 
         {/* Top row — 4 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
           {topRow.map((s, i) => (
             <ServiceCard key={i} service={s} delay={i * 75} />
           ))}
@@ -1056,7 +996,7 @@ export function AboutSection() {
             <p className="text-gray-700 leading-relaxed text-base sm:text-lg max-w-lg">
               Founded on rigid software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks.
             </p>
-            <p className="text-gray-500 leading-relaxed text-sm max-w-lg">
+            <p className="text-gray-500 leading-relaxed text-base max-w-lg">
               We believe modern enterprise apps shouldn't operate in silos. Our approach centers on unifying fragmented data streams—ensuring field actions, internal inventories, donor telemetry, and customer-facing touchpoints speak to the same underlying analytical database engine.
             </p>
 
@@ -1089,7 +1029,7 @@ export function AboutSection() {
               </div>
               <div>
                 <div className="text-sm font-black text-gray-900">100% Compliant</div>
-                <div className="text-[10px] text-gray-400 font-medium">Regulatory & Data Privacy</div>
+                <div className="text-[12px] text-gray-400 font-medium">Regulatory & Data Privacy</div>
               </div>
             </div>
 
@@ -1100,7 +1040,7 @@ export function AboutSection() {
               </div>
               <div>
                 <div className="text-sm font-black text-gray-900">Core Modules</div>
-                <div className="text-[10px] text-gray-400 font-medium">Enterprise Ready</div>
+                <div className="text-[12px] text-gray-400 font-medium">Enterprise Ready</div>
               </div>
             </div>
           </div>
@@ -1135,13 +1075,14 @@ export function AboutSection() {
                 delayMs={i * 80}
                 className="text-center space-y-1 group"
               >
-                <div className="text-5xl sm:text-6xl font-black text-white group-hover:scale-105 transition-transform duration-300 inline-block">
-                  {stat.val}
-                </div>
+                <CountUpStat
+  value={stat.val}
+  className="text-5xl sm:text-6xl font-black text-white group-hover:scale-105 transition-transform duration-300 inline-block"
+/>
                 <div className="text-xs font-black text-blue-200 uppercase tracking-widest mt-2">
                   {stat.label}
                 </div>
-                <p className="text-xs text-blue-300/70">{stat.desc}</p>
+                <p className="text-xs text-blue-200/90">{stat.desc}</p>
               </RevealItem>
             ))}
           </div>
@@ -1214,7 +1155,7 @@ export function AboutSection() {
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-xl font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors duration-300">
                     {pillar.title}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{pillar.desc}</p>
@@ -1256,7 +1197,7 @@ const SocialIcons: Record<string, (props: { size?: number }) => ReactElement> = 
 
 export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
   return (
-    <footer className="relative bg-[#0a0e1a] text-gray-400 pt-20 pb-10 text-sm overflow-hidden">
+    <footer className="relative bg-[#0a0e1a] text-gray-400 pt-16 pb-10 text-sm overflow-hidden">
       {/* top gradient accent line */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/60 to-orange-500/60" />
 
@@ -1269,7 +1210,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
           {/* brand col */}
           <div className="lg:col-span-2 space-y-5">
            <div className="flex items-center gap-2">
-              <img src="/almanet-logo.png" alt="AlmaNet" className="h-30 w-auto object-contain" />
+              <img src="/logo.svg" alt="AlmaNet" className="h-28 w-auto object-contain" />
             </div>
             <p className="text-[13px] text-gray-500 max-w-xs leading-relaxed">
               Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.
@@ -1293,7 +1234,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
 
           {/* sitemap */}
           <div className="space-y-5">
-            <h4 className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Sitemap</h4>
+            <h4 className="text-[13px] font-bold tracking-[0.15em] text-white uppercase mb-1">Sitemap</h4>
             <ul className="space-y-3 text-[13px] font-medium text-gray-500">
               {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
                 <li key={item}>
@@ -1313,7 +1254,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
           <div className="space-y-5">
             <h4 className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Core Products</h4>
             <ul className="space-y-3 text-[13px] font-medium text-gray-500">
-              {['Pathyatech Ecosystem', 'Trackintrack Fleet', 'Almanet CRM Matrix', 'NGO Global Portal', 'Vendor Supply Connect', 'Lab Module Hub'].map((prod) => (
+              {['Pathyatech ', 'Trackintake ', 'CRM Platform ', 'NgoConnect', 'VendorSync', 'LabCore LIMS', 'MedConsult Live'].map((prod) => (
                 <li key={prod}>
                   <button
                     onClick={() => scrollTo('products')}
@@ -1338,7 +1279,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
                 type="email"
                 required
                 placeholder="engineering@domain.com"
-                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-[13px] text-white placeholder:text-gray-600 outline-none focus:border-blue-500/60 focus:bg-white/[0.06] transition-all"
+className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-[13px] text-white placeholder:text-gray-500 outline-none focus:border-blue-500/60 focus:bg-white/[0.06] transition-all"
               />
               <button
                 type="submit"
@@ -1353,7 +1294,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
 
         <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-[12px] text-gray-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-gray-500">
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-gray-300 font-semibold">Almanet Technologies &copy; 2026</span>
             <span className="text-gray-700">&bull;</span>
