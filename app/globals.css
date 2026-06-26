@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-/* ── CSS Reset for full-width layout ── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+/* ── CSS Reset ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   width: 100%;
@@ -13,301 +11,250 @@ html, body {
   padding: 0;
 }
 
+/* ── Design Tokens ──────────────────────────────────────────────────────── */
+/*
+  Single source of truth for the blue-grey + white theme.
+  Every section will reference these instead of hardcoded hex values.
+
+  USAGE IN TAILWIND:  bg-[var(--color-surface-2)]
+  USAGE IN CSS:       background: var(--color-primary);
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
+  /* Brand Blue */
+  --color-primary:        #2563EB;   /* blue-600  — main CTA, active states    */
+  --color-primary-hover:  #1D4ED8;   /* blue-700  — hover state                */
+  --color-primary-light:  #EFF6FF;   /* blue-50   — tinted backgrounds         */
+  --color-primary-mid:    #BFDBFE;   /* blue-200  — borders, dividers on light */
+  --color-primary-muted:  #93C5FD;   /* blue-300  — decorative accents         */
+
+  /* Surfaces (white → light grey progression) */
+  --color-surface-0:      #FFFFFF;   /* pure white — primary background        */
+  --color-surface-1:      #F8FAFC;   /* off-white  — alternate section bg      */
+  --color-surface-2:      #F1F5F9;   /* light grey — card backgrounds          */
+  --color-surface-3:      #E2E8F0;   /* mid grey   — subtle dividers           */
+
+  /* Borders */
+  --color-border:         #E2E8F0;   /* slate-200  — default card/section border */
+  --color-border-hover:   #BFDBFE;   /* blue-200   — border on hover           */
+
+  /* Text */
+  --color-text-primary:   #0F172A;   /* slate-900  — headings                  */
+  --color-text-secondary: #475569;   /* slate-600  — body copy                 */
+  --color-text-muted:     #94A3B8;   /* slate-400  — captions, labels          */
+  --color-text-inverse:   #FFFFFF;   /* white      — text on dark/blue bg      */
+
+  /* Dark section (Blogs, Hero dark strip) */
+  --color-dark-bg:        #0B1120;   /* deep navy  — dark section background   */
+  --color-dark-surface:   #111827;   /* grey-900   — dark card surface         */
+
+  /* Spacing rhythm — sections use one of these, never ad-hoc values */
+  --section-pad-y:        7rem;      /* py-28 equivalent                       */
+  --section-pad-x:        1.5rem;    /* px-6  equivalent                       */
+  --section-max-w:        80rem;     /* max-w-7xl equivalent                   */
+
+  /* Radius scale */
+  --radius-card:          1.5rem;    /* rounded-3xl — cards                    */
+  --radius-badge:         9999px;    /* rounded-full — pills/badges            */
+  --radius-btn:           0.75rem;   /* rounded-xl  — buttons                  */
+
+  /* Shadows */
+  --shadow-card:          0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-card-hover:    0 8px 32px rgba(37,99,235,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-btn:           0 4px 14px rgba(37,99,235,0.25);
+
+  /* Legacy aliases — keep so existing Sections.tsx code doesn't break */
+  --background: var(--color-surface-0);
+  --foreground: var(--color-text-primary);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ── Base typography ────────────────────────────────────────────────────── */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: inherit;
-}
-
-@theme {
-  --color-brand-ice: #E5EDF1;
-  --color-brand-mist: #96C2DB;
-  --color-brand-white: #FFFFFF;
-}
-
-@keyframes floatUp {
-  0% {
-    opacity: 0;
-    transform: translateY(40px) scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px) scale(1);
-  }
-}
-
-@keyframes gentleFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0.5deg);
-  }
-  50% {
-    transform: translateY(-12px) rotate(-0.5deg);
-  }
-}
-
-.hero-image-enter {
-  animation: floatUp 0.9s ease-out forwards;
-}
-
-.hero-image-float {
-  animation: gentleFloat 5s ease-in-out infinite;
-}
-
-body {
-  font-family: 'Inter', 'Geist Sans', system-ui, sans-serif;
+  background-color: var(--color-surface-0);
+  color: var(--color-text-primary);
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.6;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Inter', 'Geist Sans', system-ui, sans-serif;
+  font-family: var(--font-jakarta), 'Inter', system-ui, sans-serif;
   letter-spacing: -0.02em;
+  color: var(--color-text-primary);
 }
 
-/* Font variables */
-body {
-  font-family: var(--font-inter), sans-serif;
+/* ── Shared layout utilities ────────────────────────────────────────────── */
+@layer utilities {
+
+  /* Section wrapper — apply to every <section> instead of repeating py-28 px-6 */
+  .section-pad {
+    padding-top:    var(--section-pad-y);
+    padding-bottom: var(--section-pad-y);
+  }
+
+  /* Inner container — replaces max-w-7xl mx-auto px-6 */
+  .section-container {
+    max-width:     var(--section-max-w);
+    margin-left:   auto;
+    margin-right:  auto;
+    padding-left:  var(--section-pad-x);
+    padding-right: var(--section-pad-x);
+  }
+
+  /* Card base — replaces scattered bg-white border border-gray-100 rounded-3xl shadow-sm */
+  .card-base {
+    background:    var(--color-surface-0);
+    border:        1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow:    var(--shadow-card);
+    transition:
+      transform      280ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow     280ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color   280ms ease;
+  }
+  .card-base:hover {
+    border-color:  var(--color-border-hover);
+    box-shadow:    var(--shadow-card-hover);
+    transform:     translateY(-4px);
+  }
+
+  /* Primary button — replaces scattered bg-blue-600 hover:bg-blue-700 … */
+  .btn-primary {
+    display:         inline-flex;
+    align-items:     center;
+    gap:             0.5rem;
+    padding:         0.75rem 1.75rem;
+    background:      var(--color-primary);
+    color:           var(--color-text-inverse);
+    font-weight:     700;
+    font-size:       0.875rem;
+    border-radius:   var(--radius-btn);
+    box-shadow:      var(--shadow-btn);
+    transition:
+      background  200ms ease,
+      box-shadow  200ms ease,
+      transform   200ms ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    transform:  translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  /* Decorative blob — replaces per-section hardcoded absolute div blobs */
+  .section-blob {
+    position:       absolute;
+    border-radius:  9999px;
+    pointer-events: none;
+    filter:         blur(100px);
+    opacity:        0.55;
+    background:     var(--color-primary-light);
+  }
+
+  /* Staggered reveal delays */
+  .delay-75  { transition-delay:  75ms; }
+  .delay-150 { transition-delay: 150ms; }
+  .delay-300 { transition-delay: 300ms; }
+  .delay-500 { transition-delay: 500ms; }
+
+  /* Card lift (legacy alias — .card-base already includes this) */
+  .card-lift {
+    transition:
+      transform    280ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow   280ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 280ms ease;
+  }
+  .card-lift:hover { transform: translateY(-4px); }
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-jakarta), sans-serif;
+/* ── Focus ring (accessibility) ─────────────────────────────────────────── */
+@layer base {
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline:        2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius:  8px;
+  }
 }
 
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0px)  scale(1);    }
+}
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px)   rotate( 0.5deg); }
+  50%       { transform: translateY(-12px) rotate(-0.5deg); }
+}
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-12px); }
 }
-
 @keyframes fade-in-right {
   from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+  to   { opacity: 1; transform: translateX(0);    }
 }
-
 @keyframes bounce-slow {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50%       { transform: translateY(-6px); }
 }
-@layer utilities{
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-fade-in-right {
-  animation: fade-in-right 0.8s ease-out forwards;
-}
-
-.animate-bounce-slow {
-  animation: bounce-slow 3s ease-in-out infinite;
-}
-
-.animate-bounce-slow-delay {
-  animation: bounce-slow 3s ease-in-out infinite;
-  animation-delay: 1.5s;
-}
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   ADDITIONS — append these to the END of your existing globals.css.
-   Nothing above this line in your current file needs to change; the
-   float / fade-in-right / bounce-slow keyframes you already have keep
-   working exactly as-is.
-   ───────────────────────────────────────────────────────────────────────── */
-
-/* Staggered reveal delays — used by the useReveal hook's reveal() helper
-   so cards in a grid don't all fade in at the exact same millisecond. */
-@layer utilities {
-  .delay-75   { transition-delay: 75ms; }
-  .delay-150  { transition-delay: 150ms; }
-  .delay-300  { transition-delay: 300ms; }
-  .delay-500  { transition-delay: 500ms; }
-}
-
-/* Visible, brand-colored focus ring for keyboard navigation — accessibility
-   requirement that was missing (buttons/links had no explicit focus state). */
-@layer base {
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible {
-    outline: 2px solid #2563EB;
-    outline-offset: 2px;
-    border-radius: 8px;
-  }
-}
-
-/* Subtle grain/texture for the hero background shape — adds depth without
-   a gradient overlay. Pure CSS, no image request, no performance cost. */
-.hero-grain {
-  background-image: radial-gradient(circle at 1px 1px, rgba(37,99,235,0.06) 1px, transparent 0);
-  background-size: 22px 22px;
-}
-
-/* Soft rotating accent shape behind the hero image — replaces the idea of
-   a gradient overlay with a quiet geometric accent instead. */
-@keyframes slow-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.hero-accent-ring {
-  animation: slow-spin 40s linear infinite;
-}
-
-/* Respect reduced-motion globally for anyone who's asked for it at the OS level. */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Card lift — single shared timing function so every card in every section
-   (Products, Services, Events, Blogs, Careers) lifts identically instead
-   of using slightly different durations/easings per section. */
-@layer utilities {
-  .card-lift {
-    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 280ms ease;
-  }
-  .card-lift:hover {
-    transform: translateY(-4px);
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   ADDITIONS — append these to the END of your existing globals.css.
-   Nothing above this line in your current file needs to change; the
-   float / fade-in-right / bounce-slow keyframes you already have keep
-   working exactly as-is.
-   ───────────────────────────────────────────────────────────────────────── */
-
-/* Staggered reveal delays — used by the useReveal hook's reveal() helper
-   so cards in a grid don't all fade in at the exact same millisecond. */
-@layer utilities {
-  .delay-75   { transition-delay: 75ms; }
-  .delay-150  { transition-delay: 150ms; }
-  .delay-300  { transition-delay: 300ms; }
-  .delay-500  { transition-delay: 500ms; }
-}
-
-/* Visible, brand-colored focus ring for keyboard navigation — accessibility
-   requirement that was missing (buttons/links had no explicit focus state). */
-@layer base {
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible {
-    outline: 2px solid #2563EB;
-    outline-offset: 2px;
-    border-radius: 8px;
-  }
-}
-
-/* Subtle grain/texture for the hero background shape — adds depth without
-   a gradient overlay. Pure CSS, no image request, no performance cost. */
-.hero-grain {
-  background-image: radial-gradient(circle at 1px 1px, rgba(37,99,235,0.06) 1px, transparent 0);
-  background-size: 22px 22px;
-}
-
-/* Soft rotating accent shape behind the hero image — replaces the idea of
-   a gradient overlay with a quiet geometric accent instead. */
-@keyframes slow-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.hero-accent-ring {
-  animation: slow-spin 40s linear infinite;
-}
-
-/* Respect reduced-motion globally for anyone who's asked for it at the OS level. */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Card lift — single shared timing function so every card in every section
-   (Products, Services, Events, Blogs, Careers) lifts identically instead
-   of using slightly different durations/easings per section. */
-@layer utilities {
-  .card-lift {
-    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 280ms ease;
-  }
-  .card-lift:hover {
-    transform: translateY(-4px);
-  }
-}
-
-/* ── Hero Section — global animations ──────────────────────────────────────
-   Paste these at the end of your globals.css / index.css
-   ─────────────────────────────────────────────────────────────────────────── */
-
-/* Floating dots */
-.hero-dot {
-  animation: heroDrift 7s ease-in-out infinite;
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-6px); }
 }
 @keyframes heroDrift {
-  0%, 100% { transform: translate(0, 0); }
+  0%, 100% { transform: translate(0, 0);       }
   33%       { transform: translate(10px, -14px); }
-  66%       { transform: translate(-8px, 10px); }
-}
-
-/* Dual rotating rings */
-.hero-accent-ring {
-  animation: heroRingSpin 24s linear infinite;
-}
-.hero-accent-ring-reverse {
-  animation: heroRingSpin 18s linear infinite reverse;
+  66%       { transform: translate(-8px, 10px);  }
 }
 @keyframes heroRingSpin {
-  from { transform: rotate(0deg); }
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+@keyframes slow-spin {
+  from { transform: rotate(0deg);   }
   to   { transform: rotate(360deg); }
 }
 
-/* Floating badges — slow bounce */
-@keyframes bounceSlow {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+/* ── Animation utility classes ──────────────────────────────────────────── */
+@layer utilities {
+  .hero-image-enter        { animation: floatUp       0.9s ease-out    forwards; }
+  .hero-image-float        { animation: gentleFloat   5s  ease-in-out  infinite; }
+  .animate-float           { animation: float         4s  ease-in-out  infinite; }
+  .animate-fade-in-right   { animation: fade-in-right 0.8s ease-out    forwards; }
+  .animate-bounce-slow     { animation: bounceSlow    4s  ease-in-out  infinite; }
+  .animate-bounce-slow-delay { animation: bounceSlow  4s  ease-in-out  infinite 1.2s; }
+  .hero-dot                { animation: heroDrift     7s  ease-in-out  infinite; }
+  .hero-accent-ring        { animation: heroRingSpin  24s linear       infinite; }
+  .hero-accent-ring-reverse{ animation: heroRingSpin  18s linear       infinite reverse; }
 }
-.animate-bounce-slow       { animation: bounceSlow 4s ease-in-out infinite; }
-.animate-bounce-slow-delay { animation: bounceSlow 4s ease-in-out infinite 1.2s; }
 
-/* Grain texture overlay */
+/* ── Texture & special backgrounds ─────────────────────────────────────── */
+
+/* Dot-grid grain — used in hero and career sections */
 .hero-grain {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   background-size: 200px;
   opacity: 0.4;
 }
 
+/* Blogs dark section background */
 .blogs-bg {
   background:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(30, 58, 138, 0.25) 0%, transparent 70%),
-    #0B1120;
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(99,102,241,0.18)  0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(139,92,246,0.15)  0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(30,58,138,0.25)   0%, transparent 70%),
+    var(--color-dark-bg);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior:          auto   !important;
+  }
 }

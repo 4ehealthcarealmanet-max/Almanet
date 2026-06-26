@@ -3,13 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { Activity, Briefcase, Target, ShieldCheck, Rocket } from 'lucide-react';
-import { Monitor, TrendingUp, Handshake, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Monitor, TrendingUp, Handshake, MapPin, Calendar, Clock, ArrowRight } from "lucide-react";
 import { NAV_ITEMS, SERVICES, EVENTS, BLOGS, JOBS, CAREER_PERKS } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { PRODUCTS } from '../constants';
 //import { ArrowRight } from 'lucide-react';
 import type { ReactElement } from 'react';
-
+import Image from 'next/image';
 // ─── Scroll Reveal (built-in, no separate file needed) ────────────────────────
 /**
  * useReveal — lightweight scroll-triggered reveal hook.
@@ -145,15 +145,16 @@ function RevealItem({
   delayMs = 0,
   className = '',
   children,
+  ...rest
 }: {
   as?: 'div' | 'article';
   delayMs?: number;
   className?: string;
   children: React.ReactNode;
-}) {
+} & React.HTMLAttributes<HTMLElement>) {
   const { ref, visible } = useReveal();
   return (
-    <Tag ref={ref as React.RefObject<any>} className={`${className} ${reveal(visible, delayMs)}`}>
+    <Tag ref={ref as React.RefObject<any>} className={`${className} ${reveal(visible, delayMs)}`} {...rest}>
       {children}
     </Tag>
   );
@@ -164,84 +165,157 @@ import { Menu, X } from "lucide-react";
 
 export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
+
+  // Shrink navbar slightly once the user scrolls past 20px
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleNavClick = (item: string) => {
-    scrollTo(item.toLowerCase().replace(/\s+/g, ""));
-    setMobileOpen(false); // close menu after tapping a link
+    scrollTo(item.toLowerCase().replace(/\s+/g, ''));
+    setMobileOpen(false);
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-[#F8FAFC]/90 backdrop-blur-md border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'shadow-[0_2px_20px_rgba(15,23,42,0.08)] backdrop-blur-xl border-b'
+          : 'backdrop-blur-md border-b'
+      }`}
+      style={{
+        backgroundColor: scrolled
+          ? 'rgba(248,250,252,0.97)'
+          : 'rgba(248,250,252,0.85)',
+        borderColor: 'var(--color-border)',
+      }}
+    >
+      {/* ── Main bar ── */}
+      <div
+        className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${
+          scrolled ? 'h-16' : 'h-20'
+        }`}
+      >
         {/* Logo */}
-        <div
-          className="flex items-center cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex items-center flex-shrink-0 focus-visible:outline-none"
+          aria-label="Back to top"
         >
           <img
             src="/logo.svg"
             alt="AlmaNet"
-            className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-300"
+            className={`w-auto object-contain transition-all duration-300 ${
+              scrolled ? 'h-16' : 'h-12'
+            }`}
           />
-        </div>
+        </button>
 
-        {/* Desktop nav — unchanged, visible md and up */}
-        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-gray-700">
+        {/* Divider — desktop only */}
+        <div
+          className="hidden md:block w-px h-6 mx-8 flex-shrink-0"
+          style={{ backgroundColor: 'var(--color-border)' }}
+        />
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-1 flex-1">
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
               onClick={() => handleNavClick(item)}
-              className="relative hover:text-blue-700 transition-colors group py-2"
+              className="relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                         hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)]
+                         group"
+              style={{ color: 'var(--color-text-secondary)' }}
             >
               {item}
-              <span className="absolute left-0 -bottom-0.5 h-[2px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full" />
+              {/* Animated underline dot on hover */}
+              <span
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full
+                           opacity-0 group-hover:opacity-100 transition-all duration-200"
+                style={{ backgroundColor: 'var(--color-primary)' }}
+              />
             </button>
           ))}
         </nav>
 
-        {/* Desktop CTA — hidden on mobile, hamburger takes its place */}
-        <button
-          onClick={onGetInTouch}
-          className="hidden md:inline-flex bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md shadow-blue-200/60 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-[0.98]"
-        >
-          Get in Touch
-        </button>
+        {/* Right side: CTA + hamburger */}
+        <div className="flex items-center gap-3 ml-auto md:ml-0">
+          {/* Desktop CTA */}
+          <button
+            onClick={onGetInTouch}
+            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold
+                       text-white transition-all duration-200
+                       hover:-translate-y-px hover:shadow-lg active:scale-[0.97]"
+            style={{
+              background: 'var(--color-primary)',
+              boxShadow: 'var(--shadow-btn)',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-primary-hover)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-primary)')}
+          >
+            Get in Touch
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
 
-        {/* Hamburger button — visible only below md */}
-        <button
-          onClick={() => setMobileOpen((prev) => !prev)}
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Hamburger */}
+          <button
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg
+                       transition-colors duration-200
+                       hover:bg-[var(--color-primary-light)]"
+            style={{ color: 'var(--color-text-secondary)' }}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile dropdown panel */}
+      {/* ── Mobile drawer ── */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-[#F8FAFC] border-t border-gray-200 ${
-          mobileOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out border-t ${
+          mobileOpen ? 'max-h-[480px] opacity-100' : 'max-h-0 opacity-0'
         }`}
+        style={{
+          backgroundColor: 'var(--color-surface-0)',
+          borderColor: 'var(--color-border)',
+        }}
       >
-        <nav className="flex flex-col px-6 py-4 space-y-1">
+        <nav className="flex flex-col px-4 py-3 gap-1">
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
               onClick={() => handleNavClick(item)}
-              className="text-left text-base font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg px-3 py-3 transition-colors"
+              className="text-left text-sm font-medium rounded-xl px-4 py-3
+                         transition-colors duration-150
+                         hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)]"
+              style={{ color: 'var(--color-text-secondary)' }}
             >
               {item}
             </button>
           ))}
+
+          {/* Divider */}
+          <div className="my-2 h-px" style={{ backgroundColor: 'var(--color-border)' }} />
+
+          {/* Mobile CTA — full width */}
           <button
-            onClick={() => {
-              onGetInTouch();
-              setMobileOpen(false);
+            onClick={() => { onGetInTouch(); setMobileOpen(false); }}
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl
+                       text-sm font-semibold text-white transition-all duration-200
+                       active:scale-[0.98]"
+            style={{
+              background: 'var(--color-primary)',
+              boxShadow: 'var(--shadow-btn)',
             }}
-            className="mt-2 bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md shadow-blue-200/60 hover:bg-blue-700 transition-all active:scale-[0.98]"
           >
             Get in Touch
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </nav>
       </div>
@@ -251,138 +325,283 @@ export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
 
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-// ─── Hero ─────────────────────────────────────────────────────────────────────
-// Layout   : Original left (text) + right (image) — UNCHANGED
-// Upgrades : Better typography hierarchy, refined badges, smoother animations,
-//            subtle gradient on headline, polished stat row, better image glow
-
-//import { useEffect, useRef } from "react";
-
 export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
   const imageRef = useRef<HTMLDivElement>(null);
 
-  // Subtle mouse parallax on image — desktop only
+  // Subtle mouse parallax on the image card — desktop only
   useEffect(() => {
     const el = imageRef.current;
     if (!el) return;
     const onMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth  - 0.5) * 6;
-      const y = (e.clientY / window.innerHeight - 0.5) * -4;
-      el.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+      const x = (e.clientX / window.innerWidth  - 0.5) * 5;
+      const y = (e.clientY / window.innerHeight - 0.5) * -3;
+      el.style.transform = `perspective(900px) rotateX(${y}deg) rotateY(${x}deg)`;
     };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
   }, []);
+
+  const STATS = [
+    { val: '99.9%', label: 'Uptime SLA' },
+    { val: '14+',   label: 'Modules'    },
+    { val: '100%',  label: 'Compliant'  },
+  ];
 
   return (
     <section
       id="home"
-      className="relative pt-36 pb-24 md:pt-44 md:pb-36 overflow-hidden bg-[#F8FAFC] border-b border-gray-100"
+      className="relative overflow-hidden border-b"
+      style={{
+        paddingTop: 'calc(var(--section-pad-y) + 2rem)',
+        paddingBottom: 'var(--section-pad-y)',
+        backgroundColor: 'var(--color-surface-1)',
+        borderColor: 'var(--color-border)',
+      }}
     >
-      {/* ── Background depth ── */}
-      <div className="absolute inset-0 hero-grain pointer-events-none z-0" />
-      <div className="absolute top-[-60px] left-1/3 w-[55vw] h-[340px] bg-blue-100 rounded-full blur-[130px] opacity-70 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[35vw] h-[260px] bg-blue-50 rounded-full blur-[110px] opacity-80 pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-[20vw] h-[200px] bg-indigo-50 rounded-full blur-[90px] opacity-60 pointer-events-none" />
+      {/* ── Background: grain + ambient blobs ── */}
+      <div className="absolute inset-0 hero-grain pointer-events-none z-0 opacity-60" />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '-80px', left: '38%',
+          width: '52vw', height: '380px',
+          background: 'var(--color-primary-light)',
+          borderRadius: '9999px',
+          filter: 'blur(120px)',
+          opacity: 0.7,
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: 0, right: 0,
+          width: '30vw', height: '260px',
+          background: 'var(--color-primary-light)',
+          borderRadius: '9999px',
+          filter: 'blur(100px)',
+          opacity: 0.5,
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
+      {/* ── Content grid ── */}
+      <div
+        className="relative z-10 max-w-7xl mx-auto px-6
+                   grid md:grid-cols-2 gap-12 lg:gap-20 items-center"
+      >
+        {/* ── LEFT: Copy ── */}
+        <div className="flex flex-col gap-7 text-center md:text-left">
 
-        {/* ─── LEFT: Text ─────────────────────────────────────────────────── */}
-        <div className="space-y-7 text-center md:text-left">
+          {/* Eyebrow pill — outlined style, matches navbar tone */}
+          <div className="flex justify-center md:justify-start">
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                         text-xs font-semibold tracking-wide border"
+              style={{
+                color: 'var(--color-primary)',
+                borderColor: 'var(--color-primary-mid)',
+                backgroundColor: 'var(--color-primary-light)',
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ backgroundColor: 'var(--color-primary)' }}
+              />
+              Next Generation Digital Ecosystems
+            </span>
+          </div>
 
-          {/* Badge */}
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-black bg-blue-600 text-white shadow-lg shadow-blue-300/40 tracking-wide">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            Next Generation Digital Ecosystems
-          </span>
-
-          {/* Headline — with underline accent on blue word */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-gray-900">
-            Empowering Ideas via{" "}
-            <br className="hidden sm:block" />
-            <span className="relative inline-block text-blue-600">
+          {/* Headline */}
+          <h1
+            className="text-[2.6rem] sm:text-5xl lg:text-[3.6rem] font-black
+                       tracking-tight leading-[1.08] max-w-2xl mx-auto md:mx-0"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
+            Empowering Ideas via{' '}
+            <span className="relative inline-block whitespace-nowrap" style={{ color: 'var(--color-primary)' }}>
               Advanced Intelligence
-              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-200 rounded-full" />
+              {/* Underline accent */}
+              <span
+                className="absolute left-0 -bottom-1 w-full h-[3px] rounded-full"
+                style={{ background: 'var(--color-primary-mid)' }}
+              />
             </span>
           </h1>
 
-          {/* Subheading */}
-          <p className="text-lg text-gray-500 max-w-xl mx-auto md:mx-0 leading-relaxed">
-  Almanet designs enterprise-grade software ecosystems — from SAP transformation
-  and custom automation to AI-driven analytics — built to run mission-critical
-  operations across healthcare, sales, and supply chain.
-</p>
+          {/* Body copy */}
+          <p
+            className="text-base sm:text-lg leading-relaxed max-w-lg mx-auto md:mx-0"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
+            Almanet designs enterprise-grade software ecosystems — from SAP transformation
+            and custom automation to AI-driven analytics — built to run mission-critical
+            operations across healthcare, sales, and supply chain.
+          </p>
 
-          {/* CTAs */}
-          <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-1">
+          {/* CTA row */}
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-1">
+            {/* Primary CTA — solid, matches navbar button */}
             <button
-              onClick={() => scrollTo("products")}
-              className="px-8 py-4 rounded-xl font-bold text-base bg-blue-600 text-white hover:bg-blue-700 shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 hover:-translate-y-0.5 transition-all active:scale-[0.98]"
+              onClick={() => scrollTo('products')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full
+                         text-sm font-semibold text-white
+                         transition-all duration-200 hover:-translate-y-px active:scale-[0.97]"
+              style={{
+                background: 'var(--color-primary)',
+                boxShadow: 'var(--shadow-btn)',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-primary-hover)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-primary)')}
             >
               Explore Products
+              <ArrowRight className="w-4 h-4" />
             </button>
+
+            {/* Secondary CTA — ghost/outline */}
             <button
               onClick={onGetInTouch}
-              className="px-8 py-4 rounded-xl font-bold text-base bg-white text-gray-800 border-2 border-gray-200 hover:border-blue-400 hover:text-blue-700 hover:-translate-y-0.5 transition-all active:scale-[0.98] shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full
+                         text-sm font-semibold border
+                         transition-all duration-200 hover:-translate-y-px active:scale-[0.97]
+                         bg-white"
+              style={{
+                color: 'var(--color-text-primary)',
+                borderColor: 'var(--color-border)',
+                boxShadow: 'var(--shadow-card)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-primary-mid)';
+                e.currentTarget.style.color = 'var(--color-primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border)';
+                e.currentTarget.style.color = 'var(--color-text-primary)';
+              }}
             >
               Register Platform
             </button>
           </div>
 
-          {/* Stat row */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 pt-6 border-t border-gray-100 mt-2">
-            {[
-              { val: "99.9%", label: "Uptime" },
-              { val: "14+",   label: "Modules" },
-              { val: "100%",  label: "Compliant" },
-            ].map((s, i) => (
-              <div key={i} className="text-center md:text-left">
-                <div className="text-3xl font-black text-blue-600">{s.val}</div>
-<div className="text-[13px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">{s.label}</div>
-              </div>
+          {/* Stats row — separated by thin vertical lines */}
+          <div
+            className="flex flex-wrap justify-center md:justify-start
+                       items-center gap-0 pt-6 mt-1 border-t"
+            style={{ borderColor: 'var(--color-border)' }}
+          >
+            {STATS.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="px-6 first:pl-0 text-center md:text-left">
+                  <div
+                    className="text-2xl sm:text-3xl font-black tracking-tight"
+                    style={{ color: 'var(--color-primary)' }}
+                  >
+                    {s.val}
+                  </div>
+                  <div
+                    className="text-[11px] font-semibold uppercase tracking-widest mt-0.5"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+                {/* Vertical separator — skip after last item */}
+                {i < STATS.length - 1 && (
+                  <div
+                    className="w-px h-8 flex-shrink-0"
+                    style={{ backgroundColor: 'var(--color-border)' }}
+                  />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
 
-        {/* ─── RIGHT: Image ───────────────────────────────────────────────── */}
-        <div className="relative flex justify-center items-center">
+        {/* ── RIGHT: Image ── */}
+        <div className="relative flex justify-center items-center mt-8 md:mt-0">
 
-         
-          
+          {/* Soft glow layer behind image */}
+          <div
+            className="absolute inset-6 rounded-3xl pointer-events-none"
+            style={{
+              background: 'var(--color-primary-light)',
+              filter: 'blur(40px)',
+              opacity: 0.6,
+            }}
+          />
 
-          {/* Glow behind image */}
-          <div className="absolute inset-4 bg-blue-300 rounded-3xl blur-3xl opacity-20 animate-pulse pointer-events-none" />
-
-          {/* Image */}
+          {/* Image card with mouse parallax */}
           <div
             ref={imageRef}
-            className="relative z-10 rounded-2xl overflow-hidden border border-gray-100 shadow-2xl shadow-blue-100/60 transition-transform duration-200 ease-out"
-            style={{ willChange: "transform" }}
+            className="relative z-10 w-full rounded-2xl overflow-hidden transition-transform duration-200 ease-out"
+            style={{
+              border: '1px solid var(--color-border)',
+              boxShadow: '0 24px 64px rgba(37,99,235,0.10), 0 4px 16px rgba(15,23,42,0.06)',
+              willChange: 'transform',
+            }}
           >
-                    
-          <img
-            src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&auto=format&fit=crop&q=80"
-            alt="Almanet enterprise analytics dashboard"
-            className="w-full h-auto object-cover block max-w-full"
-          />
-            {/* Subtle inner vignette */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/5 to-transparent pointer-events-none" />
+            <Image
+              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&auto=format&fit=crop&q=80"
+              alt="Almanet enterprise analytics dashboard"
+              width={900}
+              height={600}
+              priority
+              className="w-full h-auto object-cover block"
+            />
+            {/* Very subtle inner vignette */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'linear-gradient(135deg, rgba(37,99,235,0.04) 0%, transparent 60%)',
+              }}
+            />
           </div>
 
-          {/* Floating badge — bottom left */}
-          <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-2.5 z-20 animate-bounce-slow">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse flex-shrink-0" />
-            <span className="text-xs font-bold text-gray-700 whitespace-nowrap">99.9% Uptime</span>
+          {/* Floating badge — bottom-left: live uptime signal */}
+          <div
+            className="absolute -bottom-4 -left-3 sm:-left-5 z-20
+                       flex items-center gap-2.5 px-4 py-2.5 rounded-2xl
+                       animate-bounce-slow"
+            style={{
+              background: 'var(--color-surface-0)',
+              border: '1px solid var(--color-border)',
+              boxShadow: 'var(--shadow-card-hover)',
+            }}
+          >
+            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            </span>
+            <span
+              className="text-xs font-semibold whitespace-nowrap"
+              style={{ color: 'var(--color-text-primary)' }}
+            >
+              99.9% Uptime
+            </span>
           </div>
 
-          {/* Floating badge — top right */}
-          <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-2.5 z-20 animate-bounce-slow-delay">
-            <span className="text-xs font-bold text-blue-600 whitespace-nowrap">14+ Modules</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse flex-shrink-0" />
+          {/* Floating badge — top-right: modules count */}
+          <div
+            className="absolute -top-4 -right-3 sm:-right-5 z-20
+                       flex items-center gap-2.5 px-4 py-2.5 rounded-2xl
+                       animate-bounce-slow-delay"
+            style={{
+              background: 'var(--color-surface-0)',
+              border: '1px solid var(--color-border)',
+              boxShadow: 'var(--shadow-card-hover)',
+            }}
+          >
+            <div
+              className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: 'var(--color-primary-light)' }}
+            >
+              <span className="text-[10px] font-black" style={{ color: 'var(--color-primary)' }}>14+</span>
+            </div>
+            <span
+              className="text-xs font-semibold whitespace-nowrap"
+              style={{ color: 'var(--color-text-primary)' }}
+            >
+              Enterprise Modules
+            </span>
           </div>
-
-         
-
         </div>
       </div>
     </section>
@@ -569,98 +788,99 @@ export function ProductsSection() {
 
 
 // ─── Services ─────────────────────────────────────────────────────────────────
-function ServiceCard({
-  service: s,
-  delay,
-}: {
-  service: (typeof SERVICES)[0];
-  delay: number;
-}) {
+function ServiceCard({ service: s, delay }: { service: (typeof SERVICES)[0]; delay: number }) {
+  const slug = s.title.toLowerCase().replace(/[\s&,/]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
   return (
     <RevealItem
       delayMs={delay}
-      className="p-8 bg-white border border-gray-100 rounded-3xl
-                 hover:border-blue-200 card-lift shadow-sm hover:shadow-xl
-                 group flex flex-col"
+      className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100
+                 transition-all duration-300 ease-out
+                 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
     >
+      {/* Gradient header strip — icon tile + tag chip */}
       <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5
-                   group-hover:scale-110 transition-all duration-300"
-        style={{ backgroundColor: s.color.bg }}
+        className="relative h-28 flex items-center justify-between px-6"
+        style={{ background: `linear-gradient(135deg, ${s.color.bg}, ${s.color.bg}cc)` }}
       >
-        <s.icon
-          className="w-7 h-7 transition-colors duration-300"
+        {/* Icon tile — white, elevated */}
+        <div className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center flex-shrink-0">
+          <s.icon className="w-6 h-6" style={{ color: s.color.icon }} />
+        </div>
+
+        {/* Tag chip */}
+        <span
+          className="text-[11px] font-bold uppercase tracking-wide px-3 py-1.5 rounded-full
+                     bg-white/90 backdrop-blur-sm flex-shrink-0"
           style={{ color: s.color.icon }}
-        />
+        >
+          {s.color.tag}
+        </span>
       </div>
 
-      <span
-        className="text-[12px] font-bold uppercase tracking-widest mb-1.5"
-        style={{ color: s.color.icon }}
-      >
-        {s.color.tag}
-      </span>
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-6 gap-3">
+        <h3 className="text-[17px] font-bold text-gray-900 leading-snug">
+          {s.title}
+        </h3>
 
-      <h3 className="text-sm font-bold text-gray-900 mb-2.5 leading-snug">
-        {s.title}
-      </h3>
+        <p className="text-[14px] text-gray-500 leading-relaxed flex-1">
+          {s.desc}
+        </p>
 
-      <p className="text-[14px] text-gray-500 leading-relaxed mb-5 flex-1">
-        {s.desc}
-      </p>
-
-      <Link
-        href={`/services/${s.title
-          .toLowerCase()
-          .replace(/[\s&,/]+/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-|-$/g, '')}`}
-        className="text-sm font-bold flex items-center gap-1.5 transition-colors"
-        style={{ color: s.color.icon }}
-      >
-        Learn More <span aria-hidden="true">→</span>
-      </Link>
+        <Link
+          href={`/services/${slug}`}
+          className="inline-flex items-center gap-1.5 text-[14px] font-semibold w-fit
+                     transition-all duration-200 group-hover:gap-2.5"
+          style={{ color: s.color.icon }}
+        >
+          Learn More
+          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </Link>
+      </div>
     </RevealItem>
   );
 }
 
+// ─── Section ──────────────────────────────────────────────────────────────────
 export function ServicesSection() {
   const header = useReveal();
-  const topRow = SERVICES.slice(0, 4);
-  const bottomRow = SERVICES.slice(4);
 
   return (
     <section id="services" className="py-28 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
 
+        {/* Header — left heading/badge, right description (matches reference layout) */}
         <div
           ref={header.ref}
-          className={`text-center max-w-2xl mx-auto mb-16 ${reveal(header.visible)}`}
+          className={`flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-14 ${reveal(header.visible)}`}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black
-                           uppercase tracking-widest text-blue-700 bg-blue-100 mb-4">
-            What We Do
-          </span>
-          <h2 className="text-4xl font-black text-gray-900 mb-4">
-            Our Core Services
-          </h2>
-          <p className="text-gray-500 text-base">
-            We deliver end-to-end IT solutions—helping organisations implement,
-            optimise, and support mission-critical systems.
-          </p>
+          <div className="space-y-3 max-w-md">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black
+                             uppercase tracking-widest text-blue-700 bg-blue-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+              What We Do
+            </span>
+            <h2 className="text-4xl font-black text-gray-900 tracking-tight">
+              Our Core Services
+            </h2>
+          </div>
+
+          <div className="md:text-right max-w-sm space-y-1.5">
+            <p className="text-gray-500 text-[15px] leading-relaxed">
+              End-to-end IT solutions — helping organisations implement, optimise,
+              and support mission-critical systems.
+            </p>
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+              {SERVICES.length} Service Areas
+            </span>
+          </div>
         </div>
 
-        {/* Top row — 4 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
-          {topRow.map((s, i) => (
+        {/* Single responsive grid — no manual row splitting, no orphan card */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+          {SERVICES.map((s, i) => (
             <ServiceCard key={i} service={s} delay={i * 75} />
-          ))}
-        </div>
-
-        {/* Bottom row — 3 cards centered */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:max-w-[75%] mx-auto">
-          {bottomRow.map((s, i) => (
-            <ServiceCard key={i} service={s} delay={(i + 4) * 75} />
           ))}
         </div>
 
@@ -673,115 +893,258 @@ export function ServicesSection() {
 export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[0]) => void }) {
   const header = useReveal();
   return (
-    <section id="events" className="py-28 bg-white border-t border-gray-100">
-      <div className="max-w-7xl mx-auto px-6">
-        <div ref={header.ref} className={`text-center max-w-3xl mx-auto mb-16 space-y-4 ${reveal(header.visible)}`}>
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-blue-700 bg-blue-100">Stay Sharp</span>
-          <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">Upcoming Events & Workshops</h2>
-          <p className="text-gray-500 text-base">Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.</p>
+    <section
+      id="events"
+      className="relative py-28 border-t overflow-hidden"
+      style={{ backgroundColor: 'var(--color-surface-0)', borderColor: 'var(--color-border)' }}
+    >
+      {/* Ambient blob */}
+      <div
+        className="absolute top-0 right-0 w-[500px] h-[380px] rounded-full pointer-events-none"
+        style={{ background: 'var(--color-primary-light)', filter: 'blur(130px)', opacity: 0.55 }}
+      />
+      <div className="absolute inset-0 hero-grain pointer-events-none opacity-20" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+
+        {/* ── Header: left label + rule + right count badge ── */}
+        <div
+          ref={header.ref}
+          className={`flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-14 ${reveal(header.visible)}`}
+        >
+          <div className="space-y-3 max-w-xl">
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide border"
+              style={{
+                color: 'var(--color-primary)',
+                borderColor: 'var(--color-primary-mid)',
+                backgroundColor: 'var(--color-primary-light)',
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--color-primary)' }} />
+              Stay Sharp
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.07]"
+              style={{ color: 'var(--color-text-primary)' }}
+            >
+              Upcoming Events &amp; Workshops
+            </h2>
+          </div>
+          <p
+            className="text-[15px] leading-relaxed max-w-sm md:text-right"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.
+          </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+        {/* ── Event cards ── */}
+        <div className="grid md:grid-cols-2 gap-7">
           {EVENTS.map((evt, i) => (
             <RevealItem
               key={evt.id}
-              delayMs={i * 100}
-              className="relative bg-white border border-gray-100 rounded-3xl overflow-hidden flex flex-col group shadow-sm hover:shadow-2xl hover:shadow-blue-100/60 transition-all duration-500 hover:-translate-y-1"
+              delayMs={i * 120}
+              className="group flex flex-col overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E5E7EB',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              }}
             >
-              <div className="h-56 relative overflow-hidden">
-                <img src={evt.img} alt={evt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              {/* Image area */}
+              <div className="relative h-60 overflow-hidden flex-shrink-0">
+                <Image
+                  src={evt.img}
+                  alt={evt.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/30 to-transparent" />
 
-                <span className="absolute top-4 left-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-xs font-black text-gray-900">
+                {/* Index pill — top left */}
+                <span
+                  className="absolute top-4 left-4 h-8 w-8 rounded-xl flex items-center justify-center text-[11px] font-black backdrop-blur-md"
+                  style={{
+                    background: '#FFFFFF',
+                    color: '#0F172A',
+                    border: '1px solid #E5E7EB',
+                  }}
+                >
                   {String(i + 1).padStart(2, '0')}
                 </span>
 
-                <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[11px] font-semibold text-white flex items-center gap-1.5">
-                  <Activity className="w-3 h-3" /> {evt.location}
+                {/* Location pill — top right */}
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold text-white backdrop-blur-md bg-white/10 border border-white/15">
+                  <Activity className="w-3 h-3 flex-shrink-0" />
+                  {evt.location}
                 </div>
 
-                <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 text-xs text-white font-semibold">
-                  <span className="px-2.5 py-1 rounded-lg bg-blue-600/90 backdrop-blur-sm">{evt.date}</span>
-                  <span className="px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-sm border border-white/20">{evt.time}</span>
+                {/* Date + time chips — bottom left, over gradient */}
+                <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                  <span
+                    className="px-3 py-1 rounded-lg text-[11px] font-bold text-white"
+                    style={{ background: 'var(--color-primary)' }}
+                  >
+                    {evt.date}
+                  </span>
+                  <span className="px-3 py-1 rounded-lg text-[11px] font-semibold text-white bg-white/15 border border-white/20 backdrop-blur-sm">
+                    {evt.time}
+                  </span>
                 </div>
               </div>
 
-              <div className="p-7 flex flex-col justify-between flex-1 space-y-5">
-                <div className="space-y-2.5">
-                  <h3 className="text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">{evt.title}</h3>
-                  <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{evt.desc}</p>
+              {/* Card body */}
+              <div className="flex flex-col flex-1 p-7 gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3
+                    className="text-[19px] font-bold leading-snug line-clamp-2 transition-colors duration-200 group-hover:text-[var(--color-primary)]"
+                    style={{ color: 'var(--color-text-primary)' }}
+                  >
+                    {evt.title}
+                  </h3>
+                  <p
+                    className="text-sm leading-relaxed line-clamp-2"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    {evt.desc}
+                  </p>
                 </div>
-                <button onClick={() => onRegister(evt)} className="w-full px-6 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 active:scale-[0.98] transition-all shadow-md shadow-blue-100 flex items-center justify-center gap-2 group/btn">
+
+                {/* CTA */}
+                <button
+                  onClick={() => onRegister(evt)}
+                  className="group/btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white
+                             transition-all duration-200 active:scale-[0.98] hover:-translate-y-px"
+                  style={{
+                    background: 'var(--color-primary)',
+                    border: 'none',
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-primary-hover)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-primary)')}
+                >
                   Register For Event
-                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
                 </button>
               </div>
-
-              <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[3px] bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 transition-all duration-500" />
             </RevealItem>
           ))}
-        </div>
-
-        <div className="text-center mt-14">
-          <button className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors group">
-            View All Events
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
         </div>
       </div>
     </section>
   );
 }
 
+
+// ─── Blogs / Publications ─────────────────────────────────────────────────────
 // ─── Blogs / Publications ─────────────────────────────────────────────────────
 export function BlogsSection() {
   const header = useReveal();
+  const featured = BLOGS[0];
+  const rest = BLOGS.slice(1);
+
   return (
-    <section id="blogs" className="py-28 bg-gray-50 border-t border-gray-100">
+    <section id="blogs" className="py-28 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={header.ref} className={`text-center max-w-3xl mx-auto mb-16 space-y-4 ${reveal(header.visible)}`}>
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-blue-700 bg-blue-100">Insights</span>
-          <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">Our Latest Publications</h2>
-          <p className="text-gray-500 text-base">Deep technical reading exploring AI design patterns, cloud computing pipelines, and data orchestration.</p>
+
+        {/* Header — left heading/desc, right "More Articles" link (matches reference) */}
+        <div
+          ref={header.ref}
+          className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-14 ${reveal(header.visible)}`}
+        >
+          <div className="space-y-3 max-w-xl">
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+              Blog &amp; Insights
+            </h2>
+            <p className="text-gray-500 text-base leading-relaxed">
+              Explore how we leverage modern technology to drive efficiency, innovation,
+              and measurable business results.
+            </p>
+          </div>
+
+         
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {BLOGS.map((blog, i) => (
-            <RevealItem
-              key={blog.id}
-              as="article"
-              delayMs={i * 75}
-              className="bg-white border border-gray-100 rounded-3xl overflow-hidden hover:border-blue-100 card-lift flex flex-col justify-between shadow-sm hover:shadow-xl hover:shadow-blue-50/50"
-            >
-              <div>
-                <div className="h-52 overflow-hidden relative group">
-                  <img
+
+        {/* Featured (left) + List (right) layout */}
+        <div className="grid lg:grid-cols-2 gap-10">
+
+          {/* ── Featured article (left) ── */}
+          {featured && (
+            <RevealItem delayMs={0} className="flex flex-col">
+              <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden mb-6 bg-gray-100">
+                <Image
+                  src={featured.img}
+                  alt={featured.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 mb-3">
+                <Calendar className="w-3.5 h-3.5" /> {featured.date}
+              </span>
+
+              <Link href={`/blogs/${featured.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                <h3 className="text-2xl sm:text-3xl font-black text-gray-900 leading-snug mb-3
+                               hover:text-blue-600 transition-colors">
+                  {featured.title}
+                </h3>
+              </Link>
+
+              <p className="text-[15px] text-gray-500 leading-relaxed">
+                {featured.excerpt}
+              </p>
+            </RevealItem>
+          )}
+
+          {/* ── Article list (right) ── */}
+          <div className="flex flex-col divide-y divide-gray-100">
+            {rest.map((blog, i) => (
+              <RevealItem
+                key={blog.id}
+                delayMs={(i + 1) * 75}
+                as="article"
+                className="flex gap-4 py-5 first:pt-0 group"
+              >
+                <Link
+                  href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
+                >
+                  <Image
                     src={blog.img}
                     alt={blog.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=60'; }}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  {/* Subtle label chip over the image — helps scanability when browsing many cards */}
-                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[10px] font-bold text-blue-700 px-2.5 py-1 rounded-full shadow-sm">
-                    Article
-                  </span>
-                </div>
-                <div className="p-6 space-y-3">
-                  <span className="text-xs text-blue-600 font-bold tracking-wider uppercase">{blog.date}</span>
-                  <h3 className="text-xl font-bold text-gray-900 tracking-tight leading-snug line-clamp-2">{blog.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">{blog.excerpt}</p>
-                </div>
-              </div>
-              <div className="p-6 pt-0">
-                <Link href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`} className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-                  Read Full Article →
                 </Link>
-              </div>
-            </RevealItem>
-          ))}
+
+                <div className="flex flex-col gap-1.5 min-w-0">
+                  <Link href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <h4 className="text-base font-bold text-gray-900 leading-snug line-clamp-2
+                                   group-hover:text-blue-600 transition-colors">
+                      {blog.title}
+                    </h4>
+                  </Link>
+                  <span className="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+                    <Calendar className="w-3 h-3" /> {blog.date}
+                  </span>
+                  <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+                    {blog.excerpt}
+                  </p>
+                </div>
+              </RevealItem>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>
   );
 }
+
 
 // ─── Careers ──────────────────────────────────────────────────────────────────
 const PERK_IMAGES = [
@@ -878,7 +1241,7 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
                 <img
                   src={PERK_IMAGES[i]}
                   alt={perk.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-600 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
               </div>
@@ -888,10 +1251,11 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
                 <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
                   <perk.Icon className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                  {perk.title}
-                </h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{perk.desc}</p>
+                
+<h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+  {perk.title}
+</h3>
+<p className="text-[13px] text-gray-500 leading-relaxed">{perk.desc}</p>
               </div>
             </RevealItem>
           ))}
@@ -921,9 +1285,9 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
                   <h4 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
                     {job.title}
                   </h4>
-                  <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${TYPE_COLORS[job.type] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
-                    {job.type}
-                  </span>
+                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${TYPE_COLORS[job.type] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+  {job.type}
+</span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -1170,8 +1534,7 @@ export function AboutSection() {
   );
 }
 
-// brand logos: lucide-react removed brand icons (Github/Twitter/Linkedin) in
-// recent versions, so these are plain inline SVGs instead.
+
 const SocialIcons: Record<string, (props: { size?: number }) => ReactElement> = {
   Twitter: ({ size = 16 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -1197,25 +1560,29 @@ const SocialIcons: Record<string, (props: { size?: number }) => ReactElement> = 
 
 export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
   return (
-    <footer className="relative bg-[#0a0e1a] text-gray-400 pt-16 pb-10 text-sm overflow-hidden">
+    <footer className="relative bg-[#0a0e1a] text-gray-400 pt-24 pb-10 text-sm overflow-hidden">
       {/* top gradient accent line */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/60 to-orange-500/60" />
 
       {/* soft ambient glows */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -right-20 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-20 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-14">
-          {/* brand col */}
-          <div className="lg:col-span-2 space-y-5">
-           <div className="flex items-center gap-2">
-              <img src="/logo.svg" alt="AlmaNet" className="h-28 w-auto object-contain" />
-            </div>
-            <p className="text-[13px] text-gray-500 max-w-xs leading-relaxed">
-              Empowering organizations with next-generation enterprise suites, automated modules, and secure cloud pipelines.
+
+        {/* ── Main grid: brand + link groups ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 gap-x-10 pb-16">
+
+          {/* Brand column */}
+          <div className="lg:col-span-4 space-y-6">
+            <img src="/logo.svg" alt="AlmaNet" className="h-16 w-auto object-contain" />
+
+            <p className="text-[14px] text-gray-500 leading-relaxed max-w-sm">
+              Empowering organizations with next-generation enterprise suites, automated
+              modules, and secure cloud pipelines.
             </p>
-            <div className="flex space-x-3 pt-2">
+
+            <div className="flex items-center gap-2.5 pt-1">
               {['Twitter', 'Linkedin', 'Github', 'Discord'].map((label) => {
                 const Icon = SocialIcons[label];
                 return (
@@ -1232,70 +1599,86 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
             </div>
           </div>
 
-          {/* sitemap */}
-          <div className="space-y-5">
-            <h4 className="text-[13px] font-bold tracking-[0.15em] text-white uppercase mb-1">Sitemap</h4>
-            <ul className="space-y-3 text-[13px] font-medium text-gray-500">
-              {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
-                <li key={item}>
-                  <button
-                    onClick={() => scrollTo(item.toLowerCase().replace(' ', ''))}
-                    className="group relative inline-block hover:text-white transition-colors duration-300"
-                  >
-                    {item}
-                    <span className="absolute left-0 -bottom-1 w-0 group-hover:w-full h-px bg-gradient-to-r from-blue-500 to-orange-500 transition-all duration-300" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Link groups — sitemap + products share a tight 2-col rhythm on the right */}
+          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-12">
 
-          {/* core products */}
-          <div className="space-y-5">
-            <h4 className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Core Products</h4>
-            <ul className="space-y-3 text-[13px] font-medium text-gray-500">
-              {['Pathyatech ', 'Trackintake ', 'CRM Platform ', 'NgoConnect', 'VendorSync', 'LabCore LIMS', 'MedConsult Live'].map((prod) => (
-                <li key={prod}>
-                  <button
-                    onClick={() => scrollTo('products')}
-                    className="group relative inline-block text-left hover:text-white transition-colors duration-300"
-                  >
-                    {prod}
-                    <span className="absolute left-0 -bottom-1 w-0 group-hover:w-full h-px bg-gradient-to-r from-blue-500 to-orange-500 transition-all duration-300" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Sitemap */}
+            <div className="space-y-5">
+              <h4 className="text-[12px] font-bold tracking-[0.16em] text-white uppercase">
+                Sitemap
+              </h4>
+              <ul className="space-y-3.5 text-[14px] font-medium text-gray-500">
+                {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
+                  <li key={item}>
+                    <button
+                      onClick={() => scrollTo(item.toLowerCase().replace(' ', ''))}
+                      className="group relative inline-block hover:text-white transition-colors duration-300"
+                    >
+                      {item}
+                      <span className="absolute left-0 -bottom-1 w-0 group-hover:w-full h-px bg-gradient-to-r from-blue-500 to-orange-500 transition-all duration-300" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* newsletter */}
-          <div className="space-y-5">
-            <h4 className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Stay Informed</h4>
-            <p className="text-[13px] text-gray-500 leading-relaxed">
-              Subscribe to unlock periodic engineering research insights.
-            </p>
-            <form onSubmit={(e) => { e.preventDefault(); onGetInTouch(); }} className="space-y-3">
-              <input
-                type="email"
-                required
-                placeholder="engineering@domain.com"
-className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-[13px] text-white placeholder:text-gray-500 outline-none focus:border-blue-500/60 focus:bg-white/[0.06] transition-all"
-              />
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-[13px] font-bold tracking-wide transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20"
+            {/* Core Products */}
+            <div className="space-y-5">
+              <h4 className="text-[12px] font-bold tracking-[0.16em] text-white uppercase">
+                Core Products
+              </h4>
+              <ul className="space-y-3.5 text-[14px] font-medium text-gray-500">
+                {['Pathyatech ', 'Trackintake ', 'CRM Platform ', 'NgoConnect', 'VendorSync', 'LabCore LIMS', 'MedConsult Live'].map((prod) => (
+                  <li key={prod}>
+                    <button
+                      onClick={() => scrollTo('products')}
+                      className="group relative inline-block text-left hover:text-white transition-colors duration-300"
+                    >
+                      {prod}
+                      <span className="absolute left-0 -bottom-1 w-0 group-hover:w-full h-px bg-gradient-to-r from-blue-500 to-orange-500 transition-all duration-300" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Newsletter — spans remaining 2 columns on small screens, sits naturally on large */}
+            <div className="col-span-2 sm:col-span-2 space-y-5">
+              <h4 className="text-[12px] font-bold tracking-[0.16em] text-white uppercase">
+                Stay Informed
+              </h4>
+              <p className="text-[14px] text-gray-500 leading-relaxed max-w-xs">
+                Subscribe to unlock periodic engineering research insights.
+              </p>
+              <form
+                onSubmit={(e) => { e.preventDefault(); onGetInTouch(); }}
+                className="flex flex-col sm:flex-row gap-3 max-w-sm"
               >
-                Join Telemetry
-                <ArrowRight size={14} strokeWidth={2.2} />
-              </button>
-            </form>
+                <input
+                  type="email"
+                  required
+                  placeholder="engineering@domain.com"
+                  className="flex-1 min-w-0 bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-[14px] text-white placeholder:text-gray-500 outline-none focus:border-blue-500/60 focus:bg-white/[0.06] transition-all"
+                />
+                <button
+                  type="submit"
+                  className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-[14px] font-bold tracking-wide transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 whitespace-nowrap"
+                >
+                  Join
+                  <ArrowRight size={14} strokeWidth={2.2} />
+                </button>
+              </form>
+            </div>
+
           </div>
         </div>
 
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
+        {/* ── Divider ── */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-gray-500">
-          <div className="flex flex-wrap items-center gap-2.5">
+        {/* ── Bottom bar ── */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-7 text-[13px] text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 order-2 sm:order-1">
             <span className="text-gray-300 font-semibold">Almanet Technologies &copy; 2026</span>
             <span className="text-gray-700">&bull;</span>
             <span className="flex items-center gap-1.5">
@@ -1306,7 +1689,7 @@ className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 
               All System Telemetry Operational
             </span>
           </div>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 order-1 sm:order-2">
             {['Security Controls', 'Privacy Framework', 'Terms of Operations'].map((item) => (
               <button key={item} onClick={onGetInTouch} className="hover:text-white transition-colors duration-300">
                 {item}

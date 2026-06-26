@@ -46,10 +46,10 @@ const BLOGS: any[] = [
       },
     ],
     tags: ['AI', 'Enterprise Software', 'CRM', 'Machine Learning', 'Digital Transformation'],
-    relatedSlugs: ['optimizing-logistics-with-trackintrack', 'why-sap-cloud-transformation-is-crucial'],
+    relatedSlugs: ['Smart Nutrition Tracking with trackintake', 'why-sap-cloud-transformation-is-crucial'],
   },
 {
-    titleSlug: 'smart-nutrition-tracking-with-trackintrack',
+    titleSlug: 'smart-nutrition-tracking-with-trackintake',
     title: 'Smart Nutrition Tracking with TrackIntake',
     date: 'June 12, 2026',
     author: 'Priya Nair',
