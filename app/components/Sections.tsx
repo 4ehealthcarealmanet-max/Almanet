@@ -221,7 +221,8 @@ export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
         />
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1 flex-1">
+        <nav className="hidden md:flex items-center justify-center gap-1 flex-1">
+
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
@@ -411,14 +412,14 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
           </div>
 
           {/* Headline */}
-          <h1
-            className="text-[2.6rem] sm:text-5xl lg:text-[3.6rem] font-black
-                       tracking-tight leading-[1.08] max-w-2xl mx-auto md:mx-0"
-            style={{ color: 'var(--color-text-primary)' }}
-          >
-            Empowering Ideas via{' '}
-            <span className="relative inline-block whitespace-nowrap" style={{ color: 'var(--color-primary)' }}>
-              Advanced Intelligence
+         <h1
+              className="text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-black
+                        tracking-tight leading-[1.1] max-w-2xl mx-auto md:mx-0"
+              style={{ color: 'var(--color-text-primary)' }}
+            >
+              Empowering Ideas via{' '}
+              <span className="relative inline-block" style={{ color: 'var(--color-primary)' }}>
+                Advanced Intelligence
               {/* Underline accent */}
               <span
                 className="absolute left-0 -bottom-1 w-full h-[3px] rounded-full"
@@ -484,12 +485,13 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
           {/* Stats row — separated by thin vertical lines */}
           <div
             className="flex flex-wrap justify-center md:justify-start
-                       items-center gap-0 pt-6 mt-1 border-t"
+                      items-center gap-y-4 gap-x-0 pt-6 mt-1 border-t"
             style={{ borderColor: 'var(--color-border)' }}
           >
-            {STATS.map((s, i) => (
+                      {STATS.map((s, i) => (
               <React.Fragment key={i}>
-                <div className="px-6 first:pl-0 text-center md:text-left">
+                <div className="px-4 sm:px-6 first:pl-0 text-center md:text-left">
+
                   <div
                     className="text-2xl sm:text-3xl font-black tracking-tight"
                     style={{ color: 'var(--color-primary)' }}
@@ -557,9 +559,9 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
 
           {/* Floating badge — bottom-left: live uptime signal */}
           <div
-            className="absolute -bottom-4 -left-3 sm:-left-5 z-20
-                       flex items-center gap-2.5 px-4 py-2.5 rounded-2xl
-                       animate-bounce-slow"
+            className="absolute -bottom-3 left-2 sm:-left-5 sm:bottom-[-1rem] z-20
+           flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl
+           animate-bounce-slow scale-90 sm:scale-100"
             style={{
               background: 'var(--color-surface-0)',
               border: '1px solid var(--color-border)',
@@ -580,9 +582,9 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
 
           {/* Floating badge — top-right: modules count */}
           <div
-            className="absolute -top-4 -right-3 sm:-right-5 z-20
-                       flex items-center gap-2.5 px-4 py-2.5 rounded-2xl
-                       animate-bounce-slow-delay"
+            className="absolute -top-3 right-2 sm:-right-5 sm:top-[-1rem] z-20
+           flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl
+           animate-bounce-slow-delay scale-90 sm:scale-100"
             style={{
               background: 'var(--color-surface-0)',
               border: '1px solid var(--color-border)',
