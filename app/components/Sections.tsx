@@ -3,8 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Activity, Briefcase, Target, ShieldCheck, Rocket } from 'lucide-react';
-import { Monitor, TrendingUp, Handshake, MapPin, Calendar, Clock, ArrowRight } from "lucide-react";
-import { NAV_ITEMS, SERVICES, EVENTS, BLOGS, JOBS, CAREER_PERKS } from '../constants';
+import {
+  Monitor, TrendingUp, Handshake, MapPin, Calendar, Clock, ArrowRight,
+  CheckCircle2, Award, Sparkles, BookOpen, ChevronDown, ChevronUp,
+  FileSpreadsheet, Cloud, GraduationCap, Laptop,
+} from "lucide-react";
+import { NAV_ITEMS, SERVICES, EVENTS, BLOGS, JOBS, CAREER_PERKS, TRAINING_COURSES } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { PRODUCTS } from '../constants';
 //import { ArrowRight } from 'lucide-react';
@@ -209,7 +213,7 @@ export function Navbar({ onGetInTouch }: { onGetInTouch: () => void }) {
             src="/logo.svg"
             alt="AlmaNet"
             className={`w-auto object-contain transition-all duration-300 ${
-              scrolled ? 'h-16' : 'h-12'
+              scrolled ? 'h-9' : 'h-11'
             }`}
           />
         </button>
@@ -412,14 +416,14 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
           </div>
 
           {/* Headline */}
-         <h1
-              className="text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-black
-                        tracking-tight leading-[1.1] max-w-2xl mx-auto md:mx-0"
-              style={{ color: 'var(--color-text-primary)' }}
-            >
-              Empowering Ideas via{' '}
-              <span className="relative inline-block" style={{ color: 'var(--color-primary)' }}>
-                Advanced Intelligence
+          <h1
+            className="text-2xl sm:text-4xl lg:text-[2.75rem] font-bold
+                      tracking-tight leading-[1.18] max-w-2xl mx-auto md:mx-0"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
+            Empowering Ideas via{' '}
+            <span className="relative inline-block" style={{ color: 'var(--color-primary)' }}>
+              Advanced Intelligence
               {/* Underline accent */}
               <span
                 className="absolute left-0 -bottom-1 w-full h-[3px] rounded-full"
@@ -493,7 +497,7 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
                 <div className="px-4 sm:px-6 first:pl-0 text-center md:text-left">
 
                   <div
-                    className="text-2xl sm:text-3xl font-black tracking-tight"
+                    className="text-2xl sm:text-3xl font-bold tracking-tight"
                     style={{ color: 'var(--color-primary)' }}
                   >
                     {s.val}
@@ -595,7 +599,7 @@ export function HeroSection({ onGetInTouch }: { onGetInTouch: () => void }) {
               className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{ background: 'var(--color-primary-light)' }}
             >
-              <span className="text-[10px] font-black" style={{ color: 'var(--color-primary)' }}>14+</span>
+              <span className="text-[10px] font-bold" style={{ color: 'var(--color-primary)' }}>14+</span>
             </div>
             <span
               className="text-xs font-semibold whitespace-nowrap"
@@ -720,41 +724,41 @@ const DISPLAY_PRODUCTS: ProductDisplay[] = PRODUCTS
 function ProductCard({ p, delay }: { p: ProductDisplay; delay: number }) {
   return (
     <div
-      className="group bg-white border border-gray-100 rounded-2xl
-                 flex flex-col p-8
+      className="group bg-white border border-gray-100 rounded-xl
+                 flex flex-col p-5 sm:p-6
                  transition-all duration-300 ease-out
-                 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
+                 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)]"
       style={{ animationDelay: `${delay}ms` }}
     >
-      {/* Icon + Title row (same line, like reference) */}
-      <div className="flex items-center gap-4 mb-4">
+      {/* Icon + Title row */}
+      <div className="flex items-center gap-3.5 mb-3">
         <div
-          className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 shadow-xs"
           style={{ background: p.color.iconBg }}
         >
           {p.icon}
         </div>
-        <div className="flex flex-col">
-          <h3 className="text-[22px] font-bold text-gray-900 leading-tight flex items-center gap-1">
+        <div className="flex flex-col min-w-0">
+          <h3 className="text-base sm:text-[17px] font-bold text-gray-900 leading-tight flex items-center gap-1 truncate">
             {p.title}
-            <sup className="text-[11px] font-normal text-gray-400">©</sup>
+            <sup className="text-[10px] font-normal text-gray-400">©</sup>
           </h3>
-          <span className="text-[14px] font-semibold" style={{ color: p.color.accent }}>
+          <span className="text-xs font-semibold" style={{ color: p.color.accent }}>
             {p.tag}
           </span>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-[15px] text-gray-500 leading-relaxed flex-1 mb-5">
+      <p className="text-[13.5px] text-gray-500 leading-relaxed flex-1 mb-4">
         {p.desc}
       </p>
 
-      {/* Learn More link — gray, like reference */}
+      {/* Learn More link */}
       <Link
         href={`/products/${p.slug}`}
-        className="text-[15px] font-medium text-gray-500 inline-flex items-center gap-1.5
-                   transition-all group-hover:gap-2.5 group-hover:text-gray-700"
+        className="text-[13px] font-semibold text-blue-600 inline-flex items-center gap-1.5
+                   transition-all group-hover:gap-2 hover:text-blue-700"
       >
         Learn More <span aria-hidden="true">→</span>
       </Link>
@@ -765,19 +769,19 @@ function ProductCard({ p, delay }: { p: ProductDisplay; delay: number }) {
 // ─── Section ──────────────────────────────────────────────────────────────────
 export function ProductsSection() {
   return (
-    <section id="products" className="py-24 bg-[#F4F6F9]">
+    <section id="products" className="py-20 bg-[#F4F6F9]">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Core Products</h2>
-          <p className="text-gray-500 text-base leading-relaxed">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-2.5">Core Products</h2>
+          <p className="text-gray-500 text-sm sm:text-[15px] leading-relaxed">
             A suite of flagship enterprise modules designed to accelerate your digital
             transformation journey.
           </p>
         </div>
 
-        {/* Grid — 2 columns, generous gap, no orphan card */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+        {/* Grid — 2 columns, compact gap */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {DISPLAY_PRODUCTS.map((p, i) => (
             <ProductCard key={p.slug} p={p} delay={i * 75} />
           ))}
@@ -796,24 +800,24 @@ function ServiceCard({ service: s, delay }: { service: (typeof SERVICES)[0]; del
   return (
     <RevealItem
       delayMs={delay}
-      className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100
+      className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100
                  transition-all duration-300 ease-out
-                 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
+                 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)]"
     >
       {/* Gradient header strip — icon tile + tag chip */}
       <div
-        className="relative h-28 flex items-center justify-between px-6"
+        className="relative h-20 flex items-center justify-between px-5"
         style={{ background: `linear-gradient(135deg, ${s.color.bg}, ${s.color.bg}cc)` }}
       >
         {/* Icon tile — white, elevated */}
-        <div className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center flex-shrink-0">
-          <s.icon className="w-6 h-6" style={{ color: s.color.icon }} />
+        <div className="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center flex-shrink-0">
+          <s.icon className="w-5 h-5" style={{ color: s.color.icon }} />
         </div>
 
         {/* Tag chip */}
         <span
-          className="text-[11px] font-bold uppercase tracking-wide px-3 py-1.5 rounded-full
-                     bg-white/90 backdrop-blur-sm flex-shrink-0"
+          className="text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full
+                     bg-white/95 backdrop-blur-xs flex-shrink-0"
           style={{ color: s.color.icon }}
         >
           {s.color.tag}
@@ -821,23 +825,23 @@ function ServiceCard({ service: s, delay }: { service: (typeof SERVICES)[0]; del
       </div>
 
       {/* Body */}
-      <div className="flex flex-col flex-1 p-6 gap-3">
-        <h3 className="text-[17px] font-bold text-gray-900 leading-snug">
+      <div className="flex flex-col flex-1 p-5 gap-2.5">
+        <h3 className="text-[15.5px] font-bold text-gray-900 leading-snug">
           {s.title}
         </h3>
 
-        <p className="text-[14px] text-gray-500 leading-relaxed flex-1">
+        <p className="text-[13px] text-gray-500 leading-relaxed flex-1">
           {s.desc}
         </p>
 
         <Link
           href={`/services/${slug}`}
-          className="inline-flex items-center gap-1.5 text-[14px] font-semibold w-fit
-                     transition-all duration-200 group-hover:gap-2.5"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold w-fit
+                     transition-all duration-200 group-hover:gap-2"
           style={{ color: s.color.icon }}
         >
           Learn More
-          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
         </Link>
       </div>
     </RevealItem>
@@ -849,38 +853,38 @@ export function ServicesSection() {
   const header = useReveal();
 
   return (
-    <section id="services" className="py-28 bg-gray-50 border-t border-gray-100">
+    <section id="services" className="py-20 bg-gray-50/70 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Header — left heading/badge, right description (matches reference layout) */}
+        {/* Header */}
         <div
           ref={header.ref}
-          className={`flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-14 ${reveal(header.visible)}`}
+          className={`flex flex-col md:flex-row md:items-start md:justify-between gap-5 mb-12 ${reveal(header.visible)}`}
         >
-          <div className="space-y-3 max-w-md">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black
-                             uppercase tracking-widest text-blue-700 bg-blue-100">
+          <div className="space-y-2.5 max-w-md">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold
+                             uppercase tracking-widest text-blue-700 bg-blue-100/80">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               What We Do
             </span>
-            <h2 className="text-4xl font-black text-gray-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
               Our Core Services
             </h2>
           </div>
 
-          <div className="md:text-right max-w-sm space-y-1.5">
-            <p className="text-gray-500 text-[15px] leading-relaxed">
+          <div className="md:text-right max-w-sm space-y-1">
+            <p className="text-gray-500 text-[13.5px] leading-relaxed">
               End-to-end IT solutions — helping organisations implement, optimise,
               and support mission-critical systems.
             </p>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
               {SERVICES.length} Service Areas
             </span>
           </div>
         </div>
 
-        {/* Single responsive grid — no manual row splitting, no orphan card */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        {/* Responsive grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => (
             <ServiceCard key={i} service={s} delay={i * 75} />
           ))}
@@ -891,32 +895,316 @@ export function ServicesSection() {
   );
 }
 
+// ─── Training Section ─────────────────────────────────────────────────────────
+
+function TrainingCard({
+  course,
+  delay = 0,
+  onEnroll,
+}: {
+  course: typeof TRAINING_COURSES[0];
+  delay?: number;
+  onEnroll?: (title: string) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const isCloud = course.id === 'sap-abap-cloud';
+
+  return (
+    <RevealItem
+      delayMs={delay}
+      className="group relative flex flex-col rounded-2xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-blue-300 hover:shadow-[0_10px_28px_rgba(37,99,235,0.08)] transition-all duration-300 overflow-hidden"
+    >
+      {/* Top Accent Gradient Bar */}
+      <div
+        className="h-1.5 w-full"
+        style={{
+          background: isCloud
+            ? 'linear-gradient(90deg, #2563EB, #60A5FA)'
+            : 'linear-gradient(90deg, #059669, #34D399)',
+        }}
+      />
+
+      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+        <div>
+          {/* Badge & Schedule row */}
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3.5">
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+              style={{
+                backgroundColor: course.color.badgeBg,
+                color: course.color.badgeText,
+              }}
+            >
+              <Sparkles className="w-3 h-3" />
+              {course.tag}
+            </span>
+            <span className="text-[11px] font-medium text-slate-500 bg-slate-100/90 px-2.5 py-0.5 rounded-full">
+              {course.duration}
+            </span>
+          </div>
+
+          {/* Title & Icon Header */}
+          <div className="flex items-start gap-3 mb-3">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-105"
+              style={{
+                backgroundColor: course.color.light,
+                border: `1px solid ${course.color.border}`,
+              }}
+            >
+              {isCloud ? (
+                <Cloud className="w-5 h-5 text-blue-600" />
+              ) : (
+                <FileSpreadsheet className="w-5 h-5 text-emerald-600" />
+              )}
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-lg sm:text-[19px] font-bold text-slate-900 tracking-tight leading-snug">
+                {course.title}
+              </h3>
+              <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+                {course.level} · {course.schedule}
+              </p>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-slate-600 text-[13px] leading-relaxed mb-3.5 line-clamp-2">
+            {course.shortDesc}
+          </p>
+
+          {/* Key Stat Pills */}
+          <div className="grid grid-cols-3 gap-2 py-2 px-3 rounded-xl bg-slate-50 border border-slate-100 mb-3.5 text-center">
+            {course.stats.map((s, idx) => (
+              <div key={idx} className="flex flex-col">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                  {s.label}
+                </span>
+                <span className="text-xs font-bold text-slate-800 mt-0.5 truncate">
+                  {s.value}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Outcomes Highlight */}
+          <div className="space-y-1.5 mb-4">
+            <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Key Highlights:
+            </h4>
+            <div className="space-y-1">
+              {course.outcomes.slice(0, 3).map((item, i) => (
+                <div key={i} className="flex items-start gap-2 text-[12.5px] text-slate-600 leading-snug">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 shrink-0 mt-0.5"
+                    style={{ color: course.color.accent }}
+                  />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Interactive Curriculum Modules Accordion */}
+          <div className="border border-slate-200/80 rounded-xl overflow-hidden mb-4">
+            <button
+              type="button"
+              onClick={() => setExpanded(!expanded)}
+              className="w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/80 text-left transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-3.5 h-3.5 text-slate-500" />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  Syllabus ({course.curriculum.length} Modules)
+                </span>
+              </div>
+              <span className="text-xs font-semibold text-blue-600 flex items-center gap-1">
+                {expanded ? 'Hide Modules' : 'View Modules'}
+                {expanded ? (
+                  <ChevronUp className="w-3.5 h-3.5" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5" />
+                )}
+              </span>
+            </button>
+
+            {expanded && (
+              <div className="p-3 bg-white space-y-2.5 border-t border-slate-200/60 divide-y divide-slate-100 animate-in fade-in duration-200">
+                {course.curriculum.map((m, mi) => (
+                  <div key={mi} className={mi > 0 ? 'pt-2' : ''}>
+                    <div className="flex items-start gap-2">
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 mt-0.5 shrink-0">
+                        0{mi + 1}
+                      </span>
+                      <div>
+                        <p className="text-xs font-bold text-slate-800">{m.title}</p>
+                        <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{m.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer CTAs */}
+        <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+          <button
+            onClick={() => onEnroll?.(course.title)}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white transition-all shadow-sm active:scale-[0.98] group/btn cursor-pointer"
+            style={{
+              backgroundColor: course.color.accent,
+            }}
+          >
+            <span>Inquire / Enroll Now</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+          </button>
+          <button
+            onClick={() => onEnroll?.(`${course.title} Syllabus`)}
+            className="inline-flex items-center justify-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            Request Syllabus
+          </button>
+        </div>
+      </div>
+    </RevealItem>
+  );
+}
+
+export function TrainingSection({ onEnroll }: { onEnroll?: (courseTitle: string) => void }) {
+  const header = useReveal();
+
+  return (
+    <section id="training" className="relative py-20 bg-slate-50/70 border-t border-slate-200 overflow-hidden">
+      {/* Ambient background glows */}
+      <div
+        className="absolute top-0 right-1/4 w-[400px] h-[300px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-10 w-[350px] h-[300px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(5,150,105,0.06) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Header */}
+        <div
+          ref={header.ref}
+          className={`flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-12 ${reveal(header.visible)}`}
+        >
+          <div className="space-y-2.5 max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest text-blue-700 bg-blue-100/90 border border-blue-200/80">
+              <GraduationCap className="w-3.5 h-3.5 text-blue-600" />
+              Upskilling & Professional Training
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-gray-900 tracking-tight leading-tight">
+              Industry Training Programs
+            </h2>
+            <p className="text-gray-500 text-sm sm:text-[14.5px] leading-relaxed">
+              We provide comprehensive, mentor-led training designed to build real-world competency. Master cloud-native SAP ABAP architectures and advanced data modeling with hands-on labs and dedicated project mentorship.
+            </p>
+          </div>
+
+          <div className="lg:text-right shrink-0">
+            <span className="inline-block text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white border border-slate-200 rounded-full px-3.5 py-1.5 shadow-xs">
+              {TRAINING_COURSES.length} Flagship Tracks · Certification Ready
+            </span>
+          </div>
+        </div>
+
+        {/* 2-Column Course Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+          {TRAINING_COURSES.map((course, i) => (
+            <TrainingCard
+              key={course.id}
+              course={course}
+              delay={i * 120}
+              onEnroll={onEnroll}
+            />
+          ))}
+        </div>
+
+        {/* Feature Highlights Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <Laptop className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-[13px] font-bold text-slate-900">100% Practical Labs</h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">Live sandbox environments and production exercises.</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Award className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-[13px] font-bold text-slate-900">Expert Mentors</h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">Led by practitioners with 10+ years enterprise experience.</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-[13px] font-bold text-slate-900">Capstone Projects</h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">Build a high-caliber project portfolio to demonstrate execution.</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-[13px] font-bold text-slate-900">Verified Credential</h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">Official Almanet Certificate of Mastery for your LinkedIn & CV.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────
 // ─── Events ───────────────────────────────────────────────────────────────────
 export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[0]) => void }) {
   const header = useReveal();
   return (
     <section
       id="events"
-      className="relative py-28 border-t overflow-hidden"
+      className="relative py-20 border-t overflow-hidden"
       style={{ backgroundColor: 'var(--color-surface-0)', borderColor: 'var(--color-border)' }}
     >
       {/* Ambient blob */}
       <div
-        className="absolute top-0 right-0 w-[500px] h-[380px] rounded-full pointer-events-none"
-        style={{ background: 'var(--color-primary-light)', filter: 'blur(130px)', opacity: 0.55 }}
+        className="absolute top-0 right-0 w-[450px] h-[320px] rounded-full pointer-events-none"
+        style={{ background: 'var(--color-primary-light)', filter: 'blur(120px)', opacity: 0.5 }}
       />
       <div className="absolute inset-0 hero-grain pointer-events-none opacity-20" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-        {/* ── Header: left label + rule + right count badge ── */}
+        {/* ── Header ── */}
         <div
           ref={header.ref}
-          className={`flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-14 ${reveal(header.visible)}`}
+          className={`flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12 ${reveal(header.visible)}`}
         >
-          <div className="space-y-3 max-w-xl">
+          <div className="space-y-2.5 max-w-xl">
             <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide border"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide border"
               style={{
                 color: 'var(--color-primary)',
                 borderColor: 'var(--color-primary-mid)',
@@ -927,35 +1215,33 @@ export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[
               Stay Sharp
             </span>
             <h2
-              className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.07]"
-              style={{ color: 'var(--color-text-primary)' }}
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 leading-tight"
             >
               Upcoming Events &amp; Workshops
             </h2>
           </div>
           <p
-            className="text-[15px] leading-relaxed max-w-sm md:text-right"
-            style={{ color: 'var(--color-text-muted)' }}
+            className="text-[13.5px] leading-relaxed max-w-sm md:text-right text-slate-500"
           >
             Reserve a slot in our upcoming technical panels and direct deployment system deep-dives.
           </p>
         </div>
 
         {/* ── Event cards ── */}
-        <div className="grid md:grid-cols-2 gap-7">
+        <div className="grid md:grid-cols-2 gap-5">
           {EVENTS.map((evt, i) => (
             <RevealItem
               key={evt.id}
               delayMs={i * 120}
-              className="group flex flex-col overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1"
+              className="group flex flex-col overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)]"
               style={{
                 backgroundColor: '#FFFFFF',
                 border: '1px solid #E5E7EB',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
             >
               {/* Image area */}
-              <div className="relative h-60 overflow-hidden flex-shrink-0">
+              <div className="relative h-44 sm:h-48 overflow-hidden flex-shrink-0">
                 <Image
                   src={evt.img}
                   alt={evt.title}
@@ -968,7 +1254,7 @@ export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[
 
                 {/* Index pill — top left */}
                 <span
-                  className="absolute top-4 left-4 h-8 w-8 rounded-xl flex items-center justify-center text-[11px] font-black backdrop-blur-md"
+                  className="absolute top-3.5 left-3.5 h-7 w-7 rounded-lg flex items-center justify-center text-[10px] font-bold backdrop-blur-md"
                   style={{
                     background: '#FFFFFF',
                     color: '#0F172A',
@@ -979,37 +1265,35 @@ export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[
                 </span>
 
                 {/* Location pill — top right */}
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold text-white backdrop-blur-md bg-white/10 border border-white/15">
+                <div className="absolute top-3.5 right-3.5 flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold text-white backdrop-blur-md bg-white/10 border border-white/15">
                   <Activity className="w-3 h-3 flex-shrink-0" />
                   {evt.location}
                 </div>
 
-                {/* Date + time chips — bottom left, over gradient */}
-                <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                {/* Date + time chips — bottom left */}
+                <div className="absolute bottom-3.5 left-3.5 flex flex-wrap gap-1.5">
                   <span
-                    className="px-3 py-1 rounded-lg text-[11px] font-bold text-white"
+                    className="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white"
                     style={{ background: 'var(--color-primary)' }}
                   >
                     {evt.date}
                   </span>
-                  <span className="px-3 py-1 rounded-lg text-[11px] font-semibold text-white bg-white/15 border border-white/20 backdrop-blur-sm">
+                  <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold text-white bg-white/15 border border-white/20 backdrop-blur-xs">
                     {evt.time}
                   </span>
                 </div>
               </div>
 
               {/* Card body */}
-              <div className="flex flex-col flex-1 p-7 gap-5">
-                <div className="space-y-2 flex-1">
+              <div className="flex flex-col flex-1 p-5 gap-3.5">
+                <div className="space-y-1.5 flex-1">
                   <h3
-                    className="text-[19px] font-bold leading-snug line-clamp-2 transition-colors duration-200 group-hover:text-[var(--color-primary)]"
-                    style={{ color: 'var(--color-text-primary)' }}
+                    className="text-base sm:text-[17px] font-bold leading-snug line-clamp-2 transition-colors duration-200 group-hover:text-blue-600 text-slate-900"
                   >
                     {evt.title}
                   </h3>
                   <p
-                    className="text-sm leading-relaxed line-clamp-2"
-                    style={{ color: 'var(--color-text-muted)' }}
+                    className="text-[13px] leading-relaxed line-clamp-2 text-slate-500"
                   >
                     {evt.desc}
                   </p>
@@ -1018,18 +1302,17 @@ export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[
                 {/* CTA */}
                 <button
                   onClick={() => onRegister(evt)}
-                  className="group/btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white
-                             transition-all duration-200 active:scale-[0.98] hover:-translate-y-px"
+                  className="group/btn w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold text-white
+                             transition-all duration-200 active:scale-[0.98] hover:-translate-y-px cursor-pointer"
                   style={{
                     background: 'var(--color-primary)',
-                    border: 'none',
-                    boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                    boxShadow: '0 2px 8px rgba(37,99,235,0.20)',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-primary-hover)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-primary)')}
                 >
                   Register For Event
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
                 </button>
               </div>
             </RevealItem>
@@ -1040,8 +1323,6 @@ export function EventsSection({ onRegister }: { onRegister: (evt: typeof EVENTS[
   );
 }
 
-
-// ─── Blogs / Publications ─────────────────────────────────────────────────────
 // ─── Blogs / Publications ─────────────────────────────────────────────────────
 export function BlogsSection() {
   const header = useReveal();
@@ -1049,34 +1330,32 @@ export function BlogsSection() {
   const rest = BLOGS.slice(1);
 
   return (
-    <section id="blogs" className="py-28 bg-white border-t border-gray-100">
+    <section id="blogs" className="py-20 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Header — left heading/desc, right "More Articles" link (matches reference) */}
+        {/* Header */}
         <div
           ref={header.ref}
-          className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-14 ${reveal(header.visible)}`}
+          className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5 mb-12 ${reveal(header.visible)}`}
         >
-          <div className="space-y-3 max-w-xl">
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+          <div className="space-y-2 max-w-xl">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
               Blog &amp; Insights
             </h2>
-            <p className="text-gray-500 text-base leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed">
               Explore how we leverage modern technology to drive efficiency, innovation,
               and measurable business results.
             </p>
           </div>
-
-         
         </div>
 
         {/* Featured (left) + List (right) layout */}
-        <div className="grid lg:grid-cols-2 gap-10">
+        <div className="grid lg:grid-cols-2 gap-8">
 
           {/* ── Featured article (left) ── */}
           {featured && (
             <RevealItem delayMs={0} className="flex flex-col">
-              <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden mb-6 bg-gray-100">
+              <div className="relative h-52 sm:h-60 rounded-xl overflow-hidden mb-4 bg-gray-100">
                 <Image
                   src={featured.img}
                   alt={featured.title}
@@ -1085,18 +1364,18 @@ export function BlogsSection() {
                 />
               </div>
 
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 mb-3">
-                <Calendar className="w-3.5 h-3.5" /> {featured.date}
+              <span className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 mb-2">
+                <Calendar className="w-3 h-3" /> {featured.date}
               </span>
 
               <Link href={`/blogs/${featured.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                <h3 className="text-2xl sm:text-3xl font-black text-gray-900 leading-snug mb-3
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug mb-2
                                hover:text-blue-600 transition-colors">
                   {featured.title}
                 </h3>
               </Link>
 
-              <p className="text-[15px] text-gray-500 leading-relaxed">
+              <p className="text-[13.5px] text-gray-500 leading-relaxed">
                 {featured.excerpt}
               </p>
             </RevealItem>
@@ -1109,11 +1388,11 @@ export function BlogsSection() {
                 key={blog.id}
                 delayMs={(i + 1) * 75}
                 as="article"
-                className="flex gap-4 py-5 first:pt-0 group"
+                className="flex gap-3.5 py-4 first:pt-0 group"
               >
                 <Link
                   href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
+                  className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0"
                 >
                   <Image
                     src={blog.img}
@@ -1123,17 +1402,17 @@ export function BlogsSection() {
                   />
                 </Link>
 
-                <div className="flex flex-col gap-1.5 min-w-0">
+                <div className="flex flex-col gap-1 min-w-0">
                   <Link href={`/blogs/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                    <h4 className="text-base font-bold text-gray-900 leading-snug line-clamp-2
+                    <h4 className="text-[14.5px] font-bold text-gray-900 leading-snug line-clamp-2
                                    group-hover:text-blue-600 transition-colors">
                       {blog.title}
                     </h4>
                   </Link>
-                  <span className="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+                  <span className="flex items-center gap-1 text-[11px] text-gray-400 font-medium">
                     <Calendar className="w-3 h-3" /> {blog.date}
                   </span>
-                  <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
                     {blog.excerpt}
                   </p>
                 </div>
@@ -1177,7 +1456,7 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
   return (
     <section
       id="career"
-      className="relative py-28 overflow-hidden bg-[#F8FAFC] border-t border-gray-100"
+      className="relative py-20 overflow-hidden bg-[#F8FAFC] border-t border-gray-100"
     >
       {/* Subtle blue blobs for depth */}
       <div className="absolute top-[-80px] right-[-60px] w-[400px] h-[300px] bg-blue-100 rounded-full blur-[120px] opacity-60 pointer-events-none" />
@@ -1187,42 +1466,42 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* ── Cinematic hero image strip ── */}
-        <div className="relative w-full h-64 sm:h-80 rounded-3xl overflow-hidden mb-16 border border-gray-200 shadow-2xl shadow-blue-100/60">
+        <div className="relative w-full h-52 sm:h-64 rounded-2xl overflow-hidden mb-12 border border-gray-200 shadow-xl shadow-blue-100/40">
           <img
             src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1400&auto=format&fit=crop&q=80"
             alt="Almanet team working together"
             className="w-full h-full object-cover"
           />
-          {/* Blue-tinted overlay to keep white theme feel */}
+          {/* Blue-tinted overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/50 to-blue-800/10" />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-950/70 to-transparent" />
 
           {/* Headline on image */}
           <div
             ref={header.ref}
-            className={`absolute bottom-0 left-0 p-8 sm:p-12 space-y-3 max-w-2xl ${reveal(header.visible)}`}
+            className={`absolute bottom-0 left-0 p-6 sm:p-9 space-y-2 max-w-2xl ${reveal(header.visible)}`}
           >
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black bg-blue-600 text-white shadow-lg shadow-blue-500/30">
-              <Rocket className="w-3.5 h-3.5" /> Join Our Team
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-blue-600 text-white shadow-md shadow-blue-500/20">
+              <Rocket className="w-3 h-3" /> Join Our Team
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.08]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
               Build the Future of{" "}
               <span className="text-blue-300">Enterprise Software</span>
             </h2>
-            <p className="text-white/65 text-sm sm:text-base leading-relaxed max-w-xl">
+            <p className="text-white/75 text-xs sm:text-sm leading-relaxed max-w-lg">
               Grow your skills while working on advanced data systems, enterprise integrations, and robust application suites.
             </p>
           </div>
 
           {/* Floating badges on image */}
-          <div className="absolute top-5 right-5 flex flex-col gap-2">
-            <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl px-4 py-2 flex items-center gap-2 shadow-sm">
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
+            <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-xs">
               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs font-bold text-gray-700">2 Open Roles</span>
+              <span className="text-xs font-semibold text-gray-700">2 Open Roles</span>
             </div>
-            <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl px-4 py-2 flex items-center gap-2 shadow-sm">
+            <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl px-3 py-1.5 flex items-center gap-1.5 shadow-xs">
               <MapPin className="w-3 h-3 text-blue-500" />
-              <span className="text-xs font-bold text-gray-700">Remote Friendly</span>
+              <span className="text-xs font-semibold text-gray-700">Remote Friendly</span>
             </div>
           </div>
         </div>
@@ -1230,16 +1509,16 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
         {/* ── Perk cards ── */}
         <div
           ref={perks.ref}
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 ${reveal(perks.visible)}`}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-5 mb-14 ${reveal(perks.visible)}`}
         >
           {CAREER_PERKS.map((perk, i) => (
             <RevealItem
               key={i}
               delayMs={i * 100}
-              className="group relative rounded-3xl overflow-hidden border border-gray-100 hover:border-blue-200 transition-all duration-400 shadow-sm hover:shadow-xl hover:shadow-blue-100/50 hover:-translate-y-1 bg-white"
+              className="group relative rounded-xl overflow-hidden border border-gray-100 hover:border-blue-200 transition-all duration-300 shadow-xs hover:shadow-lg hover:shadow-blue-100/40 hover:-translate-y-1 bg-white"
             >
               {/* Image top */}
-              <div className="relative h-36 overflow-hidden">
+              <div className="relative h-28 overflow-hidden">
                 <img
                   src={PERK_IMAGES[i]}
                   alt={perk.title}
@@ -1249,15 +1528,15 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
               </div>
 
               {/* Card body */}
-              <div className="p-6 space-y-3 bg-white">
-                <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-                  <perk.Icon className="w-5 h-5 text-blue-600" />
+              <div className="p-4 sm:p-5 space-y-2 bg-white">
+                <div className="h-9 w-9 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <perk.Icon className="w-4.5 h-4.5 text-blue-600" />
                 </div>
                 
-<h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-  {perk.title}
-</h3>
-<p className="text-[13px] text-gray-500 leading-relaxed">{perk.desc}</p>
+                <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                  {perk.title}
+                </h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{perk.desc}</p>
               </div>
             </RevealItem>
           ))}
@@ -1266,12 +1545,12 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
         {/* ── Current Openings ── */}
         <div
           ref={jobsHead.ref}
-          className={`space-y-4 max-w-4xl mx-auto ${reveal(jobsHead.visible)}`}
+          className={`space-y-3.5 max-w-4xl mx-auto ${reveal(jobsHead.visible)}`}
         >
-          <div className="flex items-center gap-3 mb-8">
-            <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Current Openings</span>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Current Openings</span>
             <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
+            <span className="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-full">
               {JOBS.length} Positions
             </span>
           </div>
@@ -1280,24 +1559,24 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
             <RevealItem
               key={idx}
               delayMs={idx * 100}
-              className="group p-6 sm:p-8 bg-white border border-gray-100 rounded-3xl hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/40 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm hover:-translate-y-0.5"
+              className="group p-4 sm:p-5 bg-white border border-gray-100 rounded-2xl hover:border-blue-200 hover:shadow-md hover:shadow-blue-100/30 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs hover:-translate-y-0.5"
             >
-              <div className="space-y-3 flex-1">
+              <div className="space-y-2 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h4 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                  <h4 className="text-[15px] font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
                     {job.title}
                   </h4>
-                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${TYPE_COLORS[job.type] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
-  {job.type}
-</span>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${TYPE_COLORS[job.type] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+                    {job.type}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${DEPT_COLORS[job.dept] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${DEPT_COLORS[job.dept] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
                     {job.dept}
                   </span>
                   <span className="text-gray-300">·</span>
-                  <span className="flex items-center gap-1 text-xs text-gray-400">
+                  <span className="flex items-center gap-1 text-[11px] text-gray-400">
                     <Clock className="w-3 h-3" /> Posted recently
                   </span>
                 </div>
@@ -1307,10 +1586,10 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
 
               <button
                 onClick={() => onApply(job.title)}
-                className="group/btn sm:self-center flex items-center gap-2 px-7 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all duration-300 whitespace-nowrap shadow-lg shadow-blue-200 hover:shadow-xl hover:shadow-blue-300 hover:-translate-y-0.5 active:scale-[0.97]"
+                className="group/btn sm:self-center flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-all duration-200 whitespace-nowrap shadow-sm active:scale-[0.98] cursor-pointer"
               >
                 Apply Now
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
               </button>
             </RevealItem>
           ))}
@@ -1321,7 +1600,6 @@ export function CareersSection({ onApply }: { onApply: (jobTitle: string) => voi
   );
 }
 
-
 // ─── About ────────────────────────────────────────────────────────────────────
 export function AboutSection() {
   const intro   = useReveal();
@@ -1331,45 +1609,41 @@ export function AboutSection() {
   return (
     <section id="aboutus" className="relative overflow-hidden border-t border-gray-100">
 
-      {/* ═══════════════════════════════════════════════════════════════════════
-          PART 1 — Text + image side by side (white bg)
-      ════════════════════════════════════════════════════════════════════════ */}
-      <div className="relative bg-white py-28">
-        {/* Subtle top-right blob */}
-        <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-blue-50 rounded-full blur-[120px] opacity-70 pointer-events-none" />
+      {/* PART 1 — Text + image side by side */}
+      <div className="relative bg-white py-20">
+        <div className="absolute top-0 right-0 w-[450px] h-[350px] bg-blue-50 rounded-full blur-[120px] opacity-70 pointer-events-none" />
         <div className="absolute inset-0 hero-grain pointer-events-none opacity-20" />
 
         <div
           ref={intro.ref}
-          className={`max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10 ${reveal(intro.visible)}`}
+          className={`max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10 ${reveal(intro.visible)}`}
         >
           {/* Left — text */}
-          <div className="space-y-7">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black bg-blue-600 text-white shadow-md shadow-blue-200">
-              <Briefcase className="w-3.5 h-3.5" /> Corporate Profile & Intelligence
+          <div className="space-y-5">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-blue-600 text-white shadow-xs">
+              <Briefcase className="w-3 h-3" /> Corporate Profile & Intelligence
             </span>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.06]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight leading-tight">
               Architecting Software{" "}
               <span className="relative inline-block">
                 <span className="text-blue-600">Ecosystems</span>
-                {/* Underline accent */}
-                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-200 rounded-full" />
+                <span className="absolute -bottom-0.5 left-0 right-0 h-1 bg-blue-200 rounded-full" />
               </span>{" "}
               That Drive Global Enterprises
             </h2>
 
-            <p className="text-gray-700 leading-relaxed text-base sm:text-lg max-w-lg">
-              Founded on rigid software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks.
+            <p className="text-gray-600 leading-relaxed text-sm sm:text-[15px] max-w-lg">
+              Founded on rigorous software engineering principles, Almanet designs high-performance digital architectures that fundamentally eliminate structural bottlenecks.
             </p>
-            <p className="text-gray-500 leading-relaxed text-base max-w-lg">
-              We believe modern enterprise apps shouldn't operate in silos. Our approach centers on unifying fragmented data streams—ensuring field actions, internal inventories, donor telemetry, and customer-facing touchpoints speak to the same underlying analytical database engine.
+            <p className="text-gray-500 leading-relaxed text-xs sm:text-sm max-w-lg">
+              We believe modern enterprise apps shouldn&apos;t operate in silos. Our approach centers on unifying fragmented data streams—ensuring field actions, internal inventories, donor telemetry, and customer touchpoints speak to the same underlying analytical database engine.
             </p>
 
             {/* Inline trust signals */}
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap gap-2 pt-1">
               {['ISO Compliant', 'Cloud-Native', 'SAP Certified', 'AI-Ready'].map((tag) => (
-                <span key={tag} className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-full">
+                <span key={tag} className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full">
                   ✓ {tag}
                 </span>
               ))}
@@ -1378,58 +1652,50 @@ export function AboutSection() {
 
           {/* Right — stacked image with floating card */}
           <div className="relative">
-            {/* Main image */}
-            <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-2xl shadow-blue-100/50">
+            <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-xl shadow-blue-100/40">
               <img
                 src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&auto=format&fit=crop&q=80"
                 alt="Almanet engineering team"
-                className="w-full h-80 object-cover"
+                className="w-full h-72 sm:h-80 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-950/40 to-transparent" />
             </div>
 
             {/* Floating card — bottom left */}
-            <div className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl border border-gray-100 px-5 py-4 flex items-center gap-3 z-10">
-              <div className="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                <ShieldCheck className="w-5 h-5 text-white" />
+            <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-2.5 z-10">
+              <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="w-4.5 h-4.5 text-white" />
               </div>
               <div>
-                <div className="text-sm font-black text-gray-900">100% Compliant</div>
-                <div className="text-[12px] text-gray-400 font-medium">Regulatory & Data Privacy</div>
+                <div className="text-xs font-bold text-gray-900">100% Compliant</div>
+                <div className="text-[11px] text-gray-400 font-medium">Regulatory & Data Privacy</div>
               </div>
             </div>
 
             {/* Floating card — top right */}
-            <div className="absolute -top-5 -right-5 bg-white rounded-2xl shadow-xl border border-gray-100 px-5 py-4 flex items-center gap-3 z-10">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-lg font-black text-blue-600">14+</span>
+            <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-2.5 z-10">
+              <div className="h-9 w-9 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-sm font-bold text-blue-600">14+</span>
               </div>
               <div>
-                <div className="text-sm font-black text-gray-900">Core Modules</div>
-                <div className="text-[12px] text-gray-400 font-medium">Enterprise Ready</div>
+                <div className="text-xs font-bold text-gray-900">Core Modules</div>
+                <div className="text-[11px] text-gray-400 font-medium">Enterprise Ready</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════════════════════
-          PART 2 — Full-width blue stats band
-      ════════════════════════════════════════════════════════════════════════ */}
+      {/* PART 2 — Full-width blue stats band */}
       <div
         ref={stats.ref}
-        className={`relative py-16 overflow-hidden ${reveal(stats.visible)}`}
+        className={`relative py-12 overflow-hidden ${reveal(stats.visible)}`}
         style={{
           background: 'linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #1D4ED8 100%)',
         }}
       >
-        {/* Decorative circles inside band */}
-        <div className="absolute top-[-60px] left-[-60px] w-[300px] h-[300px] bg-white/5 rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-80px] right-[-40px] w-[280px] h-[280px] bg-white/5 rounded-full pointer-events-none" />
-        <div className="absolute inset-0 hero-grain pointer-events-none opacity-20" />
-
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { val: '99.9%', label: 'System Uptime',  desc: 'Redundant cloud pipelines' },
               { val: '14+',   label: 'Core Modules',   desc: 'Production-ready layers' },
@@ -1439,49 +1705,39 @@ export function AboutSection() {
               <RevealItem
                 key={i}
                 delayMs={i * 80}
-                className="text-center space-y-1 group"
+                className="text-center space-y-0.5 group"
               >
                 <CountUpStat
-  value={stat.val}
-  className="text-5xl sm:text-6xl font-black text-white group-hover:scale-105 transition-transform duration-300 inline-block"
-/>
-                <div className="text-xs font-black text-blue-200 uppercase tracking-widest mt-2">
+                  value={stat.val}
+                  className="text-3xl sm:text-4xl font-bold text-white group-hover:scale-105 transition-transform duration-300 inline-block"
+                />
+                <div className="text-[11px] font-bold text-blue-200 uppercase tracking-wider mt-1">
                   {stat.label}
                 </div>
-                <p className="text-xs text-blue-200/90">{stat.desc}</p>
+                <p className="text-[11px] text-blue-200/80">{stat.desc}</p>
               </RevealItem>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════════════════════
-          PART 3 — Pillar cards (light blue-gray bg, distinct from white above)
-      ════════════════════════════════════════════════════════════════════════ */}
-      <div className="relative bg-[#F0F6FF] py-24">
-        <div className="absolute inset-0 hero-grain pointer-events-none opacity-20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-blue-100 rounded-full blur-[100px] opacity-50 pointer-events-none" />
-
-        <div
-          ref={pillars.ref}
-          className={`max-w-7xl mx-auto px-6 relative z-10 ${reveal(pillars.visible)}`}
-        >
-          {/* Mini heading */}
-          <div className="text-center mb-12 space-y-2">
-            <span className="text-xs font-black text-blue-400 uppercase tracking-widest">What Drives Us</span>
-            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+      {/* PART 3 — Pillar cards */}
+      <div className="relative bg-[#F0F6FF] py-20">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-10 space-y-1.5">
+            <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest">What Drives Us</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
               Built on Three Core Pillars
             </h3>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             {[
               {
                 Icon: Target,
                 title: 'Our Mission',
                 desc: 'To democratize heavy enterprise automation layers—engineering secure ecosystems that lower operational friction.',
                 accent: 'bg-blue-600',
-                gradientFrom: 'from-blue-50',
                 number: '01',
               },
               {
@@ -1489,7 +1745,6 @@ export function AboutSection() {
                 title: 'Technical Mastery',
                 desc: 'Specialized Python deep learning to comprehensive SAP configurations, our architecture relies on microservice modularity.',
                 accent: 'bg-indigo-600',
-                gradientFrom: 'from-indigo-50',
                 number: '02',
               },
               {
@@ -1497,34 +1752,29 @@ export function AboutSection() {
                 title: 'Talent Incubation',
                 desc: 'Integrated internship systems and expert-led training ensure upcoming developers master full-stack code paths.',
                 accent: 'bg-sky-600',
-                gradientFrom: 'from-sky-50',
                 number: '03',
               },
             ].map((pillar, i) => (
               <RevealItem
                 key={i}
                 delayMs={i * 100}
-                className="group bg-white rounded-3xl border border-gray-100 hover:border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-100/50 transition-all duration-400 hover:-translate-y-1 overflow-hidden"
+                className="group bg-white rounded-2xl border border-gray-100 hover:border-blue-200 shadow-xs hover:shadow-md hover:shadow-blue-100/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
-                {/* Gradient accent top bar */}
-                <div className={`h-1.5 w-full ${pillar.accent}`} />
-
-                {/* Body */}
-                <div className="p-8 space-y-4">
-                  {/* Number + icon row */}
+                <div className={`h-1 w-full ${pillar.accent}`} />
+                <div className="p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className={`h-12 w-12 rounded-2xl ${pillar.accent} flex items-center justify-center shadow-lg`}>
+                    <div className={`h-10 w-10 rounded-xl ${pillar.accent} flex items-center justify-center shadow-xs`}>
                       <pillar.Icon className="w-5 h-5 text-white" />
                     </div>
-                    <span className="text-5xl font-black text-gray-100 group-hover:text-blue-100 transition-colors duration-300 select-none">
+                    <span className="text-3xl font-extrabold text-gray-200 group-hover:text-blue-100 transition-colors duration-300 select-none">
                       {pillar.number}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-[16px] font-bold text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors duration-200">
                     {pillar.title}
                   </h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{pillar.desc}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed">{pillar.desc}</p>
                 </div>
               </RevealItem>
             ))}
@@ -1548,17 +1798,30 @@ const SocialIcons: Record<string, (props: { size?: number }) => ReactElement> = 
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124M3.558 20.452h3.56V9h-3.56z" />
     </svg>
   ),
-  Github: ({ size = 16 }) => (
+  Instagram: ({ size = 16 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2" />
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
     </svg>
   ),
-  Discord: ({ size = 16 }) => (
+  Facebook: ({ size = 16 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.927 1.793 8.18 1.793 12.062 0a.073.073 0 0 1 .079.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.001-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029M8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418m7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418" />
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  ),
+  Youtube: ({ size = 16 }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
     </svg>
   ),
 };
+
+const SOCIAL_LINKS = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/almanet01/posts/?viewAsMember=true', key: 'Linkedin' },
+  { label: 'Twitter / X', href: 'https://x.com/almanet_', key: 'Twitter' },
+  { label: 'Instagram', href: 'https://www.instagram.com/almanetps/', key: 'Instagram' },
+  { label: 'Facebook', href: 'https://www.facebook.com/AlmanetPS', key: 'Facebook' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@almanetps', key: 'Youtube' },
+];
 
 export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
   return (
@@ -1585,17 +1848,19 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
             </p>
 
             <div className="flex items-center gap-2.5 pt-1">
-              {['Twitter', 'Linkedin', 'Github', 'Discord'].map((label) => {
-                const Icon = SocialIcons[label];
+              {SOCIAL_LINKS.map((item) => {
+                const Icon = SocialIcons[item.key];
                 return (
-                  <button
-                    key={label}
-                    onClick={onGetInTouch}
-                    aria-label={label}
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
                     className="h-10 w-10 flex items-center justify-center rounded-xl bg-white/[0.04] border border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-blue-400 hover:bg-white/[0.07] transition-all duration-300"
                   >
                     <Icon size={16} />
-                  </button>
+                  </a>
                 );
               })}
             </div>
@@ -1610,7 +1875,7 @@ export function Footer({ onGetInTouch }: { onGetInTouch: () => void }) {
                 Sitemap
               </h4>
               <ul className="space-y-3.5 text-[14px] font-medium text-gray-500">
-                {['Home', 'Products', 'Services', 'Events', 'Blogs', 'About Us'].map((item) => (
+                {['Home', 'Products', 'Services', 'Training', 'Events', 'Blogs', 'About Us'].map((item) => (
                   <li key={item}>
                     <button
                       onClick={() => scrollTo(item.toLowerCase().replace(' ', ''))}
