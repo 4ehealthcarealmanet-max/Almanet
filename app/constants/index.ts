@@ -180,8 +180,120 @@ export const SERVICES = [
   },
 ]
 
+// ─── Training Programs ────────────────────────────────────────────────────────
+export const TRAINING_COURSES = [
+  {
+    id: 'sap-abap-cloud',
+    title: 'SAP ABAP on Cloud',
+    tag: 'Cloud Architecture & RAP',
+    level: 'Professional & Upskilling',
+    duration: '8 Weeks · Live Interactive',
+    schedule: 'Weekend & Weekday Batches Available',
+    shortDesc: 'Master modern cloud-ready ABAP development, RESTful Application Programming Model (RAP), ABAP Core Data Services (CDS), and Clean Core extensions for SAP BTP and S/4HANA Cloud.',
+    color: {
+      accent: '#2563EB',
+      light: '#EFF6FF',
+      badgeBg: '#DBEAFE',
+      badgeText: '#1D4ED8',
+      border: '#BFDBFE',
+    },
+    stats: [
+      { label: 'Practical Labs', value: '100% Hands-On' },
+      { label: 'Architecture', value: 'RAP & Clean Core' },
+      { label: 'Environment', value: 'SAP BTP Cloud' },
+    ],
+    curriculum: [
+      {
+        title: 'Cloud ABAP Fundamentals & Modern Syntax',
+        desc: 'New ABAP 7.5+ expressions, statements, Clean ABAP principles, and cloud-ready restrictions.',
+      },
+      {
+        title: 'Core Data Services (CDS) Entities & VDM',
+        desc: 'Building Virtual Data Models (VDM), associations, aggregations, access controls, and CDS annotations.',
+      },
+      {
+        title: 'ABAP RESTful Application Programming (RAP)',
+        desc: 'Managed & unmanaged scenarios, behavior definitions, determinations, validations, actions, and Draft handling.',
+      },
+      {
+        title: 'OData V4 & Fiori Elements Integration',
+        desc: 'Exposing RAP business objects as OData V4 services and consuming them seamlessly with SAP Fiori / UI5 apps.',
+      },
+      {
+        title: 'SAP BTP & Clean Core Extensibility',
+        desc: 'Side-by-side extensibility on SAP BTP, developer extensibility (Embedded Steampunk), and event-driven architecture.',
+      },
+      {
+        title: 'abapGit, Cloud CI/CD & Unit Testing',
+        desc: 'Version control using abapGit, automated unit testing with ABAP Unit, test doubles, and quality governance.',
+      },
+    ],
+    prerequisites: 'Basic knowledge of ERP or programming concepts. Prior ABAP experience helpful but not mandatory.',
+    outcomes: [
+      'Architect and build cloud-native enterprise business objects using SAP RAP',
+      'Deploy side-by-side extensions on SAP Business Technology Platform (BTP)',
+      'Prepare confidently for SAP Certified Development Specialist certification',
+      'Gain real production enterprise project experience with live mentorship',
+    ],
+  },
+  {
+    id: 'advanced-excel',
+    title: 'Advanced Excel',
+    tag: 'Business Analytics & BI',
+    level: 'Beginner to Advanced',
+    duration: '6 Weeks · Hands-on Masterclass',
+    schedule: 'Flexible Weekend / Evening Batches',
+    shortDesc: 'Become a high-impact data expert: master advanced formulas, Power Query automated ETL pipelines, Power Pivot data modeling, interactive KPI dashboards, and VBA macros.',
+    color: {
+      accent: '#059669',
+      light: '#ECFDF5',
+      badgeBg: '#D1FAE5',
+      badgeText: '#047857',
+      border: '#A7F3D0',
+    },
+    stats: [
+      { label: 'Case Studies', value: '50+ Real Scenarios' },
+      { label: 'Data Engines', value: 'Power Query & DAX' },
+      { label: 'Certification', value: 'Industry Verified' },
+    ],
+    curriculum: [
+      {
+        title: 'Modern Formula Mastery & Dynamic Arrays',
+        desc: 'Master XLOOKUP, INDEX/MATCH, FILTER, UNIQUE, SORT, LET, LAMBDA, and nested logical algorithms.',
+      },
+      {
+        title: 'Power Query & Automated Data Cleansing (ETL)',
+        desc: 'Extract, transform, and merge multi-source datasets with zero recurring manual effort; unpivot, conditional columns.',
+      },
+      {
+        title: 'Power Pivot & Data Modeling with DAX',
+        desc: 'Build multi-table relational models (Star schemas), calculate advanced DAX measures, time-intelligence, and KPIs.',
+      },
+      {
+        title: 'Executive Dashboards & Visual Storytelling',
+        desc: 'Design interactive, C-suite ready executive KPI dashboards with dynamic slicers, sparklines, conditional heatmaps, and charts.',
+      },
+      {
+        title: 'What-If Analysis, Forecasting & Financial Modeling',
+        desc: 'Data tables, Scenario Manager, Goal Seek, Solver, statistical forecasting, and dynamic sensitivity analysis.',
+      },
+      {
+        title: 'VBA & Macro Automation for Enterprise Tasks',
+        desc: 'Automate repetitive workflows, batch export reports, generate custom dialogs, and schedule automatic email notifications.',
+      },
+    ],
+    prerequisites: 'Basic familiarity with Microsoft Excel interface and simple calculations.',
+    outcomes: [
+      'Automate 80% of repetitive data manipulation and report preparation time',
+      'Build robust relational models handling millions of rows using Power Pivot',
+      'Create executive-grade KPI dashboards used by Fortune 500 leadership',
+      'Receive official Almanet Certificate of Mastery to showcase on LinkedIn',
+    ],
+  },
+];
+
 // ─── Nav ──────────────────────────────────────────────────────────────────────
-export const NAV_ITEMS = ['Home', 'Products', 'Services', 'Events', 'Blogs', 'Career', 'About Us'];
+export const NAV_ITEMS = ['Home', 'Products', 'Services', 'Training', 'Events', 'Blogs', 'Career', 'About Us'];
 
 // ─── Career Perks ─────────────────────────────────────────────────────────────
 export const CAREER_PERKS = [

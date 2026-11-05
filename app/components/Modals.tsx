@@ -92,36 +92,69 @@ function LoginForm({ onBack, onClose }: { onBack: () => void; onClose: () => voi
 }
 
 // ─── Modal 1: Register / Get in Touch ────────────────────────────────────────
-export function RegisterModal({ onClose }: { onClose: () => void }) {
+export function RegisterModal({
+  onClose,
+  defaultInterest,
+  defaultMessage,
+}: {
+  onClose: () => void;
+  defaultInterest?: string;
+  defaultMessage?: string;
+}) {
   const [submitted, setSubmitted] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setLoading(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      tab: 'Inquiries',
+      fullName: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      interest: formData.get('interest') as string,
+      message: formData.get('message') as string,
+    };
+
     try {
-      await sendContactForm(e.currentTarget);
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
       setSubmitted(true);
-    } catch {
-      alert('Submission failed. Please try again.');
+    } catch (err) {
+      console.error(err);
+      alert('Submission failed. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
-  function handleClose() { setSubmitted(false); setShowLogin(false); onClose(); }
+  function handleClose() {
+    setSubmitted(false);
+    setShowLogin(false);
+    onClose();
+  }
 
   return (
-    <>
     <ModalShell onClose={handleClose}>
       {showLogin ? (
         <LoginForm onBack={() => setShowLogin(false)} onClose={handleClose} />
       ) : submitted ? (
-        <SuccessScreen title="Request Submitted!" message="Our team will reach out within one business cycle." onClose={handleClose} />
+        <SuccessScreen
+          title="Request Submitted!"
+          message="Thank you! Our enterprise team will reach out within one business cycle."
+          onClose={handleClose}
+        />
       ) : (
-<form
-  action="https://docs.google.com/forms/d/e/1FAIpQLSeF0-JzK1QoNb0M3z6T3BeI-HNC0M6KqdICqDjSkU9rdf6fiw/formResponse"
-  method="POST"
-  target="hidden_iframe_contact"
-  onSubmit={() => setTimeout(() => setSubmitted(true), 500)}
->          <div className="flex flex-col items-center gap-2 mb-2">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex flex-col items-center gap-2 mb-2">
             <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-1">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -132,27 +165,49 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <InputRow label="Full Name" required>
-            <input name="entry.1383830176" type="text" required placeholder="John Doe" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none" />
+            <input
+              name="fullName"
+              type="text"
+              required
+              placeholder="John Doe"
+              className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
+            />
           </InputRow>
 
           <div className="grid grid-cols-2 gap-3">
             <InputRow label="Email" required>
-              <input name="entry.498950996" type="email" required placeholder="name@co.com" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="name@co.com"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
             <InputRow label="Phone">
-              <input name="entry.1683415286" type="tel" placeholder="10-digit" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="10-digit"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
           </div>
 
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Primary Interest *</label>
             <div className="border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus-within:border-blue-500 focus-within:bg-white transition-all">
-              <select name="entry.905520173" required className="w-full bg-transparent text-sm text-slate-800 outline-none">
+              <select
+                name="interest"
+                required
+                defaultValue={defaultInterest || ""}
+                className="w-full bg-transparent text-sm text-slate-800 outline-none"
+              >
                 <option value="">Select an option...</option>
-                <option>Product Integration</option>
-                <option>SAP Consulting</option>
-                <option>Professional Training</option>
-                <option>Custom AI Development</option>
+                <option value="Professional Training">Professional Training (SAP ABAP / Advanced Excel)</option>
+                <option value="SAP Consulting">SAP Consulting</option>
+                <option value="Product Integration">Product Integration</option>
+                <option value="Custom AI Development">Custom AI Development</option>
               </select>
             </div>
           </div>
@@ -160,13 +215,31 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Message</label>
             <div className="border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus-within:border-blue-500 focus-within:bg-white transition-all">
-              <textarea name="entry.308412670" rows={3} placeholder="Tell us about your project..." className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none" />
+              <textarea
+                name="message"
+                rows={3}
+                defaultValue={defaultMessage || ""}
+                placeholder="Tell us about your requirements..."
+                className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
+              />
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
-            Submit
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200 disabled:opacity-70"
+          >
+            {loading ? (
+              <span>Submitting...</span>
+            ) : (
+              <>
+                Submit
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </>
+            )}
           </button>
 
           <p className="text-center text-sm text-slate-400">
@@ -174,37 +247,73 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
             <button type="button" onClick={() => setShowLogin(true)} className="text-blue-600 font-semibold hover:underline">Sign in</button>
           </p>
         </form>
-        
       )}
     </ModalShell>
-    <iframe name="hidden_iframe_contact" style={{ display: 'none' }}></iframe>
-    </>
   );
 }
 
 // ─── Modal 2: Event Registration ─────────────────────────────────────────────
-export function EventRegistrationModal({ eventTitle, eventDate, onClose }: { eventTitle: string; eventDate: string; onClose: () => void }) {
+export function EventRegistrationModal({
+  eventTitle,
+  eventDate,
+  onClose,
+}: {
+  eventTitle: string;
+  eventDate: string;
+  onClose: () => void;
+}) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleClose() { setSubmitted(false); onClose(); }
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
- return (
-  <>
+    const payload = {
+      tab: 'Events',
+      eventTitle,
+      eventDate,
+      fullName: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      organization: formData.get('organization') as string,
+      interest: formData.get('interest') as string,
+      questions: formData.get('questions') as string,
+    };
+
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      alert('Registration failed. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleClose() {
+    setSubmitted(false);
+    onClose();
+  }
+
+  return (
     <ModalShell onClose={handleClose}>
       {submitted ? (
         <SuccessScreen
           title="Registration Confirmed!"
-          message={<>You're registered for <span className="text-blue-600 font-semibold">{eventTitle}</span>. We'll send details to your email.</>}
+          message={<>You're registered for <span className="text-blue-600 font-semibold">{eventTitle}</span>. We'll send access details to your email.</>}
           onClose={handleClose}
         />
       ) : (
-        <form
-          action="https://docs.google.com/forms/d/e/1FAIpQLSdqmlSg7ZHTxW4qhr5vSAVyHo1QNQ2SBVWGLvYgq9Niwg_x8g/formResponse"
-          method="POST"
-          target="hidden_iframe"
-          onSubmit={() => setTimeout(() => setSubmitted(true), 500)}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col items-center gap-2 mb-2">
             <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-1">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -216,33 +325,52 @@ export function EventRegistrationModal({ eventTitle, eventDate, onClose }: { eve
             <span className="text-xs text-slate-400">{eventDate}</span>
           </div>
 
-          <input type="hidden" name="event_title" value={eventTitle} />
-          <input type="hidden" name="event_date" value={eventDate} />
-
           <InputRow label="Full Name" required>
-            <input name="entry.356114802" type="text" required placeholder="John Doe" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none" />
+            <input
+              name="fullName"
+              type="text"
+              required
+              placeholder="John Doe"
+              className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
+            />
           </InputRow>
 
           <div className="grid grid-cols-2 gap-3">
             <InputRow label="Email" required>
-              <input name="entry.410965917" type="email" required placeholder="you@mail.com" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="you@mail.com"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
             <InputRow label="Phone">
-              <input name="entry.1970013942" type="tel" placeholder="10-digit" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="10-digit"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
           </div>
 
           <InputRow label="Organization / Company">
-            <input name="organization" type="text" placeholder="Your company name" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none" />
+            <input
+              name="organization"
+              type="text"
+              placeholder="Your company name"
+              className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
+            />
           </InputRow>
 
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Primary Interest</label>
             <div className="border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus-within:border-blue-500 focus-within:bg-white transition-all">
-              <select name="entry.1724319647" className="w-full bg-transparent text-sm text-slate-800 outline-none">
+              <select name="interest" className="w-full bg-transparent text-sm text-slate-800 outline-none">
+                <option value="Professional Training">Professional Training</option>
                 <option value="Product Integration">Product Integration</option>
                 <option value="SAP Consulting">SAP Consulting</option>
-                <option value="Professional Training">Professional Training</option>
                 <option value="Custom AI Development">Custom AI Development</option>
                 <option value="Digital Marketing">Digital Marketing</option>
               </select>
@@ -252,42 +380,89 @@ export function EventRegistrationModal({ eventTitle, eventDate, onClose }: { eve
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Any Questions?</label>
             <div className="border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus-within:border-blue-500 focus-within:bg-white transition-all">
-              <textarea name="entry.1299277349" rows={2} placeholder="Any specific topics you'd like covered..." className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none" />
+              <textarea
+                name="questions"
+                rows={2}
+                placeholder="Any specific topics you'd like covered..."
+                className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
+              />
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
-            Confirm Registration
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200 disabled:opacity-70"
+          >
+            {loading ? (
+              <span>Registering...</span>
+            ) : (
+              <>
+                Confirm Registration
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </>
+            )}
           </button>
         </form>
       )}
     </ModalShell>
-    <iframe name="hidden_iframe" style={{ display: 'none' }}></iframe>
-  </>
-);
+  );
 }
-// Apply Now/ Career//
+
+// ─── Modal 3: Apply Now / Career ─────────────────────────────────────────────
 export function ApplyModal({ jobTitle, onClose }: { jobTitle: string; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleClose() { setSubmitted(false); onClose(); }
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      tab: 'Careers',
+      jobTitle,
+      fullName: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      portfolio: formData.get('portfolio') as string,
+      coverNote: formData.get('coverNote') as string,
+    };
+
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      alert('Application submission failed. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleClose() {
+    setSubmitted(false);
+    onClose();
+  }
 
   return (
-    <>
     <ModalShell onClose={handleClose}>
       {submitted ? (
-        <SuccessScreen title="Application Submitted!" message="We'll review your profile and get back to you soon." onClose={handleClose} />
+        <SuccessScreen
+          title="Application Submitted!"
+          message="Thank you! We'll review your profile and our talent team will reach out soon."
+          onClose={handleClose}
+        />
       ) : (
-        <form
-          action="https://docs.google.com/forms/d/e/1FAIpQLSeaBcaJyIQAYTzJx8TLFay3vSfKLW0l6eQBb106aMJP4c0_hA/formResponse"
-          method="POST"
-          target="hidden_iframe_apply"
-          onSubmit={() => setTimeout(() => setSubmitted(true), 500)}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col items-center gap-2 mb-2">
             <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-1">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -299,41 +474,75 @@ export function ApplyModal({ jobTitle, onClose }: { jobTitle: string; onClose: (
             <p className="text-sm text-slate-400">Fill in your details. Our HR team will reach out shortly.</p>
           </div>
 
-          {/* Hidden job title field */}
-          <input type="hidden" name="entry.102856012" value={jobTitle} />
-
           <InputRow label="Full Name" required>
-            <input name="entry.319991961" type="text" required placeholder="John Doe" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none" />
+            <input
+              name="fullName"
+              type="text"
+              required
+              placeholder="John Doe"
+              className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
+            />
           </InputRow>
 
           <div className="grid grid-cols-2 gap-3">
             <InputRow label="Email" required>
-              <input name="entry.2143875755" type="email" required placeholder="you@mail.com" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="you@mail.com"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
             <InputRow label="Phone">
-              <input name="entry.496729653" type="tel" placeholder="10-digit" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0" />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="10-digit"
+                className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none min-w-0"
+              />
             </InputRow>
           </div>
 
           <InputRow label="Portfolio / LinkedIn URL">
-            <input name="entry.1012426870" type="url" placeholder="https://linkedin.com/in/yourname" className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none" />
+            <input
+              name="portfolio"
+              type="url"
+              placeholder="https://linkedin.com/in/yourname"
+              className="flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
+            />
           </InputRow>
 
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Cover Note</label>
             <div className="border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus-within:border-blue-500 focus-within:bg-white transition-all">
-              <textarea name="entry.1261608735" rows={3} placeholder="Why are you a great fit for this role?" className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none" />
+              <textarea
+                name="coverNote"
+                rows={3}
+                placeholder="Why are you a great fit for this role?"
+                className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
+              />
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
-            Submit Application
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200 disabled:opacity-70"
+          >
+            {loading ? (
+              <span>Submitting Application...</span>
+            ) : (
+              <>
+                Submit Application
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </>
+            )}
           </button>
         </form>
       )}
     </ModalShell>
-    <iframe name="hidden_iframe_apply" style={{ display: 'none' }}></iframe>
-    </>
   );
 }
